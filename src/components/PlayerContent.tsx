@@ -1,11 +1,12 @@
 import useSound from "use-sound";
-import { useEffect, useRef, useState } from "react";
-import { useDispatch, useStore } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector, useStore } from "react-redux";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
 import CircularProgress from '@mui/material/CircularProgress';
 import MediaItem from "./MediaItem";
+import PlayerControls from "./PlayerControls";
 import Slider from "./Slider";
 import { Song } from "../types";
 import usePlayer from "../hooks/usePlayer";
@@ -22,45 +23,46 @@ interface PlayerContentProps {
 const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   const {
     isPlaying, position, volume, playNext, playPrevious,
-    setIsPlaying, setPosition, setVolume
+    setIsPlaying, setPosition, setVolume, playbackRequest, recordPlayback
   } = usePlayer();
   const dispatch = useDispatch();
   const store = useStore<RootState>();
   const [isLoaded, setIsLoaded] = useState(false);
-  const soundRef = useRef<ReturnType<typeof useSound>[1]['sound']>(null);
+  const accountStorageReady = useSelector((state: RootState) => state.global.accountStorageReady);
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
   const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
 
   const [play, { pause, sound }] = useSound(songUrl, {
     volume,
     onplay: () => {
+      if (store.getState().global.currentSong !== song.id) return;
+      recordPlayback(song);
       setIsLoaded(true);
       setIsPlaying(true);
     },
     onend: () => {
+      if (store.getState().global.currentSong !== song.id) return;
       setIsPlaying(false);
-      const nextId = playNext(true);
-      if (nextId === song.id) {
-        setPosition(0);
-        soundRef.current?.seek(0);
-        soundRef.current?.play();
-      }
+      playNext(true);
     },
-    onpause: () => setIsPlaying(false),
+    onpause: () => {
+      if (store.getState().global.currentSong === song.id) setIsPlaying(false);
+    },
     format: ['mp3', 'wav', 'ogg']
   });
 
   useEffect(() => {
-    soundRef.current = sound;
-    if (sound) {
-      sound.seek(store.getState().global.position);
-      sound.play();
-    }
-    return () => {
-      soundRef.current = null;
-      sound?.unload();
-    };
-  }, [sound, store]);
+    if (!sound) return;
+    sound.stop();
+    sound.seek(store.getState().global.position);
+    sound.play();
+  }, [sound, store, playbackRequest]);
+
+  useEffect(() => () => { sound?.unload(); }, [sound]);
+
+  useEffect(() => {
+    if (isPlaying && accountStorageReady) recordPlayback(song);
+  }, [accountStorageReady, isPlaying, recordPlayback, song]);
 
   const handlePlay = () => {
     if (isPlaying) pause();
@@ -92,9 +94,9 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
   }, [dispatch, song]);
 
   return ( 
-    <div className="grid grid-cols-2 md:grid-cols-3 h-full">
-        <div className="flex w-full justify-start">
-          <div className="flex items-center gap-x-4">
+    <div className="relative grid grid-cols-[minmax(0,1fr)_auto] md:grid-cols-3 h-full">
+        <div className="flex min-w-0 w-full justify-start">
+          <div className="flex min-w-0 w-full items-center gap-x-1 lg:gap-x-4">
             <MediaItem data={song} />
             <AddToPlaylistButton song={song} />
             <LikeButton songId={song.id} name={song.name} service={song.service} songData={song} />
@@ -111,6 +113,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
             items-center
           "
         >
+          <PlayerControls />
           <div 
             onClick={handlePlay} 
             className="
@@ -200,7 +203,8 @@ const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
           />
         </div>
 
-        <div className="hidden md:flex w-full justify-end pr-2">
+        <div className="hidden md:flex w-full items-center justify-end pr-2">
+          <PlayerControls />
           <div className="flex items-center gap-x-2 w-[120px]">
             <VolumeIcon 
               onClick={toggleMute} 

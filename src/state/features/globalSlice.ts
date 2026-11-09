@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Song } from '../../types'
+import { mergePlaybackHistory, PlaybackHistoryEntry } from '../../utils/playbackHistory'
+import { addUser } from './authSlice'
 
 
 interface ResourceBase {
@@ -14,6 +16,8 @@ interface ResourceBase {
 }
 
 interface GlobalState {
+  storageAddress: string | null
+  accountStorageReady: boolean
   isLoadingGlobal: boolean
   downloads: any
   userAvatarHash: Record<string, string>
@@ -24,6 +28,9 @@ interface GlobalState {
   songListQueried: Song[]
   queriedValue: string;
   queriedValuePlaylist: string;
+  playbackRequest: number
+  lastHistoryRequest: number
+  recentlyPlayed: PlaybackHistoryEntry[]
   currentSong: string | null
   isPlaying: boolean
   position: number
@@ -56,7 +63,11 @@ export interface SongReference {
   service: string;
   identifier: string;
   title: string;
-  artist: string;
+  artist?: string;
+  album?: string;
+  duration?: number;
+  trackNumber?: number;
+  discNumber?: number;
   author?: string;
 }
 export type RepeatMode = 'off' | 'all' | 'one';
@@ -66,14 +77,10 @@ export interface Status {
   title: string;
   description: string;
 }
-export interface SongMeta {
-  title: string
+export interface SongMeta extends Song {
   description: string
   created: number
   updated: number
-  name: string
-  id: string
-  status?: Status
 }
 
 export interface FavSong {
@@ -93,6 +100,8 @@ export interface Favorites {
   playlists: Record<string, FavPlaylist>
 }
 const initialState: GlobalState = {
+  storageAddress: null,
+  accountStorageReady: false,
   isLoadingGlobal: false,
   downloads: {},
   userAvatarHash: {},
@@ -103,6 +112,9 @@ const initialState: GlobalState = {
   songListQueried: [],
   queriedValue: "",
   queriedValuePlaylist: "",
+  playbackRequest: 0,
+  lastHistoryRequest: -1,
+  recentlyPlayed: [],
   currentSong: null,
   isPlaying: false,
   position: 0,
@@ -127,6 +139,23 @@ export const globalSlice = createSlice({
   name: 'global',
   initialState,
   reducers: {
+    hydrateAccountStorage: (state, action: PayloadAction<{ address: string; favorites: Favorites; playlists: PlayList[]; history: PlaybackHistoryEntry[] }>) => {
+      if (state.storageAddress !== action.payload.address) return
+      state.favorites = action.payload.favorites
+      state.favoritesPlaylist = action.payload.playlists
+      state.recentlyPlayed = mergePlaybackHistory(state.recentlyPlayed, action.payload.history)
+      state.accountStorageReady = true
+    },
+    recordPlaybackHistory: (state, action: PayloadAction<{ address: string; request: number; entry: PlaybackHistoryEntry }>) => {
+      if (state.storageAddress !== action.payload.address || state.lastHistoryRequest === action.payload.request) return
+      state.lastHistoryRequest = action.payload.request
+      state.recentlyPlayed = mergePlaybackHistory([action.payload.entry], state.recentlyPlayed)
+    },
+    restartPlayback: (state) => {
+      state.position = 0
+      state.isPlaying = false
+      state.playbackRequest += 1
+    },
     setIsLoadingGlobal: (state, action) => {
       state.isLoadingGlobal = action.payload
     },
@@ -246,10 +275,9 @@ export const globalSlice = createSlice({
       if (playlistId === 'nowPlayingPlaylist' && songs) {
         state.nowPlayingPlaylist = songs
       }
-      if (state.currentSong !== id) {
-        state.position = 0
-        state.isPlaying = false
-      }
+      state.position = 0
+      state.isPlaying = false
+      state.playbackRequest += 1
       state.currentSong = id
     },
     setIsPlaying: (state, action: PayloadAction<boolean>) => {
@@ -350,10 +378,26 @@ export const globalSlice = createSlice({
     setRandomPlaylist: (state, action) => {
       state.randomPlaylist = action.payload
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(addUser, (state, action) => {
+      const address = action.payload?.address || null
+      if (address === state.storageAddress) return
+      state.storageAddress = address
+      state.accountStorageReady = false
+      state.favorites = null
+      state.favoritesPlaylist = null
+      state.favoriteList = []
+      state.recentlyPlayed = []
+      state.lastHistoryRequest = -1
+    })
   }
 })
 
 export const {
+  hydrateAccountStorage,
+  recordPlaybackHistory,
+  restartPlayback,
   setIsLoadingGlobal,
   setAddToDownloads,
   updateDownloads,

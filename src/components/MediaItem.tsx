@@ -34,7 +34,8 @@ const MediaItem: React.FC<MediaItemProps> = ({
         gap-x-3 
         cursor-pointer 
         hover:bg-neutral-800/50 
-        w-full 
+        w-full
+        min-w-0
         p-2 
         rounded-md
       "
@@ -54,7 +55,7 @@ const MediaItem: React.FC<MediaItemProps> = ({
           className="object-cover absolute"
         />
       </div>
-      <div className="flex flex-col gap-y-1 overflow-hidden">
+      <div className="flex min-w-0 flex-col gap-y-1 overflow-hidden">
         <p className="text-white truncate">{data?.title}</p>
         <p className="text-neutral-400 text-sm truncate">
           By {data?.author}

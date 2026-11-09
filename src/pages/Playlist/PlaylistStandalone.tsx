@@ -11,16 +11,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../state/store'
 import { PlayListsContent } from '../../components/PlaylistsContent'
 import { useParams } from 'react-router-dom'
-import { PlayList, addToPlaylistHashMap, removeFavPlaylist, setFavPlaylist, setImageCoverHash, setIsLoadingGlobal, setNewPlayList } from '../../state/features/globalSlice'
+import { addToPlaylistHashMap, setImageCoverHash, setIsLoadingGlobal, setNewPlayList } from '../../state/features/globalSlice'
 import { AiFillEdit, AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { FaPlay } from 'react-icons/fa'
 import useOnPlay from '../../hooks/useOnPlay'
 import { queueFetchAvatars } from '../../wrappers/GlobalWrapper'
-import localforage from 'localforage'
-
-const favoritesStorage = localforage.createInstance({
-  name: 'ear-bump-favorites'
-})
+import useFavorites from '../../hooks/useFavorites'
 
 export const PlaylistStandalone = ({
   playlistId,
@@ -29,6 +25,8 @@ export const PlaylistStandalone = ({
   const username = useSelector((state: RootState) => state.auth?.user?.name);
 
   const isfavoriting = useRef(false)
+  const { togglePlaylist } = useFavorites()
+  const storageReady = useSelector((state: RootState) => state.global.accountStorageReady)
   const {    getPlaylists
   } = useFetchSongs()
   const songListQueried = useSelector((state: RootState) => state.global.songListQueried);
@@ -189,42 +187,15 @@ export const PlaylistStandalone = ({
   }
 
   const handleLike = async () => {
+    if (isfavoriting.current || !playListData || !storageReady) return
+    isfavoriting.current = true
     try {
-      if(isfavoriting.current) return
-      isfavoriting.current = true
-      const isLiked =  !!favoritesPlaylist?.find(play=> play.id === playlistId)
-      if(isLiked){
-        dispatch(removeFavPlaylist(playListData))
-  
-        let favoritesObj: PlayList[] | null = await favoritesStorage.getItem('favoritesPlaylist') || null
-  
-        if(favoritesObj){
-          const newFavs = favoritesObj.filter((fav)=> fav?.id !== playlistId)
-          await favoritesStorage.setItem('favoritesPlaylist', newFavs)
-        } 
-        
-      }else {
-        dispatch(setFavPlaylist(playListData))
-  
-        let favoritesObj:  PlayList[] | null =
-        await favoritesStorage.getItem('favoritesPlaylist') || null
-  
-        if(!favoritesObj){
-        const newObj: PlayList[] =   [playListData]
-  
-          await favoritesStorage.setItem('favoritesPlaylist', newObj)
-        }  else {
-          const newObj: PlayList[] =   [playListData, ...favoritesObj]
-  
-          await favoritesStorage.setItem('favoritesPlaylist', newObj)
-        }
-      }
-  
-      isfavoriting.current = false
+      await togglePlaylist(playListData)
     } catch (error) {
       console.error(error)
+    } finally {
+      isfavoriting.current = false
     }
-   
   }
 
   return (
@@ -287,6 +258,7 @@ export const PlaylistStandalone = ({
         hover:opacity-75 
         transition
       "
+      disabled={!storageReady}
       onClick={handleLike}
     >
       <Icon color={isLiked ? '#22c55e' : 'white'} size={40} />

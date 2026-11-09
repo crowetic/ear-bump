@@ -2,11 +2,13 @@ import { useCallback, useContext } from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import {
   RepeatMode, setAddToDownloads, setIsPlaying, setPlaybackPosition,
-  setRepeat, setShuffle, setVolumePlayer, startPlayback
+  setRepeat, setShuffle, setVolumePlayer, startPlayback, restartPlayback, recordPlaybackHistory
 } from '../state/features/globalSlice';
 import { AppDispatch, RootState } from '../state/store';
 import { Song } from '../types';
+import { artistName } from '../utils/songMetadata';
 import { MyContext } from '../wrappers/DownloadWrapper';
+import { getPlaybackQueue, selectPlaybackQueue } from '../utils/playbackQueue';
 
 // All playback commands use Redux; this hook owns no separate player state.
 const usePlayer = () => {
@@ -19,6 +21,8 @@ const usePlayer = () => {
   const volume = useSelector((state: RootState) => state.global.volume);
   const shuffle = useSelector((state: RootState) => state.global.shuffle);
   const repeat = useSelector((state: RootState) => state.global.repeat);
+  const queue = useSelector(selectPlaybackQueue);
+  const playbackRequest = useSelector((state: RootState) => state.global.playbackRequest);
 
   const startTrack = useCallback((song: Song, playlistId?: string, songs?: Song[]) => {
     const { currentPlaylist, downloads } = store.getState().global;
@@ -48,22 +52,15 @@ const usePlayer = () => {
   const playAdjacent = useCallback((direction: 1 | -1, ended = false) => {
     // Audio callbacks can outlive a render. Read the current context at event time.
     const state = store.getState().global;
-    let songs: Song[];
-    if (state.currentPlaylist === 'nowPlayingPlaylist') {
-      songs = state.nowPlayingPlaylist;
-    } else if (state.currentPlaylist === 'likedPlaylist') {
-      songs = state.favoriteList;
-    } else {
-      songs = (state.playlistHash[state.currentPlaylist]?.songs || []).map((item) => ({
-        ...item,
-        id: item.identifier,
-        author: item.author || item.artist || ''
-      }));
+    const songs = getPlaybackQueue(state);
+    if (ended && state.repeat === 'one' && state.currentSong) {
+      dispatch(restartPlayback());
+      return state.currentSong;
     }
     if (songs.length === 0) return;
-    if (ended && state.repeat === 'one') return state.currentSong || undefined;
 
     const currentIndex = songs.findIndex((item) => item.id === state.currentSong);
+    if (ended && state.repeat === 'off' && currentIndex === songs.length - 1) return;
     let nextIndex = currentIndex + direction;
     if (state.shuffle && songs.length > 1) {
       const candidates = songs.filter((item) => item.id !== state.currentSong);
@@ -75,14 +72,24 @@ const usePlayer = () => {
     }
     if (nextIndex < 0 || nextIndex >= songs.length) {
       if (state.repeat === 'off') return;
-      // Preserve the existing previous-button behavior for liked/custom lists.
-      nextIndex = direction === 1 || state.currentPlaylist !== 'nowPlayingPlaylist'
-        ? 0 : songs.length - 1;
+      nextIndex = direction === 1 ? 0 : songs.length - 1;
     }
     const nextSong = songs[nextIndex];
     startTrack(nextSong);
     return nextSong.id;
-  }, [startTrack, store]);
+  }, [dispatch, startTrack, store]);
+
+  const recordPlayback = useCallback((song: Song) => {
+    const { global, auth } = store.getState();
+    if (!auth.user?.address || global.currentSong !== song.id || global.lastHistoryRequest === global.playbackRequest) return;
+    dispatch(recordPlaybackHistory({
+      address: auth.user.address, request: global.playbackRequest,
+      entry: { id: song.id, songId: song.id, title: song.title, author: song.author,
+        artist: artistName(song), album: song.album || '', name: song.name, service: song.service,
+        duration: song.duration, trackNumber: song.trackNumber, discNumber: song.discNumber,
+        playedAt: Date.now(), thumbnail: global.imageCoverHash[song.id] }
+    }));
+  }, [dispatch, store]);
 
   const playNext = useCallback((ended = false) => playAdjacent(1, ended), [playAdjacent]);
   const playPrevious = useCallback(() => playAdjacent(-1), [playAdjacent]);
@@ -93,7 +100,7 @@ const usePlayer = () => {
   const updateRepeat = useCallback((value: RepeatMode) => dispatch(setRepeat(value)), [dispatch]);
 
   return {
-    currentSong, isPlaying, position, volume, shuffle, repeat,
+    currentSong, isPlaying, position, volume, shuffle, repeat, queue, playbackRequest, recordPlayback,
     startTrack,
     playNext,
     playPrevious,

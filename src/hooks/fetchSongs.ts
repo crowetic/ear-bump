@@ -1,13 +1,16 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
 
 
 import { RootState } from "../state/store";
 import { FavSong, PlayList, SongMeta, addToPlaylistHashMap, setImageCoverHash, setIsLoadingGlobal, setRandomPlaylist, upsertFavorite, upsertMyLibrary, upsertMyPlaylists, upsertPlaylists, upsertQueried, upsertQueriedPlaylist, upsertRecent } from "../state/features/globalSlice";
+import { getSongMetadata } from '../utils/songMetadata';
 import { queueFetchAvatars } from "../wrappers/GlobalWrapper";
 
 export const useFetchSongs = () => {
   const dispatch = useDispatch();
+  const store = useStore<RootState>();
+  const accountAddress = useSelector((state: RootState) => state.auth.user?.address);
 
   const [userAvatar, setUserAvatar] = useState<string>("");
   const username = useSelector((state: RootState) => state.auth?.user?.name);
@@ -31,7 +34,7 @@ export const useFetchSongs = () => {
       return songsInStore[key]
     })
   }, [songsInStore])
-  const getImgCover = async (id: string, name: string, retries: number = 0) => {
+  const getImgCover = useCallback(async (id: string, name: string, retries: number = 0) => {
     try {
       let url = await qortalRequest({
         action: "GET_QDN_RESOURCE_URL",
@@ -47,7 +50,7 @@ export const useFetchSongs = () => {
 
 
     }
-  }
+  }, [dispatch])
 
   const getYourLibrary = useCallback(async (name: string) => {
     try {
@@ -61,40 +64,15 @@ export const useFetchSongs = () => {
       })
       const responseData = await response.json()
       const structureData = responseData.map((song: any): SongMeta => {
-        const description = song?.metadata?.description || ""
-        let pairs: string[] = description?.split(';');  // Splits the string into an array based on the semicolon.
-
-        // Define an empty object to hold your title and author
-        let obj: { [key: string]: string } = {};
-
-        // Loop through the pairs and further split them on the equals sign.
-        for (let i = 0; i < pairs.length; i++) {
-          let pair: string[] = pairs[i].split('=');
-
-          // Ensure the pair is a key-value pair before assignment
-          if (pair.length !== 2) {
-            continue;
-          }
-
-          let key: string = pair[0].trim(); // remove whitespace
-          let value: string = pair[1].trim(); // remove whitespace
-
-          // Ensure the key is either 'title' or 'author' before assignment
-          if (key !== 'title' && key !== 'author') {
-            continue;
-          }
-
-          obj[key] = value;
-        }
         return {
-          title: song?.metadata?.title,
           description: song?.metadata?.description,
           created: song.created,
           updated: song.updated,
           name: song.name,
           id: song.identifier,
           status: song?.status,
-          ...obj
+          service: 'AUDIO',
+          ...getSongMetadata(song.metadata)
         }
       })
       dispatch(upsertMyLibrary(structureData))
@@ -132,40 +110,15 @@ export const useFetchSongs = () => {
       })
       const responseData = await response.json()
       const structureData = responseData.map((song: any): SongMeta => {
-        const description = song?.metadata?.description || ""
-        let pairs: string[] = description?.split(';');  // Splits the string into an array based on the semicolon.
-
-        // Define an empty object to hold your title and author
-        let obj: { [key: string]: string } = {};
-
-        // Loop through the pairs and further split them on the equals sign.
-        for (let i = 0; i < pairs.length; i++) {
-          let pair: string[] = pairs[i].split('=');
-
-          // Ensure the pair is a key-value pair before assignment
-          if (pair.length !== 2) {
-            continue;
-          }
-
-          let key: string = pair[0].trim(); // remove whitespace
-          let value: string = pair[1].trim(); // remove whitespace
-
-          // Ensure the key is either 'title' or 'author' before assignment
-          if (key !== 'title' && key !== 'author') {
-            continue;
-          }
-
-          obj[key] = value;
-        }
         return {
-          title: song?.metadata?.title,
           description: song?.metadata?.description,
           created: song.created,
           updated: song.updated,
           name: song.name,
           id: song.identifier,
           status: song?.status,
-          ...obj
+          service: 'AUDIO',
+          ...getSongMetadata(song.metadata)
         }
       })
       dispatch(upsertQueried(structureData))
@@ -203,40 +156,15 @@ export const useFetchSongs = () => {
         if (responseData.length === 0) continue
         const data = responseData[0]
 
-        const description = data?.metadata?.description || ""
-        let pairs: string[] = description?.split(';');  // Splits the string into an array based on the semicolon.
-
-        // Define an empty object to hold your title and author
-        let obj: { [key: string]: string } = {};
-
-        // Loop through the pairs and further split them on the equals sign.
-        for (let i = 0; i < pairs.length; i++) {
-          let pair: string[] = pairs[i].split('=');
-
-          // Ensure the pair is a key-value pair before assignment
-          if (pair.length !== 2) {
-            continue;
-          }
-
-          let key: string = pair[0].trim(); // remove whitespace
-          let value: string = pair[1].trim(); // remove whitespace
-
-          // Ensure the key is either 'title' or 'author' before assignment
-          if (key !== 'title' && key !== 'author') {
-            continue;
-          }
-
-          obj[key] = value;
-        }
         const object = {
-          title: data?.metadata?.title,
           description: data?.metadata?.description,
           created: data.created,
           updated: data.updated,
           name: data.name,
           id: data.identifier,
           status: data?.status,
-          ...obj
+          service: 'AUDIO',
+          ...getSongMetadata(data.metadata)
         }
         songsToSet.push(object)
 
@@ -251,9 +179,11 @@ export const useFetchSongs = () => {
       } finally {
       }
     }
-    dispatch(upsertFavorite(songsToSet))
+    if (store.getState().auth.user?.address === accountAddress) {
+      dispatch(upsertFavorite(songsToSet.filter((song) => !!store.getState().global.favorites?.songs[song.id])))
+    }
 
-  }, [imageCoverHash, songList, favoriteList]);
+  }, [imageCoverHash, songList, favoriteList, accountAddress, dispatch, store, getImgCover]);
 
 
   const getRecentSongs = useCallback(async (offsetParam?: number, limitParam?: number) => {
@@ -269,42 +199,15 @@ export const useFetchSongs = () => {
       })
       const responseData = await response.json()
       const structureData = responseData.map((song: any): SongMeta => {
-        const description = song?.metadata?.description || ""
-        let pairs: string[] = description?.split(';');  // Splits the string into an array based on the semicolon.
-
-        // Define an empty object to hold your title and author
-        let obj: { [key: string]: string } = {};
-
-        // Loop through the pairs and further split them on the equals sign.
-        for (let i = 0; i < pairs.length; i++) {
-          let pair: string[] = pairs[i].split('=');
-
-          // Ensure the pair is a key-value pair before assignment
-          if (pair.length !== 2) {
-            continue;
-          }
-
-          let key: string = pair[0].trim(); // remove whitespace
-          let value: string = pair[1].trim(); // remove whitespace
-
-          // Ensure the key is either 'title' or 'author' before assignment
-          if (key !== 'title' && key !== 'author') {
-            continue;
-          }
-
-          obj[key] = value;
-        }
-
-
         return {
-          title: song?.metadata?.title,
           description: song?.metadata?.description,
           created: song.created,
           updated: song.updated,
           name: song.name,
           id: song.identifier,
           status: song?.status,
-          ...obj
+          service: 'AUDIO',
+          ...getSongMetadata(song.metadata)
         }
       })
       dispatch(upsertRecent(structureData))
