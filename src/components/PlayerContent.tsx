@@ -1,343 +1,95 @@
 import useSound from "use-sound";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useStore } from "react-redux";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
-import CircularProgress from '@mui/material/CircularProgress'
-import * as RadixSlider from '@radix-ui/react-slider';
-
-
-
-// import LikeButton from "./LikeButton";
+import CircularProgress from '@mui/material/CircularProgress';
 import MediaItem from "./MediaItem";
 import Slider from "./Slider";
 import { Song } from "../types";
 import usePlayer from "../hooks/usePlayer";
 import LikeButton from "./LikeButton";
-import { useDispatch, useSelector } from "react-redux";
-import { setAddToDownloads, setCurrentSong, setVolumePlayer, upsertNowPlayingPlaylist } from "../state/features/globalSlice";
+import { upsertNowPlayingPlaylist } from "../state/features/globalSlice";
 import { RootState } from "../state/store";
 import { AddToPlaylistButton } from "./AddToPlayistButton";
-import { MyContext } from "../wrappers/DownloadWrapper";
-
 
 interface PlayerContentProps {
   song: Song;
   songUrl: string;
 }
 
-const PlayerContent: React.FC<PlayerContentProps> = ({ 
-  song, 
-  songUrl
-}) => {
-  const player = usePlayer();
-  const volume = useSelector(
-    (state: RootState) => state.global.volume
-  )
- 
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false)
-  const playlistHash = useSelector((state: RootState) => state.global.playlistHash);
-
-  const dispatch = useDispatch()
-  const nowPlayingPlaylist = useSelector(
-    (state: RootState) => state.global.nowPlayingPlaylist
-  )
-  const favoriteList = useSelector(
-    (state: RootState) => state.global.favoriteList
-  )
-  const currentPlaylist = useSelector(
-    (state: RootState) => state.global.currentPlaylist
-  )
-  const { downloadVideo } = useContext(MyContext)
-  const newPlaylist = useSelector((state: RootState) => state?.global.newPlayList);
-
-  const downloads = useSelector(
-    (state: RootState) => state.global.downloads
-  )
+const PlayerContent: React.FC<PlayerContentProps> = ({ song, songUrl }) => {
+  const {
+    isPlaying, position, volume, playNext, playPrevious,
+    setIsPlaying, setPosition, setVolume
+  } = usePlayer();
+  const dispatch = useDispatch();
+  const store = useStore<RootState>();
+  const [isLoaded, setIsLoaded] = useState(false);
+  const soundRef = useRef<ReturnType<typeof useSound>[1]['sound']>(null);
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
   const VolumeIcon = volume === 0 ? HiSpeakerXMark : HiSpeakerWave;
-  const [progress, setProgress] = useState(0)
-  const setVolume = (val: number)=> {
-    dispatch(setVolumePlayer(val))
-  }
-  const songData = useMemo(()=> {
-    return song
-  }, [songUrl])
 
-  const handleNowPlayingPlaylist = ()=> {
-    if (nowPlayingPlaylist.length === 0) {
-      return;
-    }
-
-    const currentIndex = nowPlayingPlaylist.findIndex((item) => item.id === song.id);
-    const nextSong = nowPlayingPlaylist[currentIndex + 1];
-
-    if (!nextSong) {
-      dispatch(setCurrentSong(nowPlayingPlaylist[0].id))
-      return
-    }
-    dispatch(setCurrentSong(nextSong.id))
-  }
-
-  const handleLikedPlaylist = ()=> {
-    if (favoriteList.length === 0) {
-      return;
-    }
-
-    const currentIndex = favoriteList.findIndex((item) => item.id === song.id);
-    const nextSong = favoriteList[currentIndex + 1];
-    let songToPlay = favoriteList[0]
-    if (nextSong?.id) {
-      songToPlay = nextSong
-    }
-    dispatch(setCurrentSong(songToPlay?.id))
-
-    if(songToPlay?.status?.status === 'READY' || downloads[songToPlay.id]?.status?.status === 'READY'){
-      dispatch(setAddToDownloads({
-        name: songToPlay.name,
-        service: 'AUDIO',
-        id: songToPlay.id,
-        identifier: songToPlay.id,
-        url:`/arbitrary/AUDIO/${songToPlay.name}/${songToPlay.id}`,
-        status: songToPlay?.status,
-        title: songToPlay?.title || "",
-        author: songToPlay?.author || "",
-      }))
-    }else {
-      downloadVideo({
-        name: songToPlay.name,
-        service: 'AUDIO',
-        identifier: songToPlay.id,
-        title: songToPlay?.title || "",
-        author: songToPlay?.author || "",
-        id: songToPlay.id
-      })
-    }
-   
-  }
-
-  const handleCustomPlaylist = (playlist: any)=> {
-    console.log('handleCustomPlaylist', playlist)
-    if (!playlist?.songs || playlist?.songs?.length === 0) {
-      return;
-    }
-    const songList = playlist?.songs
-    const currentIndex = songList.findIndex((item: any) => item?.identifier === song?.id);
-    const nextSong = songList[currentIndex + 1];
-    let songToPlay = songList[0]
-    if (nextSong?.identifier) {
-      songToPlay = nextSong
-    }
-    dispatch(setCurrentSong(songToPlay?.identifier))
-
-    if(songToPlay?.status?.status === 'READY' || downloads[songToPlay.id]?.status?.status === 'READY'){
-      dispatch(setAddToDownloads({
-        name: songToPlay.name,
-        service: 'AUDIO',
-        id: songToPlay.identifier,
-        identifier: songToPlay.identifier,
-        url:`/arbitrary/AUDIO/${songToPlay.name}/${songToPlay.identifier}`,
-        status: songToPlay?.status,
-        title: songToPlay?.title || "",
-        author: songToPlay?.author || "",
-      }))
-    }else {
-      downloadVideo({
-        name: songToPlay.name,
-        service: 'AUDIO',
-        identifier: songToPlay.identifier,
-        title: songToPlay?.title || "",
-        author: songToPlay?.author || "",
-        id: songToPlay.identifier
-      })
-    }
-   
-  }
-  
-  const onPlayNext = () => {
-    console.log('currentPlaylist', currentPlaylist, playlistHash)
-    if(currentPlaylist === 'nowPlayingPlaylist'){
-      handleNowPlayingPlaylist()
-    } else if(currentPlaylist === 'likedPlaylist'){
-      handleLikedPlaylist()
-    } else if(playlistHash[currentPlaylist]){
-      handleCustomPlaylist(playlistHash[currentPlaylist])
-    }
-   
-  }
-
-  
-  const handleNowPlayingPlaylistPrev = ()=> {
-   
-    if (nowPlayingPlaylist.length === 0) {
-      return;
-    }
-
-    const currentIndex = nowPlayingPlaylist.findIndex((item) => item.id === song.id);
-    const previousSong = nowPlayingPlaylist[currentIndex - 1];
-
-    if (!previousSong) {
-      const lastSong = nowPlayingPlaylist[nowPlayingPlaylist.length - 1]
-      dispatch(setCurrentSong(lastSong.id))
-      return
-    }
-
-    dispatch(setCurrentSong(previousSong.id))
-  }
-
-  const handleLikedPlaylistPrev = ()=> {
-    if (favoriteList.length === 0) {
-      return;
-    }
-
-    const currentIndex = favoriteList.findIndex((item) => item.id === song.id);
-    const nextSong = favoriteList[currentIndex - 1];
-    let songToPlay = favoriteList[0]
-    if (nextSong?.id) {
-      songToPlay = nextSong
-    }
-    dispatch(setCurrentSong(songToPlay?.id))
-
-    if(songToPlay?.status?.status === 'READY' || downloads[songToPlay.id]?.status?.status === 'READY'){
-      dispatch(setAddToDownloads({
-        name: songToPlay.name,
-        service: 'AUDIO',
-        id: songToPlay.id,
-        identifier: songToPlay.id,
-        url:`/arbitrary/AUDIO/${songToPlay.name}/${songToPlay.id}`,
-        status: songToPlay?.status,
-        title: songToPlay?.title || "",
-        author: songToPlay?.author || "",
-      }))
-    }else {
-      downloadVideo({
-        name: songToPlay.name,
-        service: 'AUDIO',
-        identifier: songToPlay.id,
-        title: songToPlay?.title || "",
-        author: songToPlay?.author || "",
-        id: songToPlay.id
-      })
-    }
-   
-  }
-
-  const handleCustomPlaylistPrev = (playlist: any)=> {
-    console.log('handleCustomPlaylist', playlist)
-    if (!playlist?.songs || playlist?.songs?.length === 0) {
-      return;
-    }
-    const songList = playlist?.songs
-    const currentIndex = songList.findIndex((item: any) => item?.identifier === song?.id);
-    const nextSong = songList[currentIndex - 1];
-    let songToPlay = songList[0]
-    if (nextSong?.identifier) {
-      songToPlay = nextSong
-    }
-    dispatch(setCurrentSong(songToPlay?.identifier))
-
-    if(songToPlay?.status?.status === 'READY' || downloads[songToPlay.id]?.status?.status === 'READY'){
-      dispatch(setAddToDownloads({
-        name: songToPlay.name,
-        service: 'AUDIO',
-        id: songToPlay.identifier,
-        identifier: songToPlay.identifier,
-        url:`/arbitrary/AUDIO/${songToPlay.name}/${songToPlay.identifier}`,
-        status: songToPlay?.status,
-        title: songToPlay?.title || "",
-        author: songToPlay?.author || "",
-      }))
-    }else {
-      downloadVideo({
-        name: songToPlay.name,
-        service: 'AUDIO',
-        identifier: songToPlay.identifier,
-        title: songToPlay?.title || "",
-        author: songToPlay?.author || "",
-        id: songToPlay.identifier
-      })
-    }
-   
-  }
-
-  const onPlayPrevious = () => {
-    if(currentPlaylist === 'nowPlayingPlaylist'){
-      handleNowPlayingPlaylistPrev()
-    } else if(currentPlaylist === 'likedPlaylist'){
-      handleLikedPlaylistPrev()
-    } else if(playlistHash[currentPlaylist]){
-      handleCustomPlaylistPrev(playlistHash[currentPlaylist])
-    }
-
-  }
-
-  const [play, { pause, sound }] = useSound(
-    songUrl || '',
-    { 
-      volume: volume,
-      onplay: () => {
-        setIsLoaded(true)
-        setIsPlaying(true)
-      } ,
-      onend: () => {
-        setIsPlaying(false);
-        onPlayNext();
-      },
-      onpause: () => setIsPlaying(false),
-      format: ['mp3', 'wav', 'ogg']
+  const [play, { pause, sound }] = useSound(songUrl, {
+    volume,
+    onplay: () => {
+      setIsLoaded(true);
+      setIsPlaying(true);
     },
-  );
-
+    onend: () => {
+      setIsPlaying(false);
+      const nextId = playNext(true);
+      if (nextId === song.id) {
+        setPosition(0);
+        soundRef.current?.seek(0);
+        soundRef.current?.play();
+      }
+    },
+    onpause: () => setIsPlaying(false),
+    format: ['mp3', 'wav', 'ogg']
+  });
 
   useEffect(() => {
-    sound?.play();
-    
-    return () => {
-      sound?.unload();
+    soundRef.current = sound;
+    if (sound) {
+      sound.seek(store.getState().global.position);
+      sound.play();
     }
-  }, [sound]);
-
+    return () => {
+      soundRef.current = null;
+      sound?.unload();
+    };
+  }, [sound, store]);
 
   const handlePlay = () => {
-    if (!isPlaying) {
-      play();
-    } else {
-      pause();
-    }
-  }
+    if (isPlaying) pause();
+    else play();
+  };
 
-  const toggleMute = () => {
-    if (volume === 0) {
-      setVolume(1);
-    } else {
-      setVolume(0);
-    }
-  }
+  const toggleMute = () => setVolume(volume === 0 ? 1 : 0);
 
   const handleProgressChange = (value: number) => {
-  
-    if (sound) {
-      sound.seek(value * sound.duration());
-    }
+    if (!sound) return;
+    const nextPosition = value * sound.duration();
+    sound.seek(nextPosition);
+    setPosition(nextPosition);
   };
 
   useEffect(() => {
-    if (sound) {
-      const interval = setInterval(() => {
-        setProgress((sound.seek() as number) / (sound.duration() as number));
-      }, 1000);
-  
-      return () => {
-        clearInterval(interval);
-      };
-    }
-  }, [sound]);
+    if (!sound) return;
+    const interval = setInterval(() => {
+      const nextPosition = sound.seek();
+      if (typeof nextPosition === 'number' && Number.isFinite(nextPosition)) {
+        setPosition(nextPosition);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [sound, setPosition]);
 
-  useEffect(()=> {
-    dispatch(upsertNowPlayingPlaylist([songData]))
-  }, [songData])
-
+  useEffect(() => {
+    dispatch(upsertNowPlayingPlaylist([song]));
+  }, [dispatch, song]);
 
   return ( 
     <div className="grid grid-cols-2 md:grid-cols-3 h-full">
@@ -391,7 +143,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
           "
         >
           <AiFillStepBackward
-            onClick={onPlayPrevious}
+            onClick={playPrevious}
             size={30} 
             className="
               text-neutral-400 
@@ -424,7 +176,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
 
           </div>
           <Slider 
-              value={progress} 
+              value={sound?.duration() ? Math.min(1, position / sound.duration()) : 0}
               onChange={(value) => handleProgressChange(value)}
               styles={{
                 width: '250px',
@@ -437,7 +189,7 @@ const PlayerContent: React.FC<PlayerContentProps> = ({
           )}
           
           <AiFillStepForward
-            onClick={onPlayNext}
+            onClick={() => playNext()}
             size={30} 
             className="
               text-neutral-400 

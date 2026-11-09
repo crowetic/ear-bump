@@ -2,13 +2,10 @@
 
 import PlayButton from "./PlayButton";
 import { Song } from "../types";
-import useLoadImage from "../hooks/useLoadImage";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/store";
 import radioImg from '../assets/img/radio-cassette.webp'
-import { useContext } from "react";
-import { MyContext } from "../wrappers/DownloadWrapper";
-import { setAddToDownloads, setCurrentSong, setNewPlayList } from "../state/features/globalSlice";
+import { setNewPlayList } from "../state/features/globalSlice";
 import {MdPlaylistAdd} from 'react-icons/md'
 interface SongItemProps {
   data: Song;
@@ -20,12 +17,8 @@ const SongItem: React.FC<SongItemProps> = ({
   onClick
 }) => {
   const imageCoverHash = useSelector((state: RootState) => state.global.imageCoverHash);
-  const { downloadVideo } = useContext(MyContext)
   const newPlaylist = useSelector((state: RootState) => state?.global.newPlayList);
 
-  const downloads = useSelector(
-    (state: RootState) => state.global.downloads
-  )
 
   const dispatch = useDispatch()
 
@@ -48,31 +41,7 @@ const SongItem: React.FC<SongItemProps> = ({
   }
   return ( 
     <div
-    onClick={() => {
-      if(data?.status?.status === 'READY' || downloads[data.id]?.status?.status === 'READY'){
-        dispatch(setAddToDownloads({
-          name: data.name,
-          service: 'AUDIO',
-          id: data.id,
-          identifier: data.id,
-          url:`/arbitrary/AUDIO/${data.name}/${data.id}`,
-          status: data?.status,
-          title: data?.title || "",
-          author: data?.author || "",
-        }))
-      }else {
-        downloadVideo({
-          name: data.name,
-          service: 'AUDIO',
-          identifier: data.id,
-          title: data?.title || "",
-          author: data?.author || "",
-          id: data.id
-        })
-      }
-     
-      dispatch(setCurrentSong(data.id))
-    }} 
+    onClick={() => onClick(data.id)}
     className="
       relative 
       group 

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Song } from '../../types'
 
 
@@ -25,6 +25,10 @@ interface GlobalState {
   queriedValue: string;
   queriedValuePlaylist: string;
   currentSong: string | null
+  isPlaying: boolean
+  position: number
+  shuffle: boolean
+  repeat: RepeatMode
   favorites: null | Favorites
   favoritesPlaylist: null | PlayList[]
   favoriteList: Song[]
@@ -53,7 +57,9 @@ export interface SongReference {
   identifier: string;
   title: string;
   artist: string;
+  author?: string;
 }
+export type RepeatMode = 'off' | 'all' | 'one';
 export interface Status {
   status: string;
   id: string;
@@ -98,6 +104,10 @@ const initialState: GlobalState = {
   queriedValue: "",
   queriedValuePlaylist: "",
   currentSong: null,
+  isPlaying: false,
+  position: 0,
+  shuffle: false,
+  repeat: 'all',
   favorites: null,
   favoriteList: [],
   nowPlayingPlaylist: [],
@@ -164,7 +174,7 @@ export const globalSlice = createSlice({
         }
       })
     },
-    upsertPlaylists: (state, action) => {
+    upsertPlaylists: (state, action: PayloadAction<PlayList[]>) => {
       action.payload.forEach((playlist: PlayList) => {
         const index = state.playlists.findIndex((p) => p.id === playlist.id)
         if (index !== -1) {
@@ -174,7 +184,7 @@ export const globalSlice = createSlice({
         }
       })
     },
-    upsertMyPlaylists: (state, action) => {
+    upsertMyPlaylists: (state, action: PayloadAction<PlayList[]>) => {
       action.payload.forEach((playlist: PlayList) => {
         const index = state.myPlaylists.findIndex((p) => p.id === playlist.id)
         if (index !== -1) {
@@ -219,8 +229,40 @@ export const globalSlice = createSlice({
         }
       })
     },
-    setCurrentSong: (state, action) => {
+    setCurrentSong: (state, action: PayloadAction<string | null>) => {
+      if (state.currentSong !== action.payload) {
+        state.position = 0
+        state.isPlaying = false
+      }
       state.currentSong = action.payload
+    },
+    startPlayback: (state, action: PayloadAction<{
+      id: string;
+      playlistId: string;
+      songs?: Song[];
+    }>) => {
+      const { id, playlistId, songs } = action.payload
+      state.currentPlaylist = playlistId
+      if (playlistId === 'nowPlayingPlaylist' && songs) {
+        state.nowPlayingPlaylist = songs
+      }
+      if (state.currentSong !== id) {
+        state.position = 0
+        state.isPlaying = false
+      }
+      state.currentSong = id
+    },
+    setIsPlaying: (state, action: PayloadAction<boolean>) => {
+      state.isPlaying = action.payload
+    },
+    setPlaybackPosition: (state, action: PayloadAction<number>) => {
+      state.position = action.payload
+    },
+    setShuffle: (state, action: PayloadAction<boolean>) => {
+      state.shuffle = action.payload
+    },
+    setRepeat: (state, action: PayloadAction<RepeatMode>) => {
+      state.repeat = action.payload
     },
 
     setQueriedValue: (state, action) => {
@@ -289,7 +331,7 @@ export const globalSlice = createSlice({
         }
       })
     },
-    setVolumePlayer: (state, action) => {
+    setVolumePlayer: (state, action: PayloadAction<number>) => {
       state.volume = action.payload
     },
     setNewPlayList: (state, action) => {
@@ -320,6 +362,11 @@ export const {
   upsertMyLibrary,
   upsertRecent,
   setCurrentSong,
+  startPlayback,
+  setIsPlaying,
+  setPlaybackPosition,
+  setShuffle,
+  setRepeat,
   upsertQueried,
   setQueriedValue,
   resetQueriedList,

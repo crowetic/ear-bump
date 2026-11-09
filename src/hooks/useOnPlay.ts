@@ -1,17 +1,16 @@
 
 import usePlayer from "./usePlayer";
-import useAuthModal from "./useAuthModal";
 import { Song } from "../types";
 
-const useOnPlay = (songs: Song[]) => {
+const useOnPlay = (songs: Song[], playlistId = 'nowPlayingPlaylist') => {
   const player = usePlayer();
 
 
   const onPlay = (id: string) => {
 
 
-    player.setId(id);
-    player.setIds(songs.map((song) => song.id));
+    const song = songs.find((item) => item.id === id);
+    if (song) player.startTrack(song, playlistId, songs);
   }
 
   return onPlay;

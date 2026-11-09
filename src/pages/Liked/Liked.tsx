@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import Header from '../../components/Header'
 import ListItem from '../../components/ListItem'
 import likeImg from '../../assets/img/liked.png'
@@ -7,53 +7,21 @@ import SearchInput from '../../components/SearchInput'
 import SearchContent from '../../components/SearchContent'
 import LazyLoad from '../../components/common/LazyLoad'
 import { useFetchSongs } from '../../hooks/fetchSongs'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { RootState } from '../../state/store'
 import { FaPlay } from 'react-icons/fa'
-import { setAddToDownloads, setCurrentPlaylist, setCurrentSong } from '../../state/features/globalSlice'
-import { MyContext } from '../../wrappers/DownloadWrapper'
+import useOnPlay from '../../hooks/useOnPlay'
 import { FavPlaylists } from '../Playlists/FavPlaylists'
 export const Liked = () => {
   const favoriteList = useSelector((state: RootState) => state.global.favoriteList);
   const favorites = useSelector((state: RootState) => state.global.favorites);
-  const { downloadVideo } = useContext(MyContext)
   const [mode, setMode] = useState<string>('songs')
 
   const {getLikedSongs} = useFetchSongs()
-  const dispatch = useDispatch()
-  const downloads = useSelector(
-    (state: RootState) => state.global.downloads
-  )
-  const onClickPlaylist = ()=> {
-    if(!favoriteList || favoriteList?.length === 0) return
-
-    const firstLikedSong = favoriteList[0]
-    dispatch(
-      setCurrentPlaylist('likedPlaylist')
-    )
-    if(firstLikedSong?.status?.status === 'READY' || downloads[firstLikedSong.id]?.status?.status === 'READY'){
-      dispatch(setAddToDownloads({
-        name: firstLikedSong.name,
-        service: 'AUDIO',
-        id: firstLikedSong.id,
-        identifier: firstLikedSong.id,
-        url:`/arbitrary/AUDIO/${firstLikedSong.name}/${firstLikedSong.id}`,
-        status: firstLikedSong?.status,
-        title: firstLikedSong?.title || "",
-        author: firstLikedSong?.author || "",
-      }))
-    }else {
-      downloadVideo({
-        name: firstLikedSong.name,
-        service: 'AUDIO',
-        identifier: firstLikedSong.id,
-        title: firstLikedSong?.title || "",
-        author: firstLikedSong?.author || "",
-        id: firstLikedSong.id
-      })
-    }
-   
-    dispatch(setCurrentSong(firstLikedSong.id))
+  const onPlay = useOnPlay(favoriteList, 'likedPlaylist')
+  const onClickPlaylist = () => {
+    if (favoriteList.length === 0) return
+    onPlay(favoriteList[0].id)
   }
 
   if(!favorites) return null
@@ -154,7 +122,7 @@ export const Liked = () => {
               </div>
             </div>
           </div>
-            <SearchContent songs={favoriteList} />
+            <SearchContent songs={favoriteList} playlistId="likedPlaylist" />
     <LazyLoad onLoadMore={getLikedSongs}></LazyLoad>
             </>
            

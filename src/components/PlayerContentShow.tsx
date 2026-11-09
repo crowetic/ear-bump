@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import { HiSpeakerWave, HiSpeakerXMark } from "react-icons/hi2";
 import { AiFillStepBackward, AiFillStepForward } from "react-icons/ai";
@@ -12,8 +12,7 @@ import Slider from "./Slider";
 import { Song } from "../types";
 import usePlayer from "../hooks/usePlayer";
 import LikeButton from "./LikeButton";
-import { setVolumePlayer } from "../state/features/globalSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../state/store";
 import { AddToPlaylistButton } from "./AddToPlayistButton";
 import { FaUndoAlt } from "react-icons/fa";
@@ -22,27 +21,20 @@ import { MyContext } from "../wrappers/DownloadWrapper";
 
 interface PlayerContentProps {
   song: Song;
-  songUrl: string;
   percentLoaded: string
 }
 
 export const PlayerContentShow: React.FC<PlayerContentProps> = ({ 
   song, 
-  songUrl,
   percentLoaded
 }) => {
-  const dispatch = useDispatch()
-  const player = usePlayer();
-  const volume = useSelector(
-    (state: RootState) => state.global.volume
-  )
+  const { volume, isPlaying, setVolume } = usePlayer();
   const currentSong = useSelector(
     (state: RootState) => state.global.currentSong
   )
   const downloads = useSelector(
     (state: RootState) => state.global.downloads
   )
-  const [isPlaying, setIsPlaying] = useState(false);
   const { downloadVideo } = useContext(MyContext)
 
   const Icon = isPlaying ? BsPauseFill : BsPlayFill;
@@ -58,9 +50,6 @@ export const PlayerContentShow: React.FC<PlayerContentProps> = ({
 
 
   
-  const setVolume = (val: number)=> {
-    dispatch(setVolumePlayer(val))
-  }
  
 
   const refresh = () => {

@@ -15,7 +15,7 @@ import { setNotification } from '../state/features/notificationsSlice';
 import { RootState } from '../state/store';
 import ImageUploader from './common/ImageUploader';
 import { objectToBase64, toBase64 } from '../utils/toBase64';
-import { SongReference, addNewSong, addToPlaylistHashMap, setImageCoverHash, setNewPlayList, upsertPlaylists } from '../state/features/globalSlice';
+import { SongReference, addToPlaylistHashMap, setNewPlayList, upsertMyPlaylists, upsertPlaylists } from '../state/features/globalSlice';
 import Textarea from './TextArea';
 import {AiOutlineClose} from  "react-icons/ai";
 import { Song } from '../types';
@@ -201,34 +201,23 @@ const UploadPlaylistModal = () => {
           resources: resources
         }
         await qortalRequest(multiplePublish)
-      toast.success('Song created!');
-      if(newPlaylist?.id){
-        //update playlist in store
-        dispatch(addToPlaylistHashMap(
-            {
-              user: newPlaylist?.user ? newPlaylist?.user : username,
-              service: 'PLAYLIST',
-              id: identifier,
-              filename,
-            songs: newPlaylist.songs,
-          title,
-          description,
-          image: (newPlaylist?.id && prevSavedImg) ? prevSavedImg  : 'data:image/webp;base64,' +  compressedImg}
-          ))
-      } else {
-        //add playlist to store
-        dispatch(upsertPlaylists(
-          {
-            user: newPlaylist?.user ? newPlaylist?.user : username,
-              service: 'PLAYLIST',
-              id: identifier,
-              filename,
-            songs: newPlaylist.songs,
-          title,
-          description,
-          image: (newPlaylist?.id && prevSavedImg) ? prevSavedImg  : 'data:image/webp;base64,' +  compressedImg}
-        ))
+      const publishedAt = Date.now()
+      const publishedPlaylist = {
+        ...newPlaylist,
+        ...playlistObject,
+        user: newPlaylist.user || username,
+        service: 'PLAYLIST',
+        id: identifier,
+        filename,
+        created: newPlaylist.created || publishedAt,
+        updated: publishedAt
       }
+      dispatch(addToPlaylistHashMap(publishedPlaylist))
+      dispatch(upsertPlaylists([publishedPlaylist]))
+      if (publishedPlaylist.user === username) {
+        dispatch(upsertMyPlaylists([publishedPlaylist]))
+      }
+      toast.success('Playlist published!');
       reset();
       dispatch(setNewPlayList(null))
       uploadModal.onClose();

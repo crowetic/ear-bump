@@ -1,5 +1,4 @@
 import { useSelector } from "react-redux";
-import useOnPlay from "../hooks/useOnPlay";
 import { PlayList } from "../state/features/globalSlice";
 import { Song } from "../types";
 import LikeButton from "./LikeButton";
@@ -18,7 +17,6 @@ interface SearchContentProps {
 export const PlayListsContent: React.FC<SearchContentProps> = ({
   playlists
 }) => {
-  const onPlay = useOnPlay([]);
   const playlistHash = useSelector((state: RootState) => state.global.playlistHash);  
   const navigate = useNavigate()
 

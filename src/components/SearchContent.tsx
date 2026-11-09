@@ -8,12 +8,14 @@ import MediaItem from "./MediaItem";
 
 interface SearchContentProps {
   songs: Song[];
+  playlistId?: string;
 }
 
 const SearchContent: React.FC<SearchContentProps> = ({
-  songs
+  songs,
+  playlistId
 }) => {
-  const onPlay = useOnPlay(songs);
+  const onPlay = useOnPlay(songs, playlistId);
 
   if (songs.length === 0) {
     return (

@@ -16,10 +16,10 @@ interface PageContentProps {
 const PageContent: React.FC<PageContentProps> = ({
   songs
 }) => {
-  const onPlay = useOnPlay(songs);
   const initialFetch = useRef(songs?.length > 0 ? true : false)
   const username = useSelector((state: RootState) => state?.auth?.user?.name);
   const songListRecent = useSelector((state: RootState) => state?.global.songListRecent);
+  const onPlay = useOnPlay(songListRecent);
   const { getRecentSongs } = useFetchSongs()
 
 

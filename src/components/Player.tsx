@@ -8,10 +8,6 @@ import { useContext, useEffect, useMemo, useRef } from "react";
 import { MyContext } from "../wrappers/DownloadWrapper";
 
 const Player = () => {
-  // const player = usePlayer();
-  // const { song } = useGetSongById(player.activeId);
-
-  // const songUrl = useLoadSongUrl(song!);
   const { downloadVideo } = useContext(MyContext)
 
   const hasRedownloaded = useRef(false)
@@ -53,9 +49,6 @@ const Player = () => {
   }, [downloads, currentSong])
 
   
-  const player = {
-    activeId: "1",
-  }
 
   let song: any = null
 
@@ -114,7 +107,7 @@ const Player = () => {
       px-4
     "
     >
-      <PlayerContentShow song={song} songUrl={songUrl} percentLoaded={`${(song?.status?.percentLoaded || 0)}%`} />
+      <PlayerContentShow song={song} percentLoaded={`${(song?.status?.percentLoaded || 0)}%`} />
     </div>
   }
 
@@ -130,7 +123,7 @@ const Player = () => {
         px-4
       "
     >
-      <PlayerContent song={song} songUrl={songUrl} />
+      <PlayerContent key={song.id} song={song} songUrl={songUrl} />
     </div>
   );
 }

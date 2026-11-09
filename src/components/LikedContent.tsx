@@ -13,7 +13,7 @@ interface SearchContentProps {
 export const LikedContent: React.FC<SearchContentProps> = ({
   songs
 }) => {
-  const onPlay = useOnPlay(songs);
+  const onPlay = useOnPlay(songs, 'likedPlaylist');
 
   if (songs.length === 0) {
     return (

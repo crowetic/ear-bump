@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useRef, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import Header from '../../components/Header'
 import ListItem from '../../components/ListItem'
 import likeImg from '../../assets/img/liked.png'
@@ -11,10 +11,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../state/store'
 import { PlayListsContent } from '../../components/PlaylistsContent'
 import { useParams } from 'react-router-dom'
-import { PlayList, addToPlaylistHashMap, removeFavPlaylist, setAddToDownloads, setCurrentPlaylist, setCurrentSong, setFavPlaylist, setImageCoverHash, setIsLoadingGlobal, setNewPlayList } from '../../state/features/globalSlice'
+import { PlayList, addToPlaylistHashMap, removeFavPlaylist, setFavPlaylist, setImageCoverHash, setIsLoadingGlobal, setNewPlayList } from '../../state/features/globalSlice'
 import { AiFillEdit, AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { FaPlay } from 'react-icons/fa'
-import { MyContext } from '../../wrappers/DownloadWrapper'
+import useOnPlay from '../../hooks/useOnPlay'
 import { queueFetchAvatars } from '../../wrappers/GlobalWrapper'
 import localforage from 'localforage'
 
@@ -36,12 +36,8 @@ export const PlaylistStandalone = ({
   const favoritesPlaylist= useSelector((state: RootState) => state.global.favoritesPlaylist);
   const dispatch = useDispatch()
   const playlistHash = useSelector((state: RootState) => state.global.playlistHash);
-  const { downloadVideo } = useContext(MyContext)
   const imageCoverHash = useSelector((state: RootState) => state.global.imageCoverHash);
 
-  const downloads = useSelector(
-    (state: RootState) => state.global.downloads
-  )
   const [playListData, setPlaylistData] = useState<any>(null)
   console.log({playlists, playlistId})
 
@@ -186,39 +182,10 @@ export const PlaylistStandalone = ({
 
    
   }
-  const onClickPlayPlaylist = ()=> {
-    if(!playListData?.songs && playListData?.songs?.length === 0) return
-
-    const firstLikedSong = {
-      ...playListData?.songs[0],
-      id: playListData?.songs[0].identifier
-    }
-    dispatch(
-      setCurrentPlaylist(playListData.id)
-    )
-    if(firstLikedSong?.status?.status === 'READY' || downloads[firstLikedSong.id]?.status?.status === 'READY'){
-      dispatch(setAddToDownloads({
-        name: firstLikedSong.name,
-        service: 'AUDIO',
-        id: firstLikedSong.id,
-        identifier: firstLikedSong.id,
-        url:`/arbitrary/AUDIO/${firstLikedSong.name}/${firstLikedSong.id}`,
-        status: firstLikedSong?.status,
-        title: firstLikedSong?.title || "",
-        author: firstLikedSong?.author || "",
-      }))
-    }else {
-      downloadVideo({
-        name: firstLikedSong.name,
-        service: 'AUDIO',
-        identifier: firstLikedSong.id,
-        title: firstLikedSong?.title || "",
-        author: firstLikedSong?.author || "",
-        id: firstLikedSong.id
-      })
-    }
-   
-    dispatch(setCurrentSong(firstLikedSong.id))
+  const onPlay = useOnPlay(songs, playListData?.id)
+  const onClickPlayPlaylist = () => {
+    if (songs.length === 0) return
+    onPlay(songs[0].id)
   }
 
   const handleLike = async () => {
@@ -249,7 +216,7 @@ export const PlaylistStandalone = ({
         }  else {
           const newObj: PlayList[] =   [playListData, ...favoritesObj]
   
-          await favoritesStorage.setItem('favoritesPlaylist', favoritesObj)
+          await favoritesStorage.setItem('favoritesPlaylist', newObj)
         }
       }
   
@@ -375,7 +342,7 @@ export const PlaylistStandalone = ({
       </div>
     </Header>
       {playListData && (
-        <SearchContent songs={songs} />
+        <SearchContent songs={songs} playlistId={playListData.id} />
       )}
       {/* <SearchContent songs={favoriteList} />
       <LazyLoad onLoadMore={getPlaylistSongs}></LazyLoad> */}

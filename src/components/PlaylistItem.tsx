@@ -2,13 +2,12 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import useLoadImage from "../hooks/useLoadImage";
-import usePlayer from "../hooks/usePlayer";
 import { Song } from "../types";
 import { RootState } from "../state/store";
 import radioImg from '../assets/img/radio-cassette.webp'
 import { useContext } from "react";
 import { MyContext } from "../wrappers/DownloadWrapper";
-import { PlayList, setAddToDownloads, setCurrentSong } from "../state/features/globalSlice";
+import { PlayList } from "../state/features/globalSlice";
 
 
 
@@ -21,7 +20,6 @@ export const PlaylistItem: React.FC<MediaItemProps> = ({
   data,
   onClick,
 }) => {
-  const player = usePlayer();
   const imageCoverHash = useSelector((state: RootState) => state.global.imageCoverHash);
   const { downloadVideo } = useContext(MyContext)
   const downloads = useSelector(
