@@ -21,7 +21,11 @@ It includes all publishers by default, including the 15 identities hidden by
 the previous node block filter. `--exclude-blocked` explicitly requests the
 narrower discovery scope. The app still respects the serving node's policy.
 Original metadata recovered on an earlier run may be reused only when its QDN
-transaction signature matches. Missing publisher metadata is retried and logged.
+transaction signature matches. Missing publisher metadata is retried and logged. New `earbump1` resources also
+hydrate their full DOCUMENT after validating publisher, audio identity, schema
+and revision, recovering compact-description truncation. A serving Core is
+required for these documents; unavailable documents remain explicit failures in
+the pull report and compact fields are retained.
 The source list is atomically replaced only after both inventories agree.
 `data/legacy/current/pull-report.json` records the exact scope and source hash.
 No fixed expected count, first-page cutoff, cron, or scheduled publishing exists.
@@ -48,7 +52,10 @@ recording-specific verification.
 `secondary` checks remaining identified artists against iTunes at least 3.1 seconds
 between calls (under Apple's approximate 20/minute limit). Exact artist/title
 matches can supply a catalog genre. A unique artist ID in a non-capped response
-may supply a separately labelled artist-context inference. Homonyms, tied genres
+may supply a separately labelled artist-context inference only when at least
+80% of matching catalog results share the genre. Featured-artist suffixes and
+reordered collaboration credits are matched explicitly, so a newer rock single
+does not relabel an older rap recording merely through artist context. Homonyms, tied genres
 and capped artist-context searches remain unresolved. Only factual metadata and
 source links are retained, never artwork or preview audio. Provider guidance:
 https://performance-partners.apple.com/search-api.

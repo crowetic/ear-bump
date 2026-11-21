@@ -87,6 +87,13 @@ class CatalogTests(unittest.TestCase):
         self.assertIsNone(catalog.apple_genre(rows, 'Different', 'Song', False)[0])
         self.assertIsNone(catalog.apple_genre(rows + [{**rows[0], 'artistId': 2}], 'Artist', 'Song', False)[0])
 
+    def test_featured_artist_credit_and_multistyle_catalogs_are_handled(self):
+        rows = [{'artistId': 1, 'artistName': 'First', 'trackName': 'Song (feat. Second)', 'primaryGenreName': 'Hip-Hop/Rap'}]
+        self.assertEqual(catalog.apple_genre(rows, 'Second & First', 'Song', False)[0], 'Hip-Hop/Rap')
+        self.assertIsNone(catalog.apple_genre(rows, 'First & Different', 'Song', False)[0])
+        mixed = [{'artistId': 1, 'artistName': 'Artist', 'trackName': 'One', 'primaryGenreName': 'Rock'}, {'artistId': 1, 'artistName': 'Artist', 'trackName': 'Two', 'primaryGenreName': 'Pop'}]
+        self.assertIsNone(catalog.apple_genre(mixed, 'Artist', 'Other', False)[0])
+
     def test_limited_secondary_catalog_does_not_establish_artist_context(self):
         rows = [{'artistId': 1, 'artistName': 'Artist', 'trackName': 'Other song', 'primaryGenreName': 'Rock'}]
         self.assertIsNone(catalog.apple_genre(rows, 'Artist', 'Song', True)[0])
@@ -144,7 +151,7 @@ class CatalogTests(unittest.TestCase):
             def __exit__(self, *args):
                 pass
 
-            def read(self):
+            def read(self, size=-1):
                 return b'{"ok":true}'
 
         with tempfile.TemporaryDirectory() as temporary:
@@ -172,6 +179,20 @@ class CatalogTests(unittest.TestCase):
                 report = json.loads((root / 'output/coverage.json').read_text())
                 self.assertEqual(report['total'], 1)
                 self.assertNotIn('pending', report['lookupStatuses'])
+
+    def test_full_descriptor_recovers_compact_artist_and_checks_identity(self):
+        song = {'name': 'Publisher', 'service': 'AUDIO', 'identifier': 'earbump_song_a', 'metadata': {'title': 'Short', 'description': 'v=earbump1;rev=a;author=Truncated;genre=Rock'}}
+        descriptor = {'schema': 'earbump.song.v1', 'publisher': 'Publisher', 'identifier': 'earbump_song_a', 'revision': 'a', 'fields': {'title': 'Full song', 'artist': 'Complete Artist', 'genre': 'Jazz'}}
+        catalog.hydrate_descriptor(FakeClient([descriptor]), 'https://example.test', song)
+        self.assertEqual(catalog.fields(song)['artist'], 'Complete Artist')
+        self.assertEqual(catalog.fields(song)['genre'], 'Jazz')
+        original = {'name': 'Publisher', 'service': 'AUDIO', 'identifier': 'earbump_song_a', 'metadata': {'description': 'v=earbump1;rev=a;genre=Rock'}}
+        with self.assertRaisesRegex(ValueError, 'does not match'):
+            catalog.hydrate_descriptor(FakeClient([{**descriptor, 'publisher': 'Other'}]), 'https://example.test', original)
+        self.assertNotIn('descriptorEvidence', original)
+        for malformed in [None, [], {**descriptor, 'publisher': None}]:
+            with self.assertRaisesRegex(ValueError, 'does not match'):
+                catalog.hydrate_descriptor(FakeClient([malformed]), 'https://example.test', original)
 
     def test_encoded_descriptions_preserve_artist(self):
         self.assertEqual(catalog.fields({'metadata': {'description': 'v=2;author=Bj%C3%B6rk;genre=Art%20Pop'}})['author'], 'Björk')

@@ -45,7 +45,7 @@ class Client:
         self.interval = interval
         self.last_request = {}
 
-    def get(self, url, cached=True):
+    def get(self, url, cached=True, max_bytes=16 * 1024 * 1024):
         key = hashlib.sha256(url.encode()).hexdigest()
         path = self.cache / (key + '.json')
         if cached and path.exists():
@@ -57,7 +57,10 @@ class Client:
             try:
                 request = urllib.request.Request(url, headers={'User-Agent': AGENT, 'Accept': 'application/json'})
                 with urllib.request.urlopen(request, timeout=35) as response:
-                    value = json.load(response)
+                    body = response.read(max_bytes + 1)
+                    if len(body) > max_bytes:
+                        raise ValueError('Metadata response exceeds byte limit')
+                    value = json.loads(body)
                 if cached:
                     write(path, value)
                 return value
@@ -125,10 +128,17 @@ def pull(args, client):
             song['metadataEvidence'] = path
         except (urllib.error.URLError, TimeoutError, http.client.HTTPException, ValueError) as error:
             failures.append({'identity': identity(song), 'error': str(error)})
+    descriptor_failures = []
+    for song in songs:
+        if fields(song).get('v') == 'earbump1':
+            try:
+                hydrate_descriptor(client, args.core, song)
+            except (urllib.error.URLError, TimeoutError, http.client.HTTPException, ValueError) as error:
+                descriptor_failures.append({'identity': identity(song), 'error': str(error)})
     write(args.source, songs)
     write(Path(args.output) / 'pull-report.json', {'at': now(), 'core': args.core, 'prefix': args.prefix,
           'scope': 'All AUDIO identities for prefix; no audio downloads', 'excludesNodeBlockedNames': args.exclude_blocked,
-          'count': len(songs), 'verifiedWithSecondScan': True, 'missingMetadata': failures,
+          'count': len(songs), 'verifiedWithSecondScan': True, 'missingMetadata': failures, 'descriptorFailures': descriptor_failures,
           'sourceSha256': hashlib.sha256(Path(args.source).read_bytes()).hexdigest()})
 
 
@@ -142,6 +152,25 @@ def fields(song):
     if compact.get('v') in ('2', 'earbump1'):
         compact = {key: urllib.parse.unquote(value) for key, value in compact.items()}
     return {**compact, **{key: value for key, value in metadata.items() if value is not None and value != ''}}
+
+
+
+def hydrate_descriptor(client, core, song):
+    compact = fields(song)
+    if compact.get('v') != 'earbump1' or not compact.get('rev'):
+        return
+    path = '/arbitrary/DOCUMENT/' + urllib.parse.quote(song['name'], safe='') + '/' + urllib.parse.quote(song['identifier'], safe='')
+    document = client.get(core.rstrip('/') + path, cached=False, max_bytes=256 * 1024)
+    if (not isinstance(document, dict) or document.get('schema') != 'earbump.song.v1'
+            or not isinstance(document.get('publisher'), str) or document['publisher'].casefold() != song['name'].casefold()
+            or document.get('identifier') != song['identifier'] or document.get('revision') != compact['rev']
+            or not isinstance(document.get('fields'), dict)):
+        raise ValueError('Song descriptor does not match publisher, identity and revision')
+    allowed = {'title', 'artist', 'author', 'genre', 'album', 'description', 'mood', 'releaseDate', 'language', 'notes'}
+    full = {key: value for key, value in document['fields'].items() if key in allowed and isinstance(value, str) and value.strip()}
+    song['metadataDescription'] = (song.get('metadata') or {}).get('description', '')
+    song['metadata'] = {**compact, **full}
+    song['descriptorEvidence'] = path
 
 
 def quote(value):
@@ -263,16 +292,19 @@ def enrich(args, client):
     for song in source:
         f = fields(song)
         title, artist = f.get('title', '').strip(), (f.get('artist') or f.get('author') or '').strip()
+        native_genre = f.get('genre', '').strip() if isinstance(f.get('genre'), str) else ''
+        if norm(native_genre) == 'uncategorized':
+            native_genre = ''
         entry = copy.deepcopy(prior.get(identity(song), {}))
         entry.update(name=song['name'], service='AUDIO', identifier=song['identifier'],
                      title=title or 'Unknown title', artist=artist or 'Unknown artist',
-                     created=song.get('created'), genre=f.get('genre') or entry.get('genre') or 'Uncategorized')
+                     created=song.get('created'), genre=native_genre or entry.get('genre') or 'Uncategorized')
         previous_signature = entry.get('provenance', {}).get('sourceSignature')
         entry['provenance'] = {**entry.get('provenance', {}), 'sourceSignature': song.get('latestSignature')}
         if isinstance(song.get('created'), (int, float)):
             entry['publishedAt'] = dt.datetime.fromtimestamp(song['created'] / 1000, dt.timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
         entry['missingMetadataFields'] = [key for key, value in [('title', title), ('artist', artist)] if not value]
-        if f.get('genre'):
+        if native_genre:
             entry.update(confidence='verified', evidence='Publisher explicitly supplies genre.')
             entry['provenance'].update(method='publisher-genre', confidence='verified')
         entries.append(entry)
@@ -387,18 +419,36 @@ def enrich_artists(args, client):
 
 
 
+def credit_key(value):
+    return tuple(sorted(set(re.split(r'\s*&\s*|\s+(?:feat\.?|ft\.?|featuring)\s+', norm(value)))))
+
+
+def track_credit(artist, title):
+    featured = re.match(r'^(.*?)\s*[\[(](?:feat\.?|ft\.?|featuring)\s+(.+?)[\])]\s*$', title, re.I)
+    if featured:
+        return norm(featured.group(1)), credit_key(artist + ' & ' + featured.group(2))
+    return norm(title), credit_key(artist)
+
+
 def apple_genre(rows, artist, title, limited):
+    rows = [row for row in rows if isinstance(row, dict) and isinstance(row.get('artistName'), str)
+            and isinstance(row.get('trackName'), str) and isinstance(row.get('artistId'), int)]
+    expected = track_credit(artist, title)
+    valid = [row for row in rows if row.get('primaryGenreName') not in (None, '', 'Music')]
+    exact_track = [row for row in valid if track_credit(row.get('artistName', ''), row.get('trackName', '')) == expected]
     named = [row for row in rows if norm(row.get('artistName', '')) == norm(artist)]
-    identities = {row.get('artistId') for row in named}
-    exact_artist = [row for row in named if row.get('primaryGenreName') not in (None, '', 'Music')]
+    identities = {row.get('artistId') for row in (exact_track or named)}
     if len(identities) != 1 or None in identities:
         return None, [], 'ambiguous-or-missing-artist'
-    exact_track = [row for row in exact_artist if norm(row.get('trackName', '')) == norm(title)]
+    exact_artist = [row for row in named if row.get('primaryGenreName') not in (None, '', 'Music')]
     candidates = exact_track or ([] if limited else exact_artist)
     counts = collections.Counter(row['primaryGenreName'] for row in candidates)
     ranked = counts.most_common()
     if not ranked or len(ranked) > 1 and ranked[0][1] == ranked[1][1]:
         return None, [], 'no-unambiguous-genre'
+    # A multi-style catalog cannot establish the genre of an unmatched recording.
+    if not exact_track and ranked[0][1] / len(candidates) < 0.8:
+        return None, [], 'mixed-artist-genres'
     genre = ranked[0][0]
     evidence = [row for row in candidates if row['primaryGenreName'] == genre]
     return genre, evidence, 'exact-track' if exact_track else 'artist-context'
@@ -415,7 +465,7 @@ def enrich_secondary(args, client):
         raise ValueError('Finish recording lookups before secondary fallback')
     artists = collections.defaultdict(list)
     for entry in entries:
-        if norm(entry['genre']) == 'uncategorized' and not entry.get('missingMetadataFields'):
+        if (norm(entry['genre']) == 'uncategorized' or entry.get('provenance', {}).get('method') == 'itunes-artist-context') and not entry.get('missingMetadataFields'):
             artists[entry['artist']].append(entry)
     for index, (artist, songs) in enumerate(artists.items()):
         try:
@@ -433,12 +483,20 @@ def enrich_secondary(args, client):
             if error:
                 evidence['error'] = error
             entry['lookup']['secondary'] = evidence
+            if not genre and not error and entry.get('provenance', {}).get('method') == 'itunes-artist-context':
+                entry['genre'] = 'Uncategorized'
+                entry.pop('confidence', None)
+                entry['classificationStatus'] = 'undetermined'
+                entry['evidence'] = 'Catalog genres are mixed or ambiguous; recording review is required.'
+                entry['provenance'].update(method='insufficient-evidence', confidence='undetermined')
+                entry['provenance'].pop('referenceUrls', None)
             if genre:
                 entry.update(genre=genre, confidence='inferred', evidence='iTunes primary genre from exact artist/title match.' if method == 'exact-track' else 'Broad artist-context inference from a unique exact artist name in the returned iTunes catalog; not recording verification.')
                 entry.pop('classificationStatus', None)
                 entry['provenance'].update(method='itunes-' + method, confidence='inferred', confidenceLevel='medium', classifiedAt=now(),
                     referenceUrls=list(dict.fromkeys(row.get('trackViewUrl') or row.get('artistViewUrl') for row in matches if row.get('trackViewUrl') or row.get('artistViewUrl')))[:5])
-        finalize(args, entries, source)
+        if (index + 1) % 10 == 0 or index + 1 == len(artists):
+            finalize(args, entries, source)
         print(f'Secondary artist lookup {index + 1}/{len(artists)}', flush=True)
     report = finalize(args, entries, source)
     return 0 if report['complete'] else 2
