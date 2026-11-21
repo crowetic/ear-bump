@@ -25,6 +25,7 @@ import { Newest } from "./pages/Newest/Newest";
 import { RecentlyPlayed } from './pages/Home/RecentlyPlayed';
 import { Artist } from './pages/Artist/Artist';
 import { Album } from './pages/Album/Album';
+import { PrivateCollections } from './pages/PrivateCollections/PrivateCollections';
 
 function App() {
   // const themeColor = window._qdnTheme
@@ -44,6 +45,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/recently-played" element={<RecentlyPlayed />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/private-collections" element={<PrivateCollections />} />
             <Route path="/playlists" element={<Playlists />} />
             <Route path="/playlists/:name/:playlistId" element={<Playlist />} />
             <Route path="/artist/:name" element={<Artist />} />

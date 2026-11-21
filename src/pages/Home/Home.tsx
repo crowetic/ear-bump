@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from 'react'
 import RecentlyPlayedSection from '../../components/RecentlyPlayedSection'
 import Header from '../../components/Header'
+import PrivateCollectionsComingSoon from '../../components/PrivateCollectionsComingSoon'
 import ListItem from '../../components/ListItem'
 import likeImg from '../../assets/img/liked.png'
 import PageContent from '../../components/PageContent'
@@ -61,6 +62,7 @@ export const Home = () => {
         </div>
       </div>
     </Header>
+    <PrivateCollectionsComingSoon />
     <RecentlyPlayedSection />
     <div className="mt-2 mb-7 px-6">
       <div className="flex justify-between items-center">
