@@ -1,0 +1,2393 @@
+{
+  "schema": "earbump.genre-reviews.v1",
+  "reviewedAt": "2026-11-21",
+  "policy": "Fill only unresolved entries with matching identity, artist/title and source signature. Broad source-backed inferences, not native or acoustic verification.",
+  "songs": [
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Bionic Whale_0srGOuni",
+      "artist": "Optiganally Yours",
+      "title": "Bionic Whale",
+      "sourceSignature": "37Hf53xmgEvgdMfiwr8YLYencvs5dUVEsgbsz8atGoWgi2qaEBd1QaSrXJQfmD21pM31qkPq7T9DoZ5y9Xr8A2T7",
+      "genre": "Indie Pop",
+      "evidence": "Cataloged indie-pop; album tracklist matches.",
+      "referenceUrls": [
+        "https://www.joyfulnoiserecordings.com/products/oy-in-hifi",
+        "https://www.allmusic.com/album/oy-in-hi-fi-mw0003181521"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Can't Resist_UERx3uwF",
+      "artist": "Lauren Cruz",
+      "title": "Can't Resist",
+      "sourceSignature": "5HTE2i2Wdb6A5zVXE3EPL2MiN6iJwTGZ7gMYJwU2HSWewce41nfjP7tRARygbqRb27JZHK3uTVFhqRbsLg6k2NSw",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Candy_pLrxbGRH",
+      "artist": "Lauren Cruz",
+      "title": "Candy",
+      "sourceSignature": "66RcN6WvrQGqJ8Taj3o4m7cpQbvS5QLxZkTccNiGkESMoS4mrMSzpSgrWCn5zLM5t4Vx7uEot5ch7ob63ds637wS",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Clandestine_53mnaAbQ",
+      "artist": "Lauren Cruz",
+      "title": "Clandestine",
+      "sourceSignature": "5KvDJNtmSe76DVXRTgxPKKoWJvo2CLDozmuKQkBR5pj5jUxG4vHxHLyP9gGQ1iYK5dKPYDu8a1GjNvndH6uy8Awq",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Constellation (rough_9xr2gSXc",
+      "artist": "Lauren Cruz",
+      "title": "Constellation (rough draft)",
+      "sourceSignature": "qNmMgUPzZVs1g8v7CEkz1xkepWj9xKN8oXUjTCGzkJHgGnRJH5UvuSg6A98q4vvi8orvzRKLpxZsdJPhjtb88sU",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Dejavu_wqfEdrIa",
+      "artist": "Lauren Cruz",
+      "title": "Dejavu",
+      "sourceSignature": "3DNseTpZuxvWwLG2FtPJjJKRw1Qxb57e7ew1jeVAt9U1QzUBHzMrvYxT7e5u1E4eRtqmz2gjrtYkPVan2T6XAUHp",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Empty Face (feat. Zy_qyIg6CZ4",
+      "artist": "Lauren Cruz",
+      "title": "Empty Face (feat. Zyyn)",
+      "sourceSignature": "3goBZpThyFf9yanmeFW5pESz6E2t8EmkrFKM8nouLsYdpzw1LtUZGG8xmPeTqJhfQdX512fkzu4HDkmh6DU476fu",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_FMU_hquYdr93",
+      "artist": "Lauren Cruz",
+      "title": "FMU",
+      "sourceSignature": "5u1aWoW3g6uMdDyCnd2vsZ8Ng4Bbdfb8GYT2HU13f4p5BBt2rdg2XdfRJYxn7EAQKKjK9T3ytCHpz4mytY6nzdps",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Guide Me_X34BpkVK",
+      "artist": "Lauren Cruz",
+      "title": "Guide Me",
+      "sourceSignature": "3ty8bWGtzksLAC2SYg6MH3fCYHKDkD8pw8F6VXnzPojQJF4KcLptQvfrXHvcYYUDX7C5Dv27ofRr2xYppc1G7JCE",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Hope In Your Eyes_QThpG9mE",
+      "artist": "Optiganally Yours",
+      "title": "Hope In Your Eyes",
+      "sourceSignature": "RUUxmnPbnoTBT34rbJYjbqiQJ2Ebr9e9egwnRwuLgpmp65UJg3xsVhK34FaBVkKWDduhZ1yUzyf8R361xPB6yQ6",
+      "genre": "Indie Pop",
+      "evidence": "Cataloged indie-pop; album tracklist matches.",
+      "referenceUrls": [
+        "https://www.joyfulnoiserecordings.com/products/oy-in-hifi",
+        "https://www.allmusic.com/album/oy-in-hi-fi-mw0003181521"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_How Do You Feel?_SAr85LIf",
+      "artist": "Optiganally Yours",
+      "title": "How Do You Feel?",
+      "sourceSignature": "qYCZQjXSsjhivX7AfqeyxXCpWkf2yGYSrgRKosey4PCfgvsKpWMLY2TsYT1QEY8zYM9w7FDeqa8LST9DpNoTzPs",
+      "genre": "Indie Pop",
+      "evidence": "Cataloged indie-pop; album tracklist matches.",
+      "referenceUrls": [
+        "https://www.joyfulnoiserecordings.com/products/oy-in-hifi",
+        "https://www.allmusic.com/album/oy-in-hi-fi-mw0003181521"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Lemons And Tacos_v1kRKXJN",
+      "artist": "Optiganally Yours",
+      "title": "Lemons And Tacos",
+      "sourceSignature": "4cYMTDjSfGswSbFYx2Fyxs7kYohFEcBH2D6AxZuDtSnnURFuxtz1dTeECcEwnPCVSUE5cYq5y8XUR5p8zpJpPwUP",
+      "genre": "Indie Pop",
+      "evidence": "Cataloged indie-pop; album tracklist matches.",
+      "referenceUrls": [
+        "https://www.joyfulnoiserecordings.com/products/oy-in-hifi",
+        "https://www.allmusic.com/album/oy-in-hi-fi-mw0003181521"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Losing Game_bpAEmmt7",
+      "artist": "Lauren Cruz",
+      "title": "Losing Game",
+      "sourceSignature": "41L8tWpLNJEKKgnLkDaGR41QiATR9b2vU9A1Lw8e4YNsf2aDmo5iYbHEUdXzx47DXv9V27DUUAQxTiJwuvP1iYUb",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Love Me Like You Do_vybBwTAw",
+      "artist": "Lauren Cruz",
+      "title": "Love Me Like You Do",
+      "sourceSignature": "4arwFZQR1kA4gdtYkusNaSnWtv6QhH24JgARocGCStiXkrBVSPHDCDW17NXh8xRx2XNPZUVbekS1Kp6bKyZKDzXt",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Martin (midori2tree)_GCAsUZ7z",
+      "artist": "Optiganally Yours",
+      "title": "Martin (midori2tree)",
+      "sourceSignature": "2wFMXzEJxmQFeMNG6wo3sx4qJqU4gnjPskcPdJtqpywA3jAYW89L8iyJ27ZfSmYRqGvBC4Xy7UZQgYy3wFKjUrM7",
+      "genre": "Indie Pop",
+      "evidence": "Cataloged indie-pop; album tracklist matches.",
+      "referenceUrls": [
+        "https://www.joyfulnoiserecordings.com/products/oy-in-hifi",
+        "https://www.allmusic.com/album/oy-in-hi-fi-mw0003181521"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Mi Amor (Choclock Re_4rOXvnt2",
+      "artist": "Lauren Cruz",
+      "title": "Mi Amor (Choclock Remix)",
+      "sourceSignature": "oLeLku1Znw4dx1wwjX3uBp7xnP5Yr1v4a854oeKH5SiVE7XR8PPzNVZVstJhw11V2XWhWkhrpoi1eNNXceBwC7k",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Mi Amor (prod. by De_iuCa1oZh",
+      "artist": "Lauren Cruz",
+      "title": "Mi Amor (prod. by Dez Wright)",
+      "sourceSignature": "5uMhpj6jiPpNEi9dHC5Nmu6GtCWg4MuKamf2RjpYDs2xbYUvurRB9MTgM3iuhBuWk5FKAbLtsTU36s6sZyGtHB3V",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Moonlight_hZQAv2ZJ",
+      "artist": "Lauren Cruz",
+      "title": "Moonlight",
+      "sourceSignature": "32zm2auwfTTNboGroD24WpD9ZinqYNy9kjM7bKQWyFxEorGAxA6N6oVhbgfixC7C9vnPt8acosfNCR6EWBnEPgAh",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Night Shop_ddFQVeMq",
+      "artist": "Optiganally Yours",
+      "title": "Night Shop",
+      "sourceSignature": "o3fbfCU2dKFLmh38qy9HaCBYDVV8pq2NCTBK7eNAqaYkpJrRXSMRHSbSYvbP8cPwTVu1aXQVjkT9EXsfSuV78H2",
+      "genre": "Indie Pop",
+      "evidence": "Cataloged indie-pop; album tracklist matches.",
+      "referenceUrls": [
+        "https://www.joyfulnoiserecordings.com/products/oy-in-hifi",
+        "https://www.allmusic.com/album/oy-in-hi-fi-mw0003181521"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Numb_asvXkMuo",
+      "artist": "Lauren Cruz",
+      "title": "Numb",
+      "sourceSignature": "2ubSo1MnxrhFqSemrJY18oMk45ji5tyLcc6Q6xfteLR1p3rfwTwSatytXFvx4BZN4B1wzfGaDUc9ZZZGSAB1wtwi",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_O.Y.nisqatsi_mMsu8sGo",
+      "artist": "Optiganally Yours",
+      "title": "O.Y.nisqatsi",
+      "sourceSignature": "UQaH3eHrodzwAJ18Jt6Xdhs67Y41c5DXqWLXzYSJK9z74ApjHotsLKQSuQMXZxaQaT5DXtBPq9dmSP4q6FS5KQW",
+      "genre": "Indie Pop",
+      "evidence": "Cataloged indie-pop; album tracklist matches.",
+      "referenceUrls": [
+        "https://www.joyfulnoiserecordings.com/products/oy-in-hifi",
+        "https://www.allmusic.com/album/oy-in-hi-fi-mw0003181521"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_OLT_Vw15XQwY",
+      "artist": "Lauren Cruz",
+      "title": "OLT",
+      "sourceSignature": "GDHjWL7vRRNtkkTkeSJRpzwnuaCMDpsx4HWp3jf7bXKPdVqfm2stZ6x44m5ovk7RzvBiouhuL43UYKRduFx4y7Z",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Oceans_w7UUZvcn",
+      "artist": "Lauren Cruz",
+      "title": "Oceans",
+      "sourceSignature": "2Ct4Da7YboP15o4aC3tpybGpcgEMkQFHLbtvE3kzTTK87Fhrxy2s6wtr6jx1zusj78o2KTkybKDLTccsYxAnAZeN",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Pirates And Monkeys_Fi9NgnNY",
+      "artist": "Optiganally Yours",
+      "title": "Pirates And Monkeys",
+      "sourceSignature": "4Rdnm1Xuwgy79CgsgfoQ57XjFwj1noNanHA7V9KRdGQG7NvAkr6hhrNHthVbJA6Z1vmagfCNx3RZJnwj2TCJpbgU",
+      "genre": "Indie Pop",
+      "evidence": "Cataloged indie-pop; album tracklist matches.",
+      "referenceUrls": [
+        "https://www.joyfulnoiserecordings.com/products/oy-in-hifi",
+        "https://www.allmusic.com/album/oy-in-hi-fi-mw0003181521"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Prelude to O.Y.nisqa_b9dsH3E3",
+      "artist": "Optiganally Yours",
+      "title": "Prelude to O.Y.nisqatsi",
+      "sourceSignature": "2zyNiPswPkde1Kzc3GBno2N8kZ6buEzmtEYnSyT9Ws2n2mAm8LYYW2HVL2JngpJbXVE5Vngc6pFJoisezQfefamg",
+      "genre": "Indie Pop",
+      "evidence": "Cataloged indie-pop; album tracklist matches.",
+      "referenceUrls": [
+        "https://www.joyfulnoiserecordings.com/products/oy-in-hifi",
+        "https://www.allmusic.com/album/oy-in-hi-fi-mw0003181521"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Savage (prod. by Sev_JqmP68qP",
+      "artist": "Lauren Cruz",
+      "title": "Savage (prod. by Sevnth)",
+      "sourceSignature": "5MHkLKR4bYGp5wkjYHd4uwH3JDHZHRkyJYAUBwfiQ7p2iM6VYGZqJNSjMLBH1q5N8JpDWJfkpwJcVYZF8M72AaRy",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Simmer Down (Why Don_tb0z0vWc",
+      "artist": "Lauren Cruz",
+      "title": "Simmer Down (Why Don't You)",
+      "sourceSignature": "2f1ckXDoV6oCLpQGPD8mDjKvHhmEKepeoz9ixMkUS5NKGcXSQwr73dPm1nkmt9sQBehjcFcJCDbtJZHsGZUeW1DM",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Sober (feat. Blimes)_E4QgJ00J",
+      "artist": "Lauren Cruz",
+      "title": "Sober (feat. Blimes)",
+      "sourceSignature": "2GK1Sixf7AptwxSZD8pt68Kzy77bH6PqfJ853nkVRvmWgBZE3nWKmtKERiAzNAu11DriGCh8BdDy55Fd4kEihk4X",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Stuck_Z16rEac7",
+      "artist": "Lauren Cruz",
+      "title": "Stuck",
+      "sourceSignature": "63wHKuCL4icjFwTBihBLJ5ZLrKduEv79Ne7pW6RYk2h2v1fFex2sQwQqqkoiYYyJDQtq4pWxEpUMirNyC97Xxieg",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Suffocate (rough mix_n0qaxS5p",
+      "artist": "Lauren Cruz",
+      "title": "Suffocate (rough mix)",
+      "sourceSignature": "4yJvrbnojGXUyMitnYmTasCjFJkjatVFNabmmr8avfL8LMihcFGYF68Bck4DTMsudUXSKC6uo5WyG72xjBeUM9Li",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Theme from O.Y.nisqa_xOfXzvic",
+      "artist": "Optiganally Yours",
+      "title": "Theme from O.Y.nisqatsi",
+      "sourceSignature": "4MRBv5zvFVUFav5xr5h9zJ4EbeHqsFc2svJszA5As2PRxwKzFD8Zu5nnPbnQBt98CtcBbuKV73Csewwdn6HhNMCr",
+      "genre": "Indie Pop",
+      "evidence": "Cataloged indie-pop; album tracklist matches.",
+      "referenceUrls": [
+        "https://www.joyfulnoiserecordings.com/products/oy-in-hifi",
+        "https://www.allmusic.com/album/oy-in-hi-fi-mw0003181521"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_This Heart_mxSaeryd",
+      "artist": "Optiganally Yours",
+      "title": "This Heart",
+      "sourceSignature": "45tASTdkZi74BS7YDF9Mh96d3mLm8Rbysiiuo5po2C4MSyyYL7F1ax2vw2orWUCYuyAquQmeHrK7Bz5xZFnwdKq7",
+      "genre": "Indie Pop",
+      "evidence": "Cataloged indie-pop; album tracklist matches.",
+      "referenceUrls": [
+        "https://www.joyfulnoiserecordings.com/products/oy-in-hifi",
+        "https://www.allmusic.com/album/oy-in-hi-fi-mw0003181521"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Too Close To The Sun_zYeloNkr",
+      "artist": "Optiganally Yours",
+      "title": "Too Close To The Sun",
+      "sourceSignature": "3Ky7vwXEh6w3625f8q2KXbJneEkLGw2wQp1LvypEULfjCUVCQdxFn2BJeBp3ezkU19FqdHGTbs6QqNv9mHES4dX8",
+      "genre": "Indie Pop",
+      "evidence": "Cataloged indie-pop; album tracklist matches.",
+      "referenceUrls": [
+        "https://www.joyfulnoiserecordings.com/products/oy-in-hifi",
+        "https://www.allmusic.com/album/oy-in-hi-fi-mw0003181521"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Unbothered_m1H9s1Iv",
+      "artist": "Lauren Cruz",
+      "title": "Unbothered",
+      "sourceSignature": "4sniYEUPVS3z91f3EwoQeiqiZnEmqqs8BQ7989wAnULzw61XDUXmdbpMJbqDzT9uaEQJooJrVZDk3o5ozuB9bAdH",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Whomever Watches You_dO4BPNXO",
+      "artist": "Optiganally Yours",
+      "title": "Whomever Watches You Sleep",
+      "sourceSignature": "47mrqTC4CteuPznLbWcmVPHe7KXxSYYkx3L3pS1mHBivd5fBqMDwXgAC8UA3y6NoVicJaRGWVsvAWVyWKbAyWwnV",
+      "genre": "Indie Pop",
+      "evidence": "Cataloged indie-pop; album tracklist matches.",
+      "referenceUrls": [
+        "https://www.joyfulnoiserecordings.com/products/oy-in-hifi",
+        "https://www.allmusic.com/album/oy-in-hi-fi-mw0003181521"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Wonder_wie0WIOo",
+      "artist": "Lauren Cruz",
+      "title": "Wonder",
+      "sourceSignature": "2KYEkvQV6AyrkPu1mjZua4xmb2Lomop4rBLSkUY7Zq6jZvE8yedsWojx23nRRoFBJQHpGnBhLrBFYSVpJEx2uSrL",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Aoedonic",
+      "service": "AUDIO",
+      "identifier": "earbump_song_You_2mVrmKW3",
+      "artist": "Lauren Cruz",
+      "title": "You",
+      "sourceSignature": "3gp8qXgVcouK9iSgm58vvZkthNBzjEbbxrkdg2o9GhJ2itQFbNJrqEsSH616YvEFrta49dhHoRVGjH4WmDa4F11C",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Bester",
+      "service": "AUDIO",
+      "identifier": "earbump_song_Rushing_HDp9whov",
+      "artist": "Lauren Cruz",
+      "title": "Rushing",
+      "sourceSignature": "34Qa7z3UAaeDLeNkFxvMCEM54RKEyEKvgQCKYQeAhAA8uH2yQ5Z2iMoiBBXyPQdfCjxS6eT42QmGcZavHmtbhpKK",
+      "genre": "Pop",
+      "evidence": "Self-described pop context; not recording verification.",
+      "referenceUrls": [
+        "https://www.soundbetter.com/profiles/437862-lauren-cruz",
+        "https://music.apple.com/us/artist/lauren-cruz/684528690"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_abseits_(du_wichser)_fJIiTRW7",
+      "artist": "Knöppel",
+      "title": "Abseits (Du Wichser)",
+      "sourceSignature": "5LwZKRRrepyCg4wts1iMesXTx3eU7EyeczJJ1jCdeMSfWAHhzNYWHFGmG26v3cFhYnJCPnzxDMCYbjeACFrgqqb2",
+      "genre": "Punk Rock",
+      "evidence": "Artist album identifies matching punk material.",
+      "referenceUrls": [
+        "https://knoppel.bandcamp.com/album/hey-wichsers"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_after_the_gig_blues_yCOk8GbJ",
+      "artist": "Tyte Stone",
+      "title": "After The Gig Blues",
+      "sourceSignature": "XvQhPgRxspbpa378u2s6espeBLLYi8qrfYW9a47graQs2McSXV1YqTDVeSLvi5HxwsozPbPM4dpdJzYDo9Gni4Z",
+      "genre": "Rock",
+      "evidence": "Artist catalog supports broad rock context.",
+      "referenceUrls": [
+        "https://www.tytestone.ch/detail.php?ID=321",
+        "https://medien.srf.ch/documents/20142/3708308/Die_acht_Chorleiter_in__Kampf_der_Choere_.pdf/0c43cf27-debf-8db7-3047-f7ad83a26fb5?download=true"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_agorist_nexus_BjkVgBbv",
+      "artist": "The Pholosopher & Jack Lloyd",
+      "title": "Agorist Nexus",
+      "sourceSignature": "2p5uHGA1twKvkF5Yqe8zsqELrQ152LUShmq3TB3nFMZcs2DGx9xUYsKmBdBcjXz7CdfWjXfi2eqjzevVyPj7iHYw",
+      "genre": "Hip-Hop",
+      "evidence": "Broad artist rap context; recording not verified.",
+      "referenceUrls": [
+        "https://thepholosopher.com/music/",
+        "https://www.youtube.com/watch?v=lkhS824AFMg"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_all_over_the_place_inCXjPgY",
+      "artist": "Chewy",
+      "title": "all over the place",
+      "sourceSignature": "39BzgJSefczFutzkxX1bKb8UEqmnG3AWjs6vMDcemneRnJrdzfJhZp5R5W9tDR8hhKEzkdB8YvLyLf6mhevNUpsx",
+      "genre": "Indie Rock",
+      "evidence": "Album identity supports indie-rock context.",
+      "referenceUrls": [
+        "https://www.last.fm/music/Chewy/Whattookyousolong"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_alls_isch_e_problem_p8pGIKcO",
+      "artist": "Knöppel",
+      "title": "Alls isch e Problem",
+      "sourceSignature": "5RsFGvDcA88ZKhDMZ7UeD3TLt8e48GGbfRQ1kFVkmQdWP8cckqBv2ZMfk196RoCCTAEprH71Fd7bBuHvYsbnGtVM",
+      "genre": "Punk Rock",
+      "evidence": "Artist album identifies matching punk material.",
+      "referenceUrls": [
+        "https://knoppel.bandcamp.com/album/hey-wichsers"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_ancap_grind_Z8yBTDvs",
+      "artist": "The Pholosopher & Jack Lloyd",
+      "title": "AnCap Grind",
+      "sourceSignature": "2N8GnodHqVQhENvcS5UfdC7Qc8L7CFsWDR9KxrZ5DxB5Ub4nTox2mWVzMPXYb3PoX4spbWM7ghsb1hbzzopgfzFK",
+      "genre": "Hip-Hop",
+      "evidence": "Broad artist rap context; recording not verified.",
+      "referenceUrls": [
+        "https://thepholosopher.com/music/",
+        "https://www.youtube.com/watch?v=lkhS824AFMg"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_animal_boy_dAcbs44L",
+      "artist": "Animal Boys",
+      "title": "Animal Boy",
+      "sourceSignature": "KDERh3Dsv6NWykFxUbh8Beqy9Lytr2SsP7wMVL2bi3jBac5xfC3br91EimdvtGvemYgRiEujdwMpGTUoHDL1YqR",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_antistate_HdSrtLvr",
+      "artist": "The Pholosopher & Jack Lloyd",
+      "title": "Antistate",
+      "sourceSignature": "xgAkadeWXYZetgBkevhM1tEgJgRjVdFQNKW5irCZD5jVvZhBqYRZDtKAxSTWRS9dAVX7XseMtb9usfUMF3bdZTe",
+      "genre": "Hip-Hop",
+      "evidence": "Broad artist rap context; recording not verified.",
+      "referenceUrls": [
+        "https://thepholosopher.com/music/",
+        "https://www.youtube.com/watch?v=lkhS824AFMg"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_aus_träit_sech_c4dAtIkm",
+      "artist": "Aextra",
+      "title": "Aus träit sech",
+      "sourceSignature": "4HnbNgH91HBvUNahMLzbQpoPm2npA88Dnpf2KQKrVcjmMxrbkFiJdAaBSrXr5xfzN1iECmbfxCvnUbH2KxrV1GyR",
+      "genre": "Rock",
+      "evidence": "Published band interview identifies rock context.",
+      "referenceUrls": [
+        "https://fa3b7654-4f04-40c6-b645-0bb6fe99c44e.filesusr.com/ugd/1eff38_26b211da7eca41f19ae7df5c41abfc8c.pdf"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_back_to_school_vtF2bbfC",
+      "artist": "Chewy",
+      "title": "back to school",
+      "sourceSignature": "62WiiUDVSe5jVmSJGqdgNBgfv5rds6QE6SXGjPZLSmzRDDZXzAEJULVFESezXfqhBnMhoWSUY9nLPWtcGsoXkyfs",
+      "genre": "Indie Rock",
+      "evidence": "Album identity supports indie-rock context.",
+      "referenceUrls": [
+        "https://www.last.fm/music/Chewy/Whattookyousolong"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_bad_post_no_apology_r9bYXVEd",
+      "artist": "The Pholosopher & Jack Lloyd",
+      "title": "Bad Post No Apology",
+      "sourceSignature": "5MK4KfY9StBvLSgQC9tJCawWmLyhneAvzbeXv6RBE6i9HNFtykXHb9isKFqvUSuScACSqoD18WcGEquB3i465xKc",
+      "genre": "Hip-Hop",
+      "evidence": "Broad artist rap context; recording not verified.",
+      "referenceUrls": [
+        "https://thepholosopher.com/music/",
+        "https://www.youtube.com/watch?v=lkhS824AFMg"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_beat_on_the_brat_-_c_hHKs21vU",
+      "artist": "Animal Boys",
+      "title": "Beat On The Brat - Cretin Hop",
+      "sourceSignature": "4NA6NPzBUm56dHkY4XuBfRUUdSiS4WcxStqeUQ5QFtaiuAxNHFdS5U4j8YqoebPcqf3Ds7Ee5a5x8h5t2BMBhUpv",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_bild_1JA3aC4j",
+      "artist": "Florian Ast",
+      "title": "Bild",
+      "sourceSignature": "2DypTuyevwTPtJnrJ1uUd8sN9V2HuScHCV7ek39mvNTuEodpeT3ga7N5KatNdyX1LZP8Gc5RihfJdvPiq4gZDrmf",
+      "genre": "Pop/Rock",
+      "evidence": "Agency catalog supports broad pop/rock context.",
+      "referenceUrls": [
+        "https://www.artistpool.ch/?band_category_id=12&band_id=95&id=79&mod_action=show_band_detail"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_black_sheep_blues_DqGESv9h",
+      "artist": "Tyte Stone",
+      "title": "Black Sheep Blues",
+      "sourceSignature": "4zt8JZWRKSn5nZqDXdosMPaUq4vq3VzU5CUHP5FXAbFkBy8oDYCyqRzUhx82hG6ic1cXDpnmyNcoPybxFe2aKxCN",
+      "genre": "Rock",
+      "evidence": "Artist catalog supports broad rock context.",
+      "referenceUrls": [
+        "https://www.tytestone.ch/detail.php?ID=321",
+        "https://medien.srf.ch/documents/20142/3708308/Die_acht_Chorleiter_in__Kampf_der_Choere_.pdf/0c43cf27-debf-8db7-3047-f7ad83a26fb5?download=true"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_blueme_wsfNRfQu",
+      "artist": "Florian Ast",
+      "title": "Blueme",
+      "sourceSignature": "3KwYtr8ZRAsUrFcAcMwT72LbYgFPCEVS4oTik6E6kpREm2uGj7h4i8sRP5jjvpTneLGHbw8vLAXypDmjVRJxpyF",
+      "genre": "Pop/Rock",
+      "evidence": "Agency catalog supports broad pop/rock context.",
+      "referenceUrls": [
+        "https://www.artistpool.ch/?band_category_id=12&band_id=95&id=79&mod_action=show_band_detail"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_blödi_chue_z03KsTKF",
+      "artist": "Aextra",
+      "title": "Blödi chue",
+      "sourceSignature": "3nywSRASJNe6eTGWGiVxS9VGp6Kze3ieSuurC7QfgBN1Mx44ATKfJVJur7F62EB62U9KRruJEwYWdibBg8ALgrcG",
+      "genre": "Rock",
+      "evidence": "Published band interview identifies rock context.",
+      "referenceUrls": [
+        "https://fa3b7654-4f04-40c6-b645-0bb6fe99c44e.filesusr.com/ugd/1eff38_26b211da7eca41f19ae7df5c41abfc8c.pdf"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_break_the_great_rese_kOmh1vaT",
+      "artist": "The Pholosopher & Jack Lloyd",
+      "title": "Break The Great Reset",
+      "sourceSignature": "5yzR4zfTDPGKXx5sANcazNgKyYNjgYUSdsjiwTvNSFcq6BspTKv2KEk4NWyyY9ADV3YENNXTumNLkYXZwt5ospRC",
+      "genre": "Hip-Hop",
+      "evidence": "Broad artist rap context; recording not verified.",
+      "referenceUrls": [
+        "https://thepholosopher.com/music/",
+        "https://www.youtube.com/watch?v=lkhS824AFMg"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_chumm_gib_mir_dini_h_qjL0Pbtk",
+      "artist": "Florian Ast",
+      "title": "Chumm gib mir dini Hand",
+      "sourceSignature": "khZZLCwPe3fEmKhTiyFfnsHCEbdQn6RYUxExa25ER6wXERG5kWBEqNt5NJBcoCdTJgE2vDf4CNrzqC1FDATt1Ht",
+      "genre": "Pop/Rock",
+      "evidence": "Agency catalog supports broad pop/rock context.",
+      "referenceUrls": [
+        "https://www.artistpool.ch/?band_category_id=12&band_id=95&id=79&mod_action=show_band_detail"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_cointelpro_3Nt9QBVj",
+      "artist": "Chris Geo",
+      "title": "Cointelpro",
+      "sourceSignature": "4s3eRvb4WvK5XCU6d8ujBaoUEzME8uk1fFMEYzQYVoVWNTsVY4dNtXzGUtChmK5aKrhciCNrarKqs8sY7ANMJpTz",
+      "genre": "Hip-Hop",
+      "evidence": "Album genre supports hip-hop artist context.",
+      "referenceUrls": [
+        "https://music.apple.com/us/album/global-resistance/1543473395",
+        "https://chrisgeo.brandyourself.com/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_consciousness_fbwLQQ2J",
+      "artist": "Chris Geo",
+      "title": "Consciousness",
+      "sourceSignature": "2eazD8SEqStZEB2cb66Uh1WeVQAnPrscEZWes4ZCaoNKsVeEsjsMRo9Mud49ZrgTuwypMEAiVHimVnM16A27WB6o",
+      "genre": "Hip-Hop",
+      "evidence": "Album genre supports hip-hop artist context.",
+      "referenceUrls": [
+        "https://music.apple.com/us/album/global-resistance/1543473395",
+        "https://chrisgeo.brandyourself.com/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_cruise_control_IoIsjFWo",
+      "artist": "Chewy",
+      "title": "cruise control",
+      "sourceSignature": "4KwXbGtsZyBJp1qmra47Fwt8hX5BTZhd6TvKB9fonbfV6A4sWbjNFo6cPCgDCRuj3rHAEm1Gg2NDEgDQAwrEnM8o",
+      "genre": "Indie Rock",
+      "evidence": "Album identity supports indie-rock context.",
+      "referenceUrls": [
+        "https://www.last.fm/music/Chewy/Whattookyousolong"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_daneli_C1NyOBQJ",
+      "artist": "Florian Ast",
+      "title": "Daneli",
+      "sourceSignature": "4REm99mqjb68mQZMDL8iqWh4PcRqUdMT6HsNDA8XAYgDFankDbiAaivrRLjs7N7ip3fiA6wC6JZtvFakvS6zrS7A",
+      "genre": "Pop/Rock",
+      "evidence": "Agency catalog supports broad pop/rock context.",
+      "referenceUrls": [
+        "https://www.artistpool.ch/?band_category_id=12&band_id=95&id=79&mod_action=show_band_detail"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_death_of_me_SpRxK2on",
+      "artist": "Animal Boys",
+      "title": "Death Of Me",
+      "sourceSignature": "2xhiameNDENiyP49zBwygP61FQfXqzxWbzk1BTJTiBv42PFdGVRd3qAxRDp2Aj4pP1G7YWcbzQS9Av12VEs8suNt",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_dirty_harry_9yBTvyBm",
+      "artist": "Tyte Stone",
+      "title": "Dirty Harry",
+      "sourceSignature": "5UWnoFWwHMrcZh8r2Cn6Cu1q7UnFNKCsF2utxKgcZzuvAagsBpA8jAC3LFQFhbpekPNF4inpSye6GqpbdHDByKGv",
+      "genre": "Rock",
+      "evidence": "Artist catalog supports broad rock context.",
+      "referenceUrls": [
+        "https://www.tytestone.ch/detail.php?ID=321",
+        "https://medien.srf.ch/documents/20142/3708308/Die_acht_Chorleiter_in__Kampf_der_Choere_.pdf/0c43cf27-debf-8db7-3047-f7ad83a26fb5?download=true"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_dirty_sheepman_(the_uAkSVN6I",
+      "artist": "Tyte Stone",
+      "title": "Dirty Sheepman (the Creep)",
+      "sourceSignature": "5x1kCicEC4NbMuKD5XiSVA4p5R9gDgUQPXo2QKwWEYos4ceNgBAXKzi3DgJfddDSnBvf1nkv9q7geXkRRqX8yX9D",
+      "genre": "Rock",
+      "evidence": "Artist catalog supports broad rock context.",
+      "referenceUrls": [
+        "https://www.tytestone.ch/detail.php?ID=321",
+        "https://medien.srf.ch/documents/20142/3708308/Die_acht_Chorleiter_in__Kampf_der_Choere_.pdf/0c43cf27-debf-8db7-3047-f7ad83a26fb5?download=true"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_disobey_DjlWJ5aW",
+      "artist": "The Pholosopher & Jack Lloyd",
+      "title": "DISOBEY",
+      "sourceSignature": "5u5v5NsFfEgm1V5h8xfQPULNDCZb8Fb3pqyVFvDiperrRrJQuwT1aBMU9ckFr8F1yLMJDQTHon85cU9z7wvSXofL",
+      "genre": "Hip-Hop",
+      "evidence": "Broad artist rap context; recording not verified.",
+      "referenceUrls": [
+        "https://thepholosopher.com/music/",
+        "https://www.youtube.com/watch?v=lkhS824AFMg"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_du_bisches_wärt_S1HJcG7M",
+      "artist": "Aextra",
+      "title": "Du bisches wärt",
+      "sourceSignature": "2FGZLntnTPVZMQcip5CQzxuhaRD7XMMCn9wV2JV4fVirMbgMiakWTNUJYncfGmc1GpmXdgzH34YKtb8vkBasorAd",
+      "genre": "Rock",
+      "evidence": "Published band interview identifies rock context.",
+      "referenceUrls": [
+        "https://fa3b7654-4f04-40c6-b645-0bb6fe99c44e.filesusr.com/ugd/1eff38_26b211da7eca41f19ae7df5c41abfc8c.pdf"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_du_hesch_wöue_k1WTPaJ9",
+      "artist": "Aextra",
+      "title": "Du hesch wöue",
+      "sourceSignature": "5wnUpNHih5E6dpJugAwFhM5aGjMaTXU9dt24TgAGNp9kXTC7jbeS2KK9ondev6nNejcmCT6GUL7t2iJ24mQv4Grc",
+      "genre": "Rock",
+      "evidence": "Published band interview identifies rock context.",
+      "referenceUrls": [
+        "https://fa3b7654-4f04-40c6-b645-0bb6fe99c44e.filesusr.com/ugd/1eff38_26b211da7eca41f19ae7df5c41abfc8c.pdf"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_durango_95_-_go_ment_i0KruPUa",
+      "artist": "Animal Boys",
+      "title": "Durango 95 - Go Mental",
+      "sourceSignature": "2bTy6Wu5kULc9jGuQZsezc8fvqwMifRfKpc8EE3ZciFG341X3aYuTqp7fWf5YxvwRjmp41yWcNJV4gmwUuQABB8D",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_dä_hät_mi_g`haue_dä_CA8SPygy",
+      "artist": "Knöppel",
+      "title": "Dä Hät Mi G`haue Dä Wichser",
+      "sourceSignature": "4QE1M5XBeD1ftSwMT6yHDFN6B1PMSHwxUQDoMhLqHioVUJGrfVFdENUR391pFqYVHEGrbakQoWEXqbvajBQGhUAg",
+      "genre": "Punk Rock",
+      "evidence": "Artist album identifies matching punk material.",
+      "referenceUrls": [
+        "https://knoppel.bandcamp.com/album/hey-wichsers"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_eiger,_mönch_&_jungf_T176rc8Y",
+      "artist": "Florian Ast",
+      "title": "Eiger, Mönch & Jungfrou",
+      "sourceSignature": "4JbGQqQwmjJhP7TfHLxjMFnJhXxobnZ1bz2bwkLZgw7powVAuBqN8gzE74XgUEwJgJSebowrZccDCFwTVddzi7HK",
+      "genre": "Pop/Rock",
+      "evidence": "Agency catalog supports broad pop/rock context.",
+      "referenceUrls": [
+        "https://www.artistpool.ch/?band_category_id=12&band_id=95&id=79&mod_action=show_band_detail"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_end_the_fed_NRV11Z4d",
+      "artist": "The Pholosopher & Jack Lloyd",
+      "title": "End The Fed",
+      "sourceSignature": "r9jZC7YJyXQK9d4JiYBbcjUocj2nP6HyhKRaadxzQUcyJTKjQrcd6fkMpuLdPtDyQ9F2FDH9waRfHR4KiZfQ1uE",
+      "genre": "Hip-Hop",
+      "evidence": "Broad artist rap context; recording not verified.",
+      "referenceUrls": [
+        "https://thepholosopher.com/music/",
+        "https://www.youtube.com/watch?v=lkhS824AFMg"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_endeless_part_ii_(ty_A7WHThuf",
+      "artist": "Tyte Stone",
+      "title": "Endeless Part II (Tyte Strone)",
+      "sourceSignature": "5iKQDywJ7DXqymiGsJi2HvBFEWKdRQZgnYmwhZuipuEsnCHhSLWGFRFHVeufXX33FurLv4nJFeTkWfGFto3bi9hK",
+      "genre": "Rock",
+      "evidence": "Artist catalog supports broad rock context.",
+      "referenceUrls": [
+        "https://www.tytestone.ch/detail.php?ID=321",
+        "https://medien.srf.ch/documents/20142/3708308/Die_acht_Chorleiter_in__Kampf_der_Choere_.pdf/0c43cf27-debf-8db7-3047-f7ad83a26fb5?download=true"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_endless_part_i_(tyte_K3ZxqWiY",
+      "artist": "Tyte Stone",
+      "title": "Endless Part I (Tyte Stone)",
+      "sourceSignature": "4u76MJKjYJh2Ks4zu9Soe33pfGXydeCtcpNYuqZ7X3wQuVqNFbhm2PhRuNN1pdvYi9xB3mWC5yMpDpMX1DDj9qua",
+      "genre": "Rock",
+      "evidence": "Artist catalog supports broad rock context.",
+      "referenceUrls": [
+        "https://www.tytestone.ch/detail.php?ID=321",
+        "https://medien.srf.ch/documents/20142/3708308/Die_acht_Chorleiter_in__Kampf_der_Choere_.pdf/0c43cf27-debf-8db7-3047-f7ad83a26fb5?download=true"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_endless_part_iii_cwhyDDrJ",
+      "artist": "Tyte Stone",
+      "title": "Endless Part III",
+      "sourceSignature": "4JDCQJnj4nCXtxQgt2kuB3ue3h68ASL6VKnkdvhtjToFLw78T5xSn8NiVvK5rE9zWHAPjdCFPHiSNJ1bCN5dsdWF",
+      "genre": "Rock",
+      "evidence": "Artist catalog supports broad rock context.",
+      "referenceUrls": [
+        "https://www.tytestone.ch/detail.php?ID=321",
+        "https://medien.srf.ch/documents/20142/3708308/Die_acht_Chorleiter_in__Kampf_der_Choere_.pdf/0c43cf27-debf-8db7-3047-f7ad83a26fb5?download=true"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_figgdroge_alkohol_xTCxUEwB",
+      "artist": "Knöppel",
+      "title": "Figgdroge Alkohol",
+      "sourceSignature": "29e55bq9hzxKM6nrUU87DHEocErZUtaQDX9akMQZ68wmnbBwaa2JMxcw6cpZLxcm5hQ2tnAixNsgpANAtNZZzjZu",
+      "genre": "Punk Rock",
+      "evidence": "Artist album identifies matching punk material.",
+      "referenceUrls": [
+        "https://knoppel.bandcamp.com/album/hey-wichsers"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_florida_man_vVKdeaCH",
+      "artist": "The Pholosopher & Jack Lloyd",
+      "title": "Florida Man",
+      "sourceSignature": "3PBwEyQ73GN2bc1FLz2hm9jSCMbg9CBWvPBeZHPpony9TNPcC4f6FHX1HxVQfvYWKaPLKmXPBFJuTohjLAVQvx2R",
+      "genre": "Hip-Hop",
+      "evidence": "Broad artist rap context; recording not verified.",
+      "referenceUrls": [
+        "https://thepholosopher.com/music/",
+        "https://www.youtube.com/watch?v=lkhS824AFMg"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_fm_spezial_YluQxyLb",
+      "artist": "Tyte Stone",
+      "title": "FM Spezial",
+      "sourceSignature": "2SVEPi8hHB6NLYvFTYRc3qfY5M3HuYbwdpkbManHsw8dRsHoSepWFenZocHHzw8n6m3QXuA1uLpKGRpUFTePRSk8",
+      "genre": "Rock",
+      "evidence": "Artist catalog supports broad rock context.",
+      "referenceUrls": [
+        "https://www.tytestone.ch/detail.php?ID=321",
+        "https://medien.srf.ch/documents/20142/3708308/Die_acht_Chorleiter_in__Kampf_der_Choere_.pdf/0c43cf27-debf-8db7-3047-f7ad83a26fb5?download=true"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_frei_wia_a_sunnastra_7PkDJZA1",
+      "artist": "Tyte Stone",
+      "title": "Frei wia a Sunnastrahl (Gila-Baby)",
+      "sourceSignature": "VEE6VpGF8Z7MPxGu8evCtDwi5SHBf7JEzqHUohzyTaRDptCpFsTcPVHTHSnmZgydhKafmjv8s7piLYjpiRmaV7D",
+      "genre": "Rock",
+      "evidence": "Artist catalog supports broad rock context.",
+      "referenceUrls": [
+        "https://www.tytestone.ch/detail.php?ID=321",
+        "https://medien.srf.ch/documents/20142/3708308/Die_acht_Chorleiter_in__Kampf_der_Choere_.pdf/0c43cf27-debf-8db7-3047-f7ad83a26fb5?download=true"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_gemschelibock_dS6XWl8H",
+      "artist": "Florian Ast",
+      "title": "Gemschelibock",
+      "sourceSignature": "5tvaNy7w9TNB8uotfgxYPfXVCmknkLcFHdnYfqZavXPhnLBsEW3nv4p1FoQNscPKn6nNeTCR74ZehBTEWuztk1s",
+      "genre": "Pop/Rock",
+      "evidence": "Agency catalog supports broad pop/rock context.",
+      "referenceUrls": [
+        "https://www.artistpool.ch/?band_category_id=12&band_id=95&id=79&mod_action=show_band_detail"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_girl_with_the_smile_0Q9kC584",
+      "artist": "Tyte Stone",
+      "title": "Girl With The Smile",
+      "sourceSignature": "5FrZe8BXLb2bi84gEezJqBTFLGqx63nZrM59mMy2N7VCL6uE9ucLqShhcbEHEwBqL6SUrsZBYQg5fsDJmru5jRqt",
+      "genre": "Rock",
+      "evidence": "Artist catalog supports broad rock context.",
+      "referenceUrls": [
+        "https://www.tytestone.ch/detail.php?ID=321",
+        "https://medien.srf.ch/documents/20142/3708308/Die_acht_Chorleiter_in__Kampf_der_Choere_.pdf/0c43cf27-debf-8db7-3047-f7ad83a26fb5?download=true"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_global_resistance_85qAr3Ig",
+      "artist": "Chris Geo",
+      "title": "Global Resistance",
+      "sourceSignature": "MEcnw4yhXtGf5xXitJT6T6PWc2JVKzN6EVXee8JbVxESx5eQccp6c3cLkoMoDm9gBHSRQ8koJrwVv3AKKQKPDkd",
+      "genre": "Hip-Hop",
+      "evidence": "Album genre supports hip-hop artist context.",
+      "referenceUrls": [
+        "https://music.apple.com/us/album/global-resistance/1543473395",
+        "https://chrisgeo.brandyourself.com/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_greek_revolution_L78ItmT7",
+      "artist": "Chris Geo",
+      "title": "Greek Revolution",
+      "sourceSignature": "3Kd9HBMyKW11YgPTYttfLLT1FYhNviyGFF9WkeEX24r4VwHxRkkgi77sFP6WWU3DjdiqptXmSTgWWmVsuRVa8J9p",
+      "genre": "Hip-Hop",
+      "evidence": "Album genre supports hip-hop artist context.",
+      "referenceUrls": [
+        "https://music.apple.com/us/album/global-resistance/1543473395",
+        "https://chrisgeo.brandyourself.com/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_grossvater_gZdlZaSM",
+      "artist": "Florian Ast",
+      "title": "Grossvater",
+      "sourceSignature": "3T48Gz5kCRm253gwZga8PVFY2FtDuBNtW91xq7WdPjR5J9nM55verZFX5BrT4L6R5EkzbWhPKEi7fzWiv9YkK8p6",
+      "genre": "Pop/Rock",
+      "evidence": "Agency catalog supports broad pop/rock context.",
+      "referenceUrls": [
+        "https://www.artistpool.ch/?band_category_id=12&band_id=95&id=79&mod_action=show_band_detail"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_guet_für_mi_SuZzucgD",
+      "artist": "Aextra",
+      "title": "Guet für mi",
+      "sourceSignature": "3P3zGnKkmsrtVekgdTj26rBdHr3Z3gSjnuZdzAbaR6gJrUGtiiXzo5ZGVHg8zNDHNEj1C9wKk5zt8HF2p2QsuKEo",
+      "genre": "Rock",
+      "evidence": "Published band interview identifies rock context.",
+      "referenceUrls": [
+        "https://fa3b7654-4f04-40c6-b645-0bb6fe99c44e.filesusr.com/ugd/1eff38_26b211da7eca41f19ae7df5c41abfc8c.pdf"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_harti_weirather_qHjmNbJ6",
+      "artist": "Knöppel",
+      "title": "Harti Weirather",
+      "sourceSignature": "3XkhYDED4Xst2pDhfcLYEdpA4PkHJvZ358UVkKjKMDF6Zzx42PuxANFcuxjrU2ZB99d4YqvCCsMsQdjfZJc2LBeV",
+      "genre": "Punk Rock",
+      "evidence": "Artist album identifies matching punk material.",
+      "referenceUrls": [
+        "https://knoppel.bandcamp.com/album/hey-wichsers"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_havanna_affair_3mAp5sK5",
+      "artist": "Animal Boys",
+      "title": "Havanna Affair",
+      "sourceSignature": "5GhG7seVpcxgD3GWuAJVEpwbYgkKxpfzb7g2aTBTHv8PYNaZ4VWpZpiq3pfvW2XMGTSn1VmJvDWXvcgKPAziEohB",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_hellowe`en_Om94jLdI",
+      "artist": "Tyte Stone",
+      "title": "Hellowe`en",
+      "sourceSignature": "4sqY1xs8ttBpKssrUmpVbsSXp8EErR55SQyDJeJWvxUNtU2jDUa4CjyeVYhaNxGHzaCgpqd1PexE1BkUCKhApT3A",
+      "genre": "Rock",
+      "evidence": "Artist catalog supports broad rock context.",
+      "referenceUrls": [
+        "https://www.tytestone.ch/detail.php?ID=321",
+        "https://medien.srf.ch/documents/20142/3708308/Die_acht_Chorleiter_in__Kampf_der_Choere_.pdf/0c43cf27-debf-8db7-3047-f7ad83a26fb5?download=true"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_hend_weg_vo_mim_sack_oCQoJb7e",
+      "artist": "Knöppel",
+      "title": "Hend Weg vo mim Sack",
+      "sourceSignature": "2mWFGvYjVPTSScEHgHG3gJL14nkrJUu7RmdHgLu9cMCqTXFsMkTdaYs4ZbCNaR4STtoTH1MM1MvoiUuyn1QuTcqC",
+      "genre": "Punk Rock",
+      "evidence": "Artist album identifies matching punk material.",
+      "referenceUrls": [
+        "https://knoppel.bandcamp.com/album/hey-wichsers"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_hidden_track_görpsel_Dtw3nBHb",
+      "artist": "Tyte Stone",
+      "title": "Hidden Track Görpsel",
+      "sourceSignature": "5kFYgCwZNAWUv7E5UspifUt62yDAoXh6Ukw1nhecG3iqUVcFBx9BbzQAdG8Tg2qBiv8ihYjvW2WArF5pqWmqJCzo",
+      "genre": "Rock",
+      "evidence": "Artist catalog supports broad rock context.",
+      "referenceUrls": [
+        "https://www.tytestone.ch/detail.php?ID=321",
+        "https://medien.srf.ch/documents/20142/3708308/Die_acht_Chorleiter_in__Kampf_der_Choere_.pdf/0c43cf27-debf-8db7-3047-f7ad83a26fb5?download=true"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_hurt_uat5s25h",
+      "artist": "Chris Geo",
+      "title": "Hurt",
+      "sourceSignature": "4RVbSG7Y45NqXQAAGn5YpSmaRHUbWV6NVza5axgaYM65M3hnaaYsqAKD8iBAPmQzNE28xt9cnS8aMETdPFNzYkDz",
+      "genre": "Hip-Hop",
+      "evidence": "Album genre supports hip-hop artist context.",
+      "referenceUrls": [
+        "https://music.apple.com/us/album/global-resistance/1543473395",
+        "https://chrisgeo.brandyourself.com/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_härzchlopfe_AnQiIrZP",
+      "artist": "Florian Ast",
+      "title": "Härzchlopfe",
+      "sourceSignature": "2jFgPhZgvKsd3N3i21XioKMLFWkUmBcG6Q9QzWgchYnS7DQMBYnFg2NbEtVGe7n26SSfqFaxZMQnW1XKa7VxcR28",
+      "genre": "Pop/Rock",
+      "evidence": "Agency catalog supports broad pop/rock context.",
+      "referenceUrls": [
+        "https://www.artistpool.ch/?band_category_id=12&band_id=95&id=79&mod_action=show_band_detail"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_hüt_wert_onaniert_m85zeQPY",
+      "artist": "Knöppel",
+      "title": "Hüt Wert Onaniert",
+      "sourceSignature": "3RiA9YqK1fpWKoULvxpHG9RH3igRRZ3VbHBeEaaRKJCyP1n1qe3Q4SDLh5d1x4rMqc43dZnmr5ii2gpmZDz1AHWi",
+      "genre": "Punk Rock",
+      "evidence": "Artist album identifies matching punk material.",
+      "referenceUrls": [
+        "https://knoppel.bandcamp.com/album/hey-wichsers"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_i_can`t_make_it_on_t_ivPHYxLK",
+      "artist": "Animal Boys",
+      "title": "I Can`t Make It On Time",
+      "sourceSignature": "3RqKsusgENrqbRmNPPhgRtGVN8PFT7cAbJpM7U9F9cDe9UgSDH5nroqVoRJfvtmDEkzJJH3RYsk9Fd9CiYoGWjxs",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_i_did_not_consent_ek6DBMPI",
+      "artist": "The Pholosopher & Jack Lloyd",
+      "title": "I Did Not Consent",
+      "sourceSignature": "YPaHv3UY2DiuxPqd2D3snaizsp4ssxA8nJQhWqFudxBPGmeJncRpiyCDpcwKFhFNbHkhTt2Fjpx3GPmny21j6Rx",
+      "genre": "Hip-Hop",
+      "evidence": "Broad artist rap context; recording not verified.",
+      "referenceUrls": [
+        "https://thepholosopher.com/music/",
+        "https://www.youtube.com/watch?v=lkhS824AFMg"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_i_wanna_be_sedated_pv3YYjXL",
+      "artist": "Animal Boys",
+      "title": "I Wanna Be Sedated",
+      "sourceSignature": "5cyaoaB2tfp3XRBCwAKvV8JS5NHd1eAh4w82ZmSHjqb4LThdC3qG6VAPG6AvgZ7FoHR2excUrgYQZTwvcRhfrDNF",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_i_will_not_take_the_qZLx4MPI",
+      "artist": "The Pholosopher & Jack Lloyd",
+      "title": "I Will Not Take The Shot",
+      "sourceSignature": "oUaNjXBwxeH4S4Say8tq9c1Yv8Z4dR74FxbLnj3zdGHasL22YsgjreCsffKRKoVGHWhAx23TQA9tzep91z4FMrV",
+      "genre": "Hip-Hop",
+      "evidence": "Broad artist rap context; recording not verified.",
+      "referenceUrls": [
+        "https://thepholosopher.com/music/",
+        "https://www.youtube.com/watch?v=lkhS824AFMg"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_im_having_sex_with_m_VZZtQfgD",
+      "artist": "The Pholosopher & Jack Lloyd",
+      "title": "Im Having Sex With My Wife",
+      "sourceSignature": "5Hxs1KMcFwyho3WwHrY4qAN6sGjcMERq8jk6bAy5tSotHEKuEVCyb3dp2RuNMojskif8gDjVsFa1gyQuLKhhyLEc",
+      "genre": "Hip-Hop",
+      "evidence": "Broad artist rap context; recording not verified.",
+      "referenceUrls": [
+        "https://thepholosopher.com/music/",
+        "https://www.youtube.com/watch?v=lkhS824AFMg"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_in_the_long_run_43zRNfEi",
+      "artist": "Chewy",
+      "title": "in the long run",
+      "sourceSignature": "426aF2b64hd7JbVJRwcm1CoAbrdPiFNPmH4WEyo7aUYbArYduEahpMRjsxJHivAVkMSHfgA9E9aqvrVGsAZ8RMHb",
+      "genre": "Indie Rock",
+      "evidence": "Album identity supports indie-rock context.",
+      "referenceUrls": [
+        "https://www.last.fm/music/Chewy/Whattookyousolong"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_intermission_ii_X5O94hv0",
+      "artist": "Animal Boys",
+      "title": "Intermission II",
+      "sourceSignature": "5z7u4yWM8YybnkisyHKsnQQZHhMazY1oL5oivV7n9cA3ArsJHs6J5zQ3URcZPbhmMogHtn4KVjMvQv1jcyo7dSKp",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_intermission_iii_UpVFtwfA",
+      "artist": "Animal Boys",
+      "title": "Intermission III",
+      "sourceSignature": "u2VQEH1yqUgGGTD5Xrp5uvWw2u4izLS8u8kcrZ3EGbiqkL8hb1imD9vUQDwDKk1kPziFbJSCP7XamYMy3PeteQJ",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_intermission_iiii_AHlCUHIt",
+      "artist": "Animal Boys",
+      "title": "Intermission IIII",
+      "sourceSignature": "36ER6QmfLhAujBKfKKjUk7eTUEAf18M7PQTG8okFRAowr3hj49LAfGn4fD12qXzM7i1khQzGaKd4DyVYurTFPA5F",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_intermission_leMDlpbg",
+      "artist": "Animal Boys",
+      "title": "Intermission",
+      "sourceSignature": "4iYj7fcqftTM1axxwNafYFAD3hDVsrVc3DGE8oK9Ls6jaRvAnV6Jee1MaLBGvEoFi1ieozYkD1gnvKfRNByRkfsV",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_ja_oder_nei_cOiBa8Kn",
+      "artist": "Aextra",
+      "title": "Ja oder nei",
+      "sourceSignature": "5TXP6dkjL1YWYJuVqDxcUj31d2Qm3nXutSByD8YFUuB4hFA8ahuNKgZFsk2yXxtHiZi8p2Ma1zKnnLnL665RjmoN",
+      "genre": "Rock",
+      "evidence": "Published band interview identifies rock context.",
+      "referenceUrls": [
+        "https://fa3b7654-4f04-40c6-b645-0bb6fe99c44e.filesusr.com/ugd/1eff38_26b211da7eca41f19ae7df5c41abfc8c.pdf"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_javier_milei_worldwi_kHyaCUcM",
+      "artist": "The Pholosopher & Jack Lloyd",
+      "title": "Javier Milei Worldwide",
+      "sourceSignature": "2EryUL63HHqeWUMbQD4isP9twS9zErkf6nnMzzvnLfXk8FjAi3N8FHUxfbNkHt5TzEGuQPrpyYDWa7hJH6UDmtYT",
+      "genre": "Hip-Hop",
+      "evidence": "Broad artist rap context; recording not verified.",
+      "referenceUrls": [
+        "https://thepholosopher.com/music/",
+        "https://www.youtube.com/watch?v=lkhS824AFMg"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_july_LcvaVowM",
+      "artist": "Chewy",
+      "title": "july",
+      "sourceSignature": "4gF52WgA3Mi1UHBKkUHskpAjBKQu71hqAkxqFxc1wbzivVqLeXpAgmkKPmFSseCsXbzfkR129tjorfzT4weTUdm8",
+      "genre": "Indie Rock",
+      "evidence": "Album identity supports indie-rock context.",
+      "referenceUrls": [
+        "https://www.last.fm/music/Chewy/Whattookyousolong"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_la_mi_ned_allei_P2NcrENY",
+      "artist": "Aextra",
+      "title": "La mi ned allei",
+      "sourceSignature": "58JprTkBEE2SxtwMHHUXet3QNZDfmZa3BXe1L7Ha39YtLCQYtafyFJwvXeNSEWFoFLfDAn2CowR3zMMHeLNbZYEu",
+      "genre": "Rock",
+      "evidence": "Published band interview identifies rock context.",
+      "referenceUrls": [
+        "https://fa3b7654-4f04-40c6-b645-0bb6fe99c44e.filesusr.com/ugd/1eff38_26b211da7eca41f19ae7df5c41abfc8c.pdf"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_libertarian_guys_7b58ODdU",
+      "artist": "The Pholosopher & Jack Lloyd",
+      "title": "Libertarian Guys",
+      "sourceSignature": "4eYToYP3hz1VDnL7B6BUyRNPEK77g4tDABEuCmmLso1hPncPynmnsX1cWBhyrQ582xiMMUKHXM8ZJHHzkU57GtJ",
+      "genre": "Hip-Hop",
+      "evidence": "Broad artist rap context; recording not verified.",
+      "referenceUrls": [
+        "https://thepholosopher.com/music/",
+        "https://www.youtube.com/watch?v=lkhS824AFMg"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_luut_TC8gqNtO",
+      "artist": "Knöppel",
+      "title": "Luut",
+      "sourceSignature": "34trxXADmWXvejmYWM65pvNRc9EjVdXDgGkC1AUBWBAHqMm5Hg7DoJTKDk8UZCWU2UBmr3LNuJF1KgZ2GCKZTZqH",
+      "genre": "Punk Rock",
+      "evidence": "Artist album identifies matching punk material.",
+      "referenceUrls": [
+        "https://knoppel.bandcamp.com/album/hey-wichsers"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_machtlos_ed7PwvDn",
+      "artist": "Aextra",
+      "title": "Machtlos",
+      "sourceSignature": "y6Hzi8uNc9vAiiEHNxkerbPB6P9uWuoDfz2NBvU18GSxhK6i6N1GJi2EgZf6LKPYrWJHaH4WTRBoXPRybwnKdcr",
+      "genre": "Rock",
+      "evidence": "Published band interview identifies rock context.",
+      "referenceUrls": [
+        "https://fa3b7654-4f04-40c6-b645-0bb6fe99c44e.filesusr.com/ugd/1eff38_26b211da7eca41f19ae7df5c41abfc8c.pdf"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_mad_as_hell_VIUHopOA",
+      "artist": "Chris Geo",
+      "title": "Mad As Hell",
+      "sourceSignature": "k4PRjuuCv8mRVVZhtJk5NGitGzUVDczxpiKPhZVaV5xogVJhKMveQgHG6DNHCPi97xmWgSCDDpXXqgL4uo2f4s7",
+      "genre": "Hip-Hop",
+      "evidence": "Album genre supports hip-hop artist context.",
+      "referenceUrls": [
+        "https://music.apple.com/us/album/global-resistance/1543473395",
+        "https://chrisgeo.brandyourself.com/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_mad_world_e9PZONyw",
+      "artist": "Chris Geo",
+      "title": "Mad World",
+      "sourceSignature": "SPvcXqkSXHp3oGBtbz5qiu3y3sMeicT5DMSfypNGDqgD9XwN8dLHU3F8JLUxSSSCue4XVDAvjSKvXFG6RVQ5zcA",
+      "genre": "Hip-Hop",
+      "evidence": "Album genre supports hip-hop artist context.",
+      "referenceUrls": [
+        "https://music.apple.com/us/album/global-resistance/1543473395",
+        "https://chrisgeo.brandyourself.com/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_maisgold_shuffle_8AjYZgxa",
+      "artist": "Tyte Stone",
+      "title": "Maisgold Shuffle",
+      "sourceSignature": "5eA4oELFbnWX2D8jGk6n3nK6GheCUoNxTWYs9cup7rFeSZ66DMmW6P395qbtg4WwrSyrDNyvzp27AD1DXbHYnpc9",
+      "genre": "Rock",
+      "evidence": "Artist catalog supports broad rock context.",
+      "referenceUrls": [
+        "https://www.tytestone.ch/detail.php?ID=321",
+        "https://medien.srf.ch/documents/20142/3708308/Die_acht_Chorleiter_in__Kampf_der_Choere_.pdf/0c43cf27-debf-8db7-3047-f7ad83a26fb5?download=true"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_mama`s_boy_2Z9upvf8",
+      "artist": "Animal Boys",
+      "title": "Mama`s Boy",
+      "sourceSignature": "UqRZpT6LAqEQG3Qg74k46K2Hj8ZhmmVsMF6dTAHNQVBAhS7d3TQCgRKHtCei62KcbsGSybeWDaeRJRamJARHQug",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_mask_order_reMHDB8N",
+      "artist": "The Pholosopher & Jack Lloyd",
+      "title": "Mask Order",
+      "sourceSignature": "4qj6FSDUu7ZXL1uSzm7nW7dnhj4WZnQRaEwZSSArdUxnwBoERf1Jy1u8E8GBnJjRgtt4mCCq3wgWyprpoo939kYW",
+      "genre": "Hip-Hop",
+      "evidence": "Broad artist rap context; recording not verified.",
+      "referenceUrls": [
+        "https://thepholosopher.com/music/",
+        "https://www.youtube.com/watch?v=lkhS824AFMg"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_meitschi_xZQWTNTm",
+      "artist": "Florian Ast",
+      "title": "Meitschi",
+      "sourceSignature": "3XXZYA3BguRsRtoKFsdSnUScgb914dRSEiejTXEsXK9taPqAKXePtrjYjjquXyJA1LuuvZiNFzF8yEVcKAnL4gCB",
+      "genre": "Pop/Rock",
+      "evidence": "Agency catalog supports broad pop/rock context.",
+      "referenceUrls": [
+        "https://www.artistpool.ch/?band_category_id=12&band_id=95&id=79&mod_action=show_band_detail"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_mir_fitschering_semi_24UWlU6u",
+      "artist": "Aextra",
+      "title": "Mir Fitschering Semih",
+      "sourceSignature": "DGJmvCVsRDkJFbyTywjXmvzMSzdrVoZN2qFKHurN9SnrovtLMfTVQzeutjuW2JxPafJCSAVQZhbUfiduXF8byrH",
+      "genre": "Rock",
+      "evidence": "Published band interview identifies rock context.",
+      "referenceUrls": [
+        "https://fa3b7654-4f04-40c6-b645-0bb6fe99c44e.filesusr.com/ugd/1eff38_26b211da7eca41f19ae7df5c41abfc8c.pdf"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_mittelohrentzündig_YS5F5SuE",
+      "artist": "Knöppel",
+      "title": "Mittelohrentzündig",
+      "sourceSignature": "Fv7VQW42Z8mguyidmJHgmE7fUNwD9eLGGu5gDxKNzEzubtGvgnB1fxxAzbQttFxFBkz8RWY79uvyUZ48NrkCpfB",
+      "genre": "Punk Rock",
+      "evidence": "Artist album identifies matching punk material.",
+      "referenceUrls": [
+        "https://knoppel.bandcamp.com/album/hey-wichsers"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_never_surrender_0RZzDLcP",
+      "artist": "The Pholosopher & Jack Lloyd",
+      "title": "Never Surrender",
+      "sourceSignature": "tckjACuwd9MC68thPC8cD9LKgbJJmGyjQGj4KhGN8nYcUKC7xYJJsGtMbf8S2XXyKuyCPBSU1wsf1BBPfhpPXc9",
+      "genre": "Hip-Hop",
+      "evidence": "Broad artist rap context; recording not verified.",
+      "referenceUrls": [
+        "https://thepholosopher.com/music/",
+        "https://www.youtube.com/watch?v=lkhS824AFMg"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_nimm_die_hand_da_rau_AKH8az0b",
+      "artist": "Tyte Stone",
+      "title": "Nimm die Hand da Raus",
+      "sourceSignature": "3wHdwZsa86LPNgEwBesM6APS4bUitvwtQFFFrTApDtVMoCuAhJpcX2YsfNCYcZv3fujeS7ruEukBAXDcv616CLaL",
+      "genre": "Rock",
+      "evidence": "Artist catalog supports broad rock context.",
+      "referenceUrls": [
+        "https://www.tytestone.ch/detail.php?ID=321",
+        "https://medien.srf.ch/documents/20142/3708308/Die_acht_Chorleiter_in__Kampf_der_Choere_.pdf/0c43cf27-debf-8db7-3047-f7ad83a26fb5?download=true"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_nwo_HLqeJVTI",
+      "artist": "Chris Geo",
+      "title": "NWO",
+      "sourceSignature": "51juyVvZwJdP4RTiC1aaRLDGf91c3j7gFak4mv6igwf77iudF4vakMNSRH5VnY45oFyHyJfbwdokBCQxy9kqD548",
+      "genre": "Hip-Hop",
+      "evidence": "Album genre supports hip-hop artist context.",
+      "referenceUrls": [
+        "https://music.apple.com/us/album/global-resistance/1543473395",
+        "https://chrisgeo.brandyourself.com/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_our_lives_in_super-8_NbGF2O5O",
+      "artist": "Chewy",
+      "title": "our lives in super-8",
+      "sourceSignature": "hkUdLkhzjweyYT2BnK6cjdJhAD37RPmgE6TRe9HcAbCHQcoJT6boGXQBLZAMM132ECzUuN6G7FTucwC9xEPRLZT",
+      "genre": "Indie Rock",
+      "evidence": "Album identity supports indie-rock context.",
+      "referenceUrls": [
+        "https://www.last.fm/music/Chewy/Whattookyousolong"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_paris_Rm45FsWi",
+      "artist": "Florian Ast",
+      "title": "Paris",
+      "sourceSignature": "62ABFeqzBQ1vaYViTcfHYpAetGWhYuW5yvNP5TLiZHQ6Khu6SVKPX4SDWYJ1vXjGRmUHq3KsSPM7P6kfTVAXvcdt",
+      "genre": "Pop/Rock",
+      "evidence": "Agency catalog supports broad pop/rock context.",
+      "referenceUrls": [
+        "https://www.artistpool.ch/?band_category_id=12&band_id=95&id=79&mod_action=show_band_detail"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_pinhead_4jrvZhDb",
+      "artist": "Animal Boys",
+      "title": "Pinhead",
+      "sourceSignature": "59ygbSXHrskJm2zTJpJxWfLvoYosmE8UYJqixZbaYmiYUD64xcfbaxvcyXERBe6Ap8nc4hb8e7B4zeMV9P4U8mCk",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_prada_DAeIe0lG",
+      "artist": "Knöppel",
+      "title": "Prada",
+      "sourceSignature": "2CQACRfg4WE6UV8NbYwgdaSjWTjWhmgNYLM8j7K84wYoVnKj3Z4wdKUpCXm3EiBRmmo4oghkFNWEVSGsNCJWDsR5",
+      "genre": "Punk Rock",
+      "evidence": "Artist album identifies matching punk material.",
+      "referenceUrls": [
+        "https://knoppel.bandcamp.com/album/hey-wichsers"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_repeaters_awZow5VS",
+      "artist": "Chris Geo",
+      "title": "Repeaters",
+      "sourceSignature": "c2FihHGM2Rp9mjCwTcRZGNABtFSmTxc4vv3YvLwVEVwQrwbMEKjacqt7JvuVDmjqx2KGoCM3TYMswLaZYaz5LDH",
+      "genre": "Hip-Hop",
+      "evidence": "Album genre supports hip-hop artist context.",
+      "referenceUrls": [
+        "https://music.apple.com/us/album/global-resistance/1543473395",
+        "https://chrisgeo.brandyourself.com/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_rippaverse_takin_ova_OeEkdxUd",
+      "artist": "The Pholosopher & Jack Lloyd",
+      "title": "Rippaverse Takin Ova",
+      "sourceSignature": "gUaaWJeKESnDLQ9qNgTYJbjrZ9RVVkwRz5s62qLNGnBNuoApeqsLBh3vpw1BjJZQfhr58m2oXP1VHJe6uYMX6oY",
+      "genre": "Hip-Hop",
+      "evidence": "Broad artist rap context; recording not verified.",
+      "referenceUrls": [
+        "https://thepholosopher.com/music/",
+        "https://www.youtube.com/watch?v=lkhS824AFMg"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_rock_`n`_roll_ehr_wi_eXANMokb",
+      "artist": "Knöppel",
+      "title": "Rock `n` Roll ehr Wichser",
+      "sourceSignature": "24CQHBKMVmLKpVBTm4W65XFmKDMAvS9W2uvy4hAKkdC8K6XxNySugZoatGXFm33LSrJvsD9HqPhBTcZ6FQeBJTQA",
+      "genre": "Punk Rock",
+      "evidence": "Artist album identifies matching punk material.",
+      "referenceUrls": [
+        "https://knoppel.bandcamp.com/album/hey-wichsers"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_rock_`n`_roll_isch_t_ljUFUIvA",
+      "artist": "Knöppel",
+      "title": "Rock `n` Roll isch Tod",
+      "sourceSignature": "5Qg8din51RRah6TqHPfASNu4ugUF82cY5qKRqnqk8CS5uMoEWNDcrQmVZAqyVCias4Dnhfg8JoPd4iofN5Jpmj1r",
+      "genre": "Punk Rock",
+      "evidence": "Artist album identifies matching punk material.",
+      "referenceUrls": [
+        "https://knoppel.bandcamp.com/album/hey-wichsers"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_rock_n_roll_highscho_P2e939Gj",
+      "artist": "Animal Boys",
+      "title": "Rock n Roll Highschool",
+      "sourceSignature": "4dWXZmYcfsi62U8tD7HWYNAvD6ZBKQfZHR7vUx6yPh88CqKZfeKx9GjaAXMY5sMcJi6RwYQgJpXfsycZh2m6mf8d",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_rockaway_beach__judy_EDhvGcnx",
+      "artist": "Animal Boys",
+      "title": "Rockaway Beach  Judy Is A Punk...",
+      "sourceSignature": "49A6dhYYCVMhpxntdnqptqPfggyQbahL4PdUXZQKAjx2M7VmEojLYHjcFetRzfpoLFxxDhxXfavhe7af9W8iuKd8",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_rudelfigg(gila-baby)_LKGjUunS",
+      "artist": "Tyte Stone",
+      "title": "Rudelfigg(Gila-Baby)",
+      "sourceSignature": "4EBmVaTVA8KkzFDesfVGarBB7UiMLHRJ9YvdkF89GXmELdRj6ThefwQv9xX97FgtHbcUi7V2tUtJ3oA9xgfGAp1H",
+      "genre": "Rock",
+      "evidence": "Artist catalog supports broad rock context.",
+      "referenceUrls": [
+        "https://www.tytestone.ch/detail.php?ID=321",
+        "https://medien.srf.ch/documents/20142/3708308/Die_acht_Chorleiter_in__Kampf_der_Choere_.pdf/0c43cf27-debf-8db7-3047-f7ad83a26fb5?download=true"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_run_this_town_RezXOh19",
+      "artist": "Chris Geo",
+      "title": "Run This Town",
+      "sourceSignature": "3C1r6upmScKtUEJyexTbnTwoG2edbSGbma39d6rk4GAZyDhSjBuf8XV11CVKG3bZ3eU8nqmG4TAJrsVeFJjeTKjN",
+      "genre": "Hip-Hop",
+      "evidence": "Album genre supports hip-hop artist context.",
+      "referenceUrls": [
+        "https://music.apple.com/us/album/global-resistance/1543473395",
+        "https://chrisgeo.brandyourself.com/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_rütli_iznqlz1K",
+      "artist": "Florian Ast",
+      "title": "Rütli",
+      "sourceSignature": "3PYxngeWbDEYtd3ZPHdR9GRBW7ryfGz9yiBqHbyYhRQ3pMBfmnGvYxqKRTCiLkkUPakaRbj6CznCXo3s4kCoQLSS",
+      "genre": "Pop/Rock",
+      "evidence": "Agency catalog supports broad pop/rock context.",
+      "referenceUrls": [
+        "https://www.artistpool.ch/?band_category_id=12&band_id=95&id=79&mod_action=show_band_detail"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_s`läbe_isch_schön_dcHl8f3O",
+      "artist": "Florian Ast",
+      "title": "S`Läbe Isch Schön",
+      "sourceSignature": "5gHgdxkVytQMJUrBQVUJvgygoCsmkxKoZohqXb4mxPsy5BiZTRWPHTJh9LSgckukWAiBxAXeLLPncL6tcF9nBrtv",
+      "genre": "Pop/Rock",
+      "evidence": "Agency catalog supports broad pop/rock context.",
+      "referenceUrls": [
+        "https://www.artistpool.ch/?band_category_id=12&band_id=95&id=79&mod_action=show_band_detail"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_schattespiu_rvmxly7W",
+      "artist": "Aextra",
+      "title": "Schattespiu",
+      "sourceSignature": "4sHzbQuCCqSiWEYrnTKu7g83QLWgev9JAzMxVFcdQTSBvgLX2vLxEFTfn4vUTqiLwazRRdyR96CcHPhd169iZK49",
+      "genre": "Rock",
+      "evidence": "Published band interview identifies rock context.",
+      "referenceUrls": [
+        "https://fa3b7654-4f04-40c6-b645-0bb6fe99c44e.filesusr.com/ugd/1eff38_26b211da7eca41f19ae7df5c41abfc8c.pdf"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_scheff_Nhld9J03",
+      "artist": "Knöppel",
+      "title": "Scheff",
+      "sourceSignature": "37h8cBetiy8RPzJSJn1gM7BBwYjXwAWMjWjjVjdv1k5iRNbMfWaLoKLQk89k5AaP3vdYWGeKtT4K9BMfUCbvMHym",
+      "genre": "Punk Rock",
+      "evidence": "Artist album identifies matching punk material.",
+      "referenceUrls": [
+        "https://knoppel.bandcamp.com/album/hey-wichsers"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_schlechti_luune_NpqiLobP",
+      "artist": "Knöppel",
+      "title": "Schlechti Luune",
+      "sourceSignature": "247JYagGs5UNahrHvV354xMqL4rkUe65j7YzsPEFhLT3hEE54Dn9HdSbBiRFAnQ7YNPnKdF7TiH7jVRwhaDup6c8",
+      "genre": "Punk Rock",
+      "evidence": "Artist album identifies matching punk material.",
+      "referenceUrls": [
+        "https://knoppel.bandcamp.com/album/hey-wichsers"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_schöni_meitschi_o9Em9z9h",
+      "artist": "Florian Ast",
+      "title": "Schöni Meitschi",
+      "sourceSignature": "5H3czKGncF3mjGccgAuNtNMyjZUmPmoae4Dkt8tvuV8nkr9k3A8gMgUwjSbGKZpLryZUHhkdGkAiSyiaM79LZiCR",
+      "genre": "Pop/Rock",
+      "evidence": "Agency catalog supports broad pop/rock context.",
+      "referenceUrls": [
+        "https://www.artistpool.ch/?band_category_id=12&band_id=95&id=79&mod_action=show_band_detail"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_schüga_VfGK34d3",
+      "artist": "Knöppel",
+      "title": "Schüga",
+      "sourceSignature": "B2jT1nwSZab7j75sm6rC2TLd3rdqpLGw3ZWwFwB9c3heDbu5iFus57Hff2BKhr6NRMLv1AXH8bT1BcM3zxi79kC",
+      "genre": "Punk Rock",
+      "evidence": "Artist album identifies matching punk material.",
+      "referenceUrls": [
+        "https://knoppel.bandcamp.com/album/hey-wichsers"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_second_hand_magic_iJWLExdo",
+      "artist": "Chewy",
+      "title": "second hand magic",
+      "sourceSignature": "7sE2FRCsJQpxSzn96R6b5ibyUwxAxzq5yzDY234nRvKhq46wyjNyLAbSJW6fyvZn8A8bAQYoCU7ktwXb8aMDSES",
+      "genre": "Indie Rock",
+      "evidence": "Album identity supports indie-rock context.",
+      "referenceUrls": [
+        "https://www.last.fm/music/Chewy/Whattookyousolong"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_self_love_Tpah1Ywz",
+      "artist": "The Pholosopher & Jack Lloyd",
+      "title": "Self Love",
+      "sourceSignature": "VLQimqggdok7PHd2QeAVD3ARohTXx6FLDHu1wysYbCMHSTbxDSANgzTijmGb61JuRrk4MwkQv3HLsj6yvG71rmj",
+      "genre": "Hip-Hop",
+      "evidence": "Broad artist rap context; recording not verified.",
+      "referenceUrls": [
+        "https://thepholosopher.com/music/",
+        "https://www.youtube.com/watch?v=lkhS824AFMg"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_sex_r7MkARa6",
+      "artist": "Florian Ast",
+      "title": "Sex",
+      "sourceSignature": "3CdZ2gtpSYq8EQkugYi3NPBKxvWJQTwKDmmbVJZb5d5rdhLjvuJi2pUuqds8he4oGiX6Y66isBSWgMeuviwMDXrR",
+      "genre": "Pop/Rock",
+      "evidence": "Agency catalog supports broad pop/rock context.",
+      "referenceUrls": [
+        "https://www.artistpool.ch/?band_category_id=12&band_id=95&id=79&mod_action=show_band_detail"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_shafhirtemelodie_(sh_yCzwMbdk",
+      "artist": "Tyte Stone",
+      "title": "Shafhirtemelodie (Shy-Boy-Roli)",
+      "sourceSignature": "3FPgEcbxmdyxrpLQ5gfzUQ7potXx6RR7dh7RoLPvhtcsKPRiFHKGZ3wVpeozdpo7VdgF1K8QczvzV7thTXnX6Bry",
+      "genre": "Rock",
+      "evidence": "Artist catalog supports broad rock context.",
+      "referenceUrls": [
+        "https://www.tytestone.ch/detail.php?ID=321",
+        "https://medien.srf.ch/documents/20142/3708308/Die_acht_Chorleiter_in__Kampf_der_Choere_.pdf/0c43cf27-debf-8db7-3047-f7ad83a26fb5?download=true"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_sheena_is_a_punk_roc_jIe3EkWC",
+      "artist": "Animal Boys",
+      "title": "Sheena is A Punk Rocker",
+      "sourceSignature": "4UjSDH4urdZUwRF74tCBu3GLRS7RpFuxgUorMGG4eGMpNrCfxS6KopLvqak5u3NfFpFLjWHGLT7kATMa9Q5jpk8r",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_sheeps_eyes_WWlFR2NM",
+      "artist": "Chris Geo",
+      "title": "Sheeps Eyes",
+      "sourceSignature": "3ZkWxj81gULQGe34o7QroizGXJeWhWoGu8B1DiDWzyo3jWXhcDMFNpkhUoGpQ6VoPwjCHozNoLnUQ1EZi8susDbR",
+      "genre": "Hip-Hop",
+      "evidence": "Album genre supports hip-hop artist context.",
+      "referenceUrls": [
+        "https://music.apple.com/us/album/global-resistance/1543473395",
+        "https://chrisgeo.brandyourself.com/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_show_me_your_princip_KPSciKGX",
+      "artist": "The Pholosopher & Jack Lloyd",
+      "title": "Show Me Your Principles",
+      "sourceSignature": "4M7tc18KcyCinkmVRUPDFjW2GnUhvwSNXjxTgdVTaNJ3ft8nXnGREVeeSKw53opp15kYjQHt1PryrKAPs9ZxakLG",
+      "genre": "Hip-Hop",
+      "evidence": "Broad artist rap context; recording not verified.",
+      "referenceUrls": [
+        "https://thepholosopher.com/music/",
+        "https://www.youtube.com/watch?v=lkhS824AFMg"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_sidekicks_E14TzehK",
+      "artist": "Chewy",
+      "title": "sidekicks",
+      "sourceSignature": "4DN9QoPE5Fp7Zw6K2M1Kw1wgVFxy32pRt8yaVygzWswChhvWAEr5DczULQyj4QLGvUApkmo9YaCYKbYQoLjonido",
+      "genre": "Indie Rock",
+      "evidence": "Album identity supports indie-rock context.",
+      "referenceUrls": [
+        "https://www.last.fm/music/Chewy/Whattookyousolong"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_slug_1mFWgkG4",
+      "artist": "Animal Boys",
+      "title": "Slug",
+      "sourceSignature": "55Wmk8gPX9MckLJK7uyZBUkP42F5cXRCv5qxLhjy57D5pJ5HzPD448NTqnb6YBLCTpL6wSmnbuUscodRkhaAENsG",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_summer_boiBZ1e8",
+      "artist": "Aextra",
+      "title": "Summer",
+      "sourceSignature": "2M6oJ6baUJDnBpaLT21xph3MiK36VAnAKFQtCrBB1J8m2GrbGcAsLLpHY3DFz54vjYX3pZarfXTF8fGqBhAWzx55",
+      "genre": "Rock",
+      "evidence": "Published band interview identifies rock context.",
+      "referenceUrls": [
+        "https://fa3b7654-4f04-40c6-b645-0bb6fe99c44e.filesusr.com/ugd/1eff38_26b211da7eca41f19ae7df5c41abfc8c.pdf"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_super_karate_schnied_wPNHoRze",
+      "artist": "Knöppel",
+      "title": "Super Karate Schniedel",
+      "sourceSignature": "4zZz8bttPyYEtgAZoD9cnZmZBfG9UmLgHb2aGGVVLhYchig2ix8WH8KJgW36UaG9b6DwQcW7nKwANry5f1r7jKJV",
+      "genre": "Punk Rock",
+      "evidence": "Artist album identifies matching punk material.",
+      "referenceUrls": [
+        "https://knoppel.bandcamp.com/album/hey-wichsers"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_swallow_my_pirde_rY4bbAmr",
+      "artist": "Animal Boys",
+      "title": "Swallow My Pirde",
+      "sourceSignature": "3wsL1JrQK1zEvHuyjgEmtcyXcN7juYP3NzNMhyVRUC16jubKSUiTCo2EUbDM2A41wjcXFdBugR4fK1HUw4NQ7VgA",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_tanze_IQxHBGWK",
+      "artist": "Florian Ast",
+      "title": "Tanze",
+      "sourceSignature": "5MgMk6twJqmgMiMcVMUyrgfpnMX9mA1EqBVEWFd41TVCEQmHzeJMf5cX4MfWxsv3D8R2Zb3iNd6N37tSShdXg15o",
+      "genre": "Pop/Rock",
+      "evidence": "Agency catalog supports broad pop/rock context.",
+      "referenceUrls": [
+        "https://www.artistpool.ch/?band_category_id=12&band_id=95&id=79&mod_action=show_band_detail"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_taxation_is_theft_SJ4pvrgf",
+      "artist": "The Pholosopher & Jack Lloyd",
+      "title": "Taxation Is Theft",
+      "sourceSignature": "3WPAWWDHX2x38Td31QvehvY251J2fFPoeRxJYPJFyDo9RG1g6QJbz1Vgs3Dyv8koSQuEqQujdAvZL27xUFwvraao",
+      "genre": "Hip-Hop",
+      "evidence": "Broad artist rap context; recording not verified.",
+      "referenceUrls": [
+        "https://thepholosopher.com/music/",
+        "https://www.youtube.com/watch?v=lkhS824AFMg"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_the_kkk_took_my_baby_9BEDVse9",
+      "artist": "Animal Boys",
+      "title": "The KKK Took My Baby Away",
+      "sourceSignature": "47q2yiXz4KS5jfmwL8Vdsp1yPBy5oV4Ley7er1hcDAaAoRSnCpndjXLenqkCxP7t35kCNHrAU3JCWtZcYUFG6wtq",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_the_movement_7Z2UGEJp",
+      "artist": "Chris Geo",
+      "title": "The Movement",
+      "sourceSignature": "SszU8TVnBUDdm66QmGFrPeNRM6smtKrf8NU62XooBdsek1Qkp9g1E7JkXz9Wje2it5uEVkpXxWeArQD2Wavfi3h",
+      "genre": "Hip-Hop",
+      "evidence": "Album genre supports hip-hop artist context.",
+      "referenceUrls": [
+        "https://music.apple.com/us/album/global-resistance/1543473395",
+        "https://chrisgeo.brandyourself.com/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_tiny_tiger_KGwlvNDp",
+      "artist": "Chewy",
+      "title": "tiny tiger",
+      "sourceSignature": "4Cy6Vbse7hcuFuctEVHr2UBzDkY4NWeyLQ3i2HrGpUEph98aBzSSsS8SLG9UpVRFuHufdSUABnzBpAw1U7rpewTs",
+      "genre": "Indie Rock",
+      "evidence": "Album identity supports indie-rock context.",
+      "referenceUrls": [
+        "https://www.last.fm/music/Chewy/Whattookyousolong"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_to_the_limit_RY4Tbnl5",
+      "artist": "Tyte Stone",
+      "title": "To The Limit",
+      "sourceSignature": "3LUXQgE7fQmN544majqs8dBVNKUn5pGEt5QAUhEY7DSbWKTvw3MvEa9bDZ6eCmXw7n1shCeCX5hYrLN7RQ1TRZsM",
+      "genre": "Rock",
+      "evidence": "Artist catalog supports broad rock context.",
+      "referenceUrls": [
+        "https://www.tytestone.ch/detail.php?ID=321",
+        "https://medien.srf.ch/documents/20142/3708308/Die_acht_Chorleiter_in__Kampf_der_Choere_.pdf/0c43cf27-debf-8db7-3047-f7ad83a26fb5?download=true"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_today_your_love_tomo_L7uLeR6M",
+      "artist": "Animal Boys",
+      "title": "Today your Love Tomorrow The World",
+      "sourceSignature": "3eEsgcGC3NSZ3v9v3XqiWt9QUyNg2zaWBcP48CCLJfy7PbqUBVsvTa6rb6DtaAeWZzvwKhdF5LfgMwT1Vt7AfufV",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_tom_woods_house_1yl0grYK",
+      "artist": "The Pholosopher & Jack Lloyd",
+      "title": "Tom Woods House",
+      "sourceSignature": "4xpPr193oAzBJP1Jw5UcKNbcB9yqPfHtuxgPW4Dirk8HRCTZc6QHLK6aKy1GNdaZNyvjiSfFxpw9BRGX8DP9apso",
+      "genre": "Hip-Hop",
+      "evidence": "Broad artist rap context; recording not verified.",
+      "referenceUrls": [
+        "https://thepholosopher.com/music/",
+        "https://www.youtube.com/watch?v=lkhS824AFMg"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_tomcat_ubMsovLQ",
+      "artist": "Chewy",
+      "title": "Tomcat",
+      "sourceSignature": "4Qk8EtBboR9xeBsQ8frPPmG7xq2Yvd4PtPNUHUVsnUUV3JXt2BffrGUyiBAoV22QXpJThi9H1ohhnzHRAV7dCryx",
+      "genre": "Indie Rock",
+      "evidence": "Album identity supports indie-rock context.",
+      "referenceUrls": [
+        "https://www.last.fm/music/Chewy/Whattookyousolong"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_troumfrou_FKRu1Vdy",
+      "artist": "Florian Ast",
+      "title": "Troumfrou",
+      "sourceSignature": "26Sr6WT98xh6RQFQBU1c2znTBFAYfNDaU2eo7BcyDsZ69zPNZdHBj77K93DGZdci5wwckaWfTdNiYfZ547AVJqrf",
+      "genre": "Pop/Rock",
+      "evidence": "Agency catalog supports broad pop/rock context.",
+      "referenceUrls": [
+        "https://www.artistpool.ch/?band_category_id=12&band_id=95&id=79&mod_action=show_band_detail"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_träne_EJ4TmvAa",
+      "artist": "Florian Ast",
+      "title": "Träne",
+      "sourceSignature": "3sWFgvmpGuhF5uvaWDmbnEMgUrF5S22cRQdt55Dkw3H4G92dfSbLXsmarjYBCrrbLTjnn39uUmRKhoguBCCuxaXe",
+      "genre": "Pop/Rock",
+      "evidence": "Agency catalog supports broad pop/rock context.",
+      "referenceUrls": [
+        "https://www.artistpool.ch/?band_category_id=12&band_id=95&id=79&mod_action=show_band_detail"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_tyte_stone_rock`n_ro_nLKMwByD",
+      "artist": "Tyte Stone",
+      "title": "Tyte Stone Rock`n Roll",
+      "sourceSignature": "3jXSsbWp483B7ewpGkeZwjJv8ysWDYTnA6xx2hz7Ynwx4jWAgiJskdKyrq5ENHntewsXNyFq862dwu5zioKHhZmE",
+      "genre": "Rock",
+      "evidence": "Artist catalog supports broad rock context.",
+      "referenceUrls": [
+        "https://www.tytestone.ch/detail.php?ID=321",
+        "https://medien.srf.ch/documents/20142/3708308/Die_acht_Chorleiter_in__Kampf_der_Choere_.pdf/0c43cf27-debf-8db7-3047-f7ad83a26fb5?download=true"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_ueli_RkdMz5Np",
+      "artist": "Florian Ast",
+      "title": "Ueli",
+      "sourceSignature": "kjmbbYp111iXbfxxx3jzgSw1o3eLqfDFCutazhaRRmNbeK8cXhihMkW1Ait84f453eaB1X4YyZVsyzyTfW5DiLt",
+      "genre": "Pop/Rock",
+      "evidence": "Agency catalog supports broad pop/rock context.",
+      "referenceUrls": [
+        "https://www.artistpool.ch/?band_category_id=12&band_id=95&id=79&mod_action=show_band_detail"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_uma_&_jay_S8MUg0QG",
+      "artist": "Chewy",
+      "title": "uma & jay",
+      "sourceSignature": "49yB1Xxtp25gGxxz6idfT8Fsnm7V87GEcqpM5uw3e3Nbdidpsurq8UDoMr2egS3VBN5uHYv28APiHEtLtSkFNdn",
+      "genre": "Indie Rock",
+      "evidence": "Album identity supports indie-rock context.",
+      "referenceUrls": [
+        "https://www.last.fm/music/Chewy/Whattookyousolong"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_us_stärne_REvczoWC",
+      "artist": "Aextra",
+      "title": "Us Stärne",
+      "sourceSignature": "HBXMb3s8iBzdo9qoWjpHXBD4gCmh8DKDLbDB3TaSEjsdbG6TSPHYxPCdwbvJsTNj9nPaCPsLBt75Ddys14rz9Ts",
+      "genre": "Rock",
+      "evidence": "Published band interview identifies rock context.",
+      "referenceUrls": [
+        "https://fa3b7654-4f04-40c6-b645-0bb6fe99c44e.filesusr.com/ugd/1eff38_26b211da7eca41f19ae7df5c41abfc8c.pdf"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_uzwil_ATog3pw1",
+      "artist": "Knöppel",
+      "title": "Uzwil",
+      "sourceSignature": "4P2riSzij3WHBun35WJqSxhCKJKHaPoExFhmqTZjKRiHep7fuUmAn98xoD4UTEhEcMBV5rPoMf2qNT5Ui4v3Sgzt",
+      "genre": "Punk Rock",
+      "evidence": "Artist album identifies matching punk material.",
+      "referenceUrls": [
+        "https://knoppel.bandcamp.com/album/hey-wichsers"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_were_in_trouble_`07_a2Uw3Y1f",
+      "artist": "Chris Geo",
+      "title": "Were In Trouble `07",
+      "sourceSignature": "39awBBGnYg3huZbo7Eru6qVXPmB8iJZAZovpgeVUPn4A4NXQKJFrWXRAqekEzkFysmpo51MgQVgVJ5a5c9wRYBJf",
+      "genre": "Hip-Hop",
+      "evidence": "Album genre supports hip-hop artist context.",
+      "referenceUrls": [
+        "https://music.apple.com/us/album/global-resistance/1543473395",
+        "https://chrisgeo.brandyourself.com/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_were_in_trouble_kD9ztock",
+      "artist": "Chris Geo",
+      "title": "Were In Trouble",
+      "sourceSignature": "5vT9CjTqmrRmb3BXnZK4Cp3wVmAfH9SBxRKMejnADrJ4ukQVF1WdDWuCTAbtgmEhRL7SkGJG1w5QAEVLdRf6A2Zk",
+      "genre": "Hip-Hop",
+      "evidence": "Album genre supports hip-hop artist context.",
+      "referenceUrls": [
+        "https://music.apple.com/us/album/global-resistance/1543473395",
+        "https://chrisgeo.brandyourself.com/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_woody_end_pseiRtA1",
+      "artist": "Chewy",
+      "title": "Woody End",
+      "sourceSignature": "4JWCKG39Wxs49M8D3mGHvjSDeCu8uP9n5MvqdoCy4G9L1iCqDfPerGtSCMQceYtHP9NF5Dt6pUbCDjAHLuGLGZPW",
+      "genre": "Indie Rock",
+      "evidence": "Album identity supports indie-rock context.",
+      "referenceUrls": [
+        "https://www.last.fm/music/Chewy/Whattookyousolong"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_wäut_umarme_DRUi8VnK",
+      "artist": "Aextra",
+      "title": "Wäut umarme",
+      "sourceSignature": "5NcKr7EnZzHTZanMsgMVaSETuwGwwnKeBYfKTb3hRqSyaEzjuwpZviB565PSxkyfXUYnRUk9mXMLtoYAhBZBuqqi",
+      "genre": "Rock",
+      "evidence": "Published band interview identifies rock context.",
+      "referenceUrls": [
+        "https://fa3b7654-4f04-40c6-b645-0bb6fe99c44e.filesusr.com/ugd/1eff38_26b211da7eca41f19ae7df5c41abfc8c.pdf"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_you_&_dan_cortez_U9YSKfmM",
+      "artist": "Chewy",
+      "title": "you & dan cortez",
+      "sourceSignature": "4HQQJsN1Uygr9epvMfCRvqNjQN2Co6g7p1NiF3V64sVpEBeGe8qHx33M1giATojRSMNC5bA89fpRThqErYAhChZQ",
+      "genre": "Indie Rock",
+      "evidence": "Album identity supports indie-rock context.",
+      "referenceUrls": [
+        "https://www.last.fm/music/Chewy/Whattookyousolong"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_you_don`t_deserve_me_M5kC3qg8",
+      "artist": "Chewy",
+      "title": "You Don`t Deserve Me",
+      "sourceSignature": "4FNwf8Ub2FRAY9vDsMqFr5SFP3LnZHvJAWdio8VbzAJQ8vhUsSHjjpmRSV1y5aAqnTD6CyumAH35UxBKAj3AYDp5",
+      "genre": "Indie Rock",
+      "evidence": "Album identity supports indie-rock context.",
+      "referenceUrls": [
+        "https://www.last.fm/music/Chewy/Whattookyousolong"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_youre_gonna_kill_tha_3w1woq9Z",
+      "artist": "Animal Boys",
+      "title": "Youre Gonna Kill That Girl",
+      "sourceSignature": "LnC2dHsyMS2RyKmUg9BxSF6rectZfS2w3uVnNiFxb4YYzcMgrk1aF9MJ398b8gupbDYwCxWtApecbjAS9uDTPAU",
+      "genre": "Punk Rock",
+      "evidence": "Ramones tribute; inferred punk rock context.",
+      "referenceUrls": [
+        "https://swisspunk.ch/index.php/links-active-bands/",
+        "https://mokka.ch/event/animal-boys/"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_ziel_vor_auge_xBlnxYIA",
+      "artist": "Knöppel",
+      "title": "Ziel vor Auge",
+      "sourceSignature": "3jJeLy7NeVsxywELE42yMXmVMkZjcW8h9sH2uPJwXb88GDwkBfCm65rXsrvLPK5iyx5eKLmmkDWfJF7MuoofZ82q",
+      "genre": "Punk Rock",
+      "evidence": "Artist album identifies matching punk material.",
+      "referenceUrls": [
+        "https://knoppel.bandcamp.com/album/hey-wichsers"
+      ]
+    },
+    {
+      "name": "Swisslibertarian",
+      "service": "AUDIO",
+      "identifier": "earbump_song_ängu_xpl77Mpb",
+      "artist": "Florian Ast",
+      "title": "Ängu",
+      "sourceSignature": "2UT2zSJk6kPZxWEeT9wBMD3X4LNPQ4rtDVomHoFgn1EvVxr3PLZUAKaURtfvaMa92xJjYRhvVr3YqwZXGbrtZht4",
+      "genre": "Pop/Rock",
+      "evidence": "Agency catalog supports broad pop/rock context.",
+      "referenceUrls": [
+        "https://www.artistpool.ch/?band_category_id=12&band_id=95&id=79&mod_action=show_band_detail"
+      ]
+    }
+  ]
+}

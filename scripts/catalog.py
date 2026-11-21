@@ -369,7 +369,7 @@ def enrich_artists(args, client):
             rows, error = results[name]
             matches = [row for row in rows if norm(row.get('name', '')) == norm(name)]
             genre = choose_genre(matches, allowed) if len(matches) == 1 else None
-            status = 'error' if error else 'ambiguous-artist' if len(matches) > 1 else 'matched-artist-genre' if genre else 'no-artist-genre' if matches else 'no-exact-artist'
+            status = 'result-limit' if error and 'provider result limit' in error else 'error' if error else 'ambiguous-artist' if len(matches) > 1 else 'matched-artist-genre' if genre else 'no-artist-genre' if matches else 'no-exact-artist'
             for entry in artists[name]:
                 evidence = {'status': status, 'at': now(), 'artistIds': [row['id'] for row in matches]}
                 if error:
@@ -444,10 +444,56 @@ def enrich_secondary(args, client):
     return 0 if report['complete'] else 2
 
 
+
+def apply_reviews(args):
+    output = Path(args.output)
+    document = json.loads((output / 'genres.json').read_text())
+    source = json.loads(Path(args.source).read_text())
+    reviews = json.loads(Path(args.reviews).read_text())
+    if reviews.get('schema') != 'earbump.genre-reviews.v1':
+        raise ValueError('Invalid genre reviews schema')
+    entries = {identity(row): row for row in document['songs']}
+    if set(entries) != {identity(row) for row in source}:
+        raise ValueError('Genre reviews require the complete source inventory')
+    seen = set()
+    for review in reviews['songs']:
+        key = identity(review)
+        if key in seen:
+            raise ValueError('Duplicate genre review identity')
+        seen.add(key)
+        entry = entries.get(key)
+        if not entry or norm(entry['genre']) != 'uncategorized':
+            continue
+        matches = (entry['artist'] == review['artist'] and entry['title'] == review['title']
+                   and entry.get('provenance', {}).get('sourceSignature') == review['sourceSignature'])
+        references = review.get('referenceUrls', [])
+        if not matches:
+            entry['lookup']['review'] = {'status': 'stale-source', 'at': now()}
+            continue
+        if not review.get('genre', '').strip() or not references or not all(isinstance(link, str) and link.startswith('https://') for link in references):
+            raise ValueError('Genre reviews require a genre and HTTPS evidence')
+        entry.update(genre=review['genre'], confidence='inferred', evidence=review['evidence'])
+        entry.pop('classificationStatus', None)
+        entry['provenance'].update(method='reviewed-artist-context', confidence='inferred', confidenceLevel='medium',
+            classifiedAt=now(), referenceUrls=references)
+        entry['lookup']['review'] = {'status': 'applied', 'at': now()}
+    report = finalize(args, list(entries.values()), source)
+    return 0 if report['complete'] else 2
+
+
 def finalize(args, entries, source):
     source_by_id = {identity(row): row for row in source}
     for entry in entries:
+        fallback = entry.get('lookup', {}).get('artistFallback', {})
+        if fallback.get('status') == 'error' and 'provider result limit' in fallback.get('error', ''):
+            fallback['status'] = 'result-limit'
+            fallback['detail'] = fallback.pop('error')
         original = source_by_id[identity(entry)]
+        if norm(entry['genre']) == 'uncategorized':
+            entry['classificationStatus'] = 'undetermined'
+            entry.setdefault('evidence', 'No reliable genre evidence is available.')
+            entry.setdefault('provenance', {}).setdefault('method', 'insufficient-evidence')
+            entry['provenance'].setdefault('confidence', 'undetermined')
         if isinstance(original.get('size'), int):
             entry['sourceBytes'] = original['size']
             if original['size'] <= 32:
@@ -461,6 +507,7 @@ def finalize(args, entries, source):
               'lookupStatuses': dict(statuses), 'genres': dict(collections.Counter(row['genre'] for row in entries)),
               'methods': dict(collections.Counter(row.get('provenance', {}).get('method', 'unclassified') for row in entries)),
               'secondaryErrors': sum(row.get('lookup', {}).get('secondary', {}).get('status') == 'error' for row in entries),
+              'artistProviderLimits': sum(row.get('lookup', {}).get('artistFallback', {}).get('status') == 'result-limit' for row in entries),
               'artistFallbackErrors': sum(row.get('lookup', {}).get('artistFallback', {}).get('status') == 'error' for row in entries),
               'providerLimitedLookups': sum(bool(row.get('lookup', {}).get('providerResultLimited')) for row in entries),
               'lookupFinished': not (statuses['error'] or statuses['pending']),
@@ -471,7 +518,9 @@ def finalize(args, entries, source):
     document = {'schema': 'earbump.legacy-genres.v1', 'updatedAt': now(), 'revision': args.revision,
                 'dataset': {'count': len(entries), 'sourceSha256': hashlib.sha256(Path(args.source).read_bytes()).hexdigest(),
                             'identifierPrefix': args.prefix, 'excludesNodeBlockedNames': args.exclude_blocked},
-                'classificationPolicy': {'confidence': 'Native genre > exact-recording community tags > preserved editorial inference > Uncategorized. No acoustic verification.'},
+                'classificationPolicy': {'confidence': 'Native genre > exact-recording community tags > documented artist/catalog inference > preserved editorial inference > Uncategorized. No acoustic verification.',
+                    'missingMetadata': 'Unknown title/Unknown artist are explicit placeholders, not publisher-attributed metadata.',
+                    'providerLimits': 'Every source identity is retained. Provider candidate limits and narrowed follow-up searches are recorded per lookup.'},
                 'summary': report, 'songs': entries}
     output = Path(args.output)
     write(output / 'genres.json', document)
@@ -484,7 +533,7 @@ def finalize(args, entries, source):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['pull', 'enrich', 'artists', 'secondary'])
+    parser.add_argument('action', choices=['refresh', 'pull', 'enrich', 'artists', 'secondary', 'review'])
     parser.add_argument('--core', default='https://api.qortal.org')
     parser.add_argument('--prefix', default='earbump_song_')
     parser.add_argument('--exclude-blocked', action='store_true', help='Optional explicit narrower scope; default includes all identities')
@@ -493,12 +542,22 @@ def main():
     parser.add_argument('--baseline', default='data/legacy/genres-2026-11-20.json')
     parser.add_argument('--output', default='data/legacy/current')
     parser.add_argument('--cache', default='.cache/catalog')
-    parser.add_argument('--revision', default='2026-11-21.1')
+    parser.add_argument('--reviews', default='data/legacy/reviews.json')
+    parser.add_argument('--revision', default=dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%d') + '.1')
     parser.add_argument('--batch-size', type=int, default=20)
     args = parser.parse_args()
     if not 1 <= args.batch_size <= 20:
         parser.error('--batch-size must be between 1 and 20')
     client = Client(args.cache, interval=3.1 if args.action == 'secondary' else 1.1)
+    if args.action == 'refresh':
+        pull(args, client)
+        enrich(args, client)
+        enrich_artists(args, client)
+        client.interval = 3.1
+        enrich_secondary(args, client)
+        return apply_reviews(args)
+    if args.action == 'review':
+        return apply_reviews(args)
     if args.action == 'pull':
         pull(args, client)
         return 0

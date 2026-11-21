@@ -64,6 +64,23 @@ class CatalogTests(unittest.TestCase):
         self.assertIsNone(catalog.choose_genre([{'tags': [{'name': 'rock', 'count': 2}, {'name': 'pop', 'count': 2}]}], {'rock', 'pop'}))
         self.assertEqual(catalog.choose_genre([{'tags': [{'name': 'rock', 'count': 3}]}], {'rock'}), 'rock')
 
+    def test_reviews_fill_only_matching_unresolved_source_and_preserve_native_genres(self):
+        for genre, signature, expected in [('Uncategorized', 'same', 'Rock'), ('Jazz', 'same', 'Jazz'), ('Uncategorized', 'changed', 'Uncategorized')]:
+            with self.subTest(genre=genre, signature=signature), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                source = [{'name': 'Publisher', 'service': 'AUDIO', 'identifier': 'earbump_song_a', 'created': 1000}]
+                catalog.write(root / 'source.json', source)
+                entry = {**source[0], 'title': 'One', 'artist': 'Artist', 'genre': genre, 'missingMetadataFields': [], 'provenance': {'sourceSignature': signature}, 'lookup': {'status': 'no-exact-match'}}
+                catalog.write(root / 'output/genres.json', {'songs': [entry]})
+                review = {**source[0], 'title': 'One', 'artist': 'Artist', 'genre': 'Rock', 'sourceSignature': 'same', 'evidence': 'Reviewed artist context.', 'referenceUrls': ['https://example.test/artist']}
+                catalog.write(root / 'reviews.json', {'schema': 'earbump.genre-reviews.v1', 'songs': [review]})
+                args = types.SimpleNamespace(source=str(root / 'source.json'), output=str(root / 'output'), reviews=str(root / 'reviews.json'), revision='test', prefix='earbump_song_', exclude_blocked=False)
+                catalog.apply_reviews(args)
+                result = json.loads((root / 'output/genres.json').read_text())['songs'][0]
+                self.assertEqual(result['genre'], expected)
+                if signature == 'changed':
+                    self.assertEqual(result['lookup']['review']['status'], 'stale-source')
+
     def test_secondary_provider_requires_exact_names_and_rejects_homonyms(self):
         rows = [{'artistId': 1, 'artistName': 'Artist', 'trackName': 'Song', 'primaryGenreName': 'Rock'}]
         self.assertEqual(catalog.apple_genre(rows, 'Artist', 'song', False)[0], 'Rock')

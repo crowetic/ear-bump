@@ -1,12 +1,15 @@
 # Maintaining the legacy song catalog
 
 Run from the repository root with Python 3; no API key or audio download is needed.
+`python3 scripts/catalog.py refresh` runs the entire inventory and enrichment
+workflow. The individual resumable stages and verification commands are:
 
 ```sh
 python3 scripts/catalog.py pull
 python3 scripts/catalog.py enrich
 python3 scripts/catalog.py artists
 python3 scripts/catalog.py secondary
+python3 scripts/catalog.py review
 python3 -m unittest discover -s tests -p 'test_*.py'
 node --test tests/song-metadata.test.mjs
 npm run build
@@ -71,6 +74,13 @@ searches, while `complete` also requires real genres and known artist/title.
 Do not relabel Uncategorized as a genre or invent artist/title data to pass it.
 Review missing/ambiguous identities with the publisher, correct source metadata,
 and rerun. No provider can promise a factual genre for an unidentified recording.
+
+`review` fills remaining gaps from `data/legacy/reviews.json`, retaining citations
+and inferred confidence. Reviews bind the exact QDN identity, original signature,
+artist and title. Stale reviews are flagged; existing native or catalog genres
+are preserved. The current review file covers researched artist/album context,
+not acoustic identification. Add reviewed evidence here rather than editing the
+generated snapshot or expanding an untraceable hardcoded artist map.
 
 ## App consumption and publication
 
