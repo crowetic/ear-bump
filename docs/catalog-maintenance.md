@@ -6,6 +6,7 @@ Run from the repository root with Python 3; no API key or audio download is need
 python3 scripts/catalog.py pull
 python3 scripts/catalog.py enrich
 python3 scripts/catalog.py artists
+python3 scripts/catalog.py secondary
 python3 -m unittest discover -s tests -p 'test_*.py'
 node --test tests/song-metadata.test.mjs
 npm run build
@@ -41,6 +42,13 @@ is available; they are not upgraded to verified genres.
 name with positive genre tags may supply an explicitly labelled broad inference;
 homonyms and untagged artists remain unresolved. This fallback does not claim
 recording-specific verification.
+`secondary` checks remaining identified artists against iTunes at least 3.1 seconds
+between calls (under Apple's approximate 20/minute limit). Exact artist/title
+matches can supply a catalog genre. A unique artist ID in a non-capped response
+may supply a separately labelled artist-context inference. Homonyms, tied genres
+and capped artist-context searches remain unresolved. Only factual metadata and
+source links are retained, never artwork or preview audio. Provider guidance:
+https://performance-partners.apple.com/search-api.
 
 MusicBrainz requests share a limiter (at least 1.1 seconds apart), a meaningful
 User-Agent, bounded retries/backoff and Retry-After support. Successful responses

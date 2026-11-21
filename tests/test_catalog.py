@@ -64,6 +64,17 @@ class CatalogTests(unittest.TestCase):
         self.assertIsNone(catalog.choose_genre([{'tags': [{'name': 'rock', 'count': 2}, {'name': 'pop', 'count': 2}]}], {'rock', 'pop'}))
         self.assertEqual(catalog.choose_genre([{'tags': [{'name': 'rock', 'count': 3}]}], {'rock'}), 'rock')
 
+    def test_secondary_provider_requires_exact_names_and_rejects_homonyms(self):
+        rows = [{'artistId': 1, 'artistName': 'Artist', 'trackName': 'Song', 'primaryGenreName': 'Rock'}]
+        self.assertEqual(catalog.apple_genre(rows, 'Artist', 'song', False)[0], 'Rock')
+        self.assertIsNone(catalog.apple_genre(rows, 'Different', 'Song', False)[0])
+        self.assertIsNone(catalog.apple_genre(rows + [{**rows[0], 'artistId': 2}], 'Artist', 'Song', False)[0])
+
+    def test_limited_secondary_catalog_does_not_establish_artist_context(self):
+        rows = [{'artistId': 1, 'artistName': 'Artist', 'trackName': 'Other song', 'primaryGenreName': 'Rock'}]
+        self.assertIsNone(catalog.apple_genre(rows, 'Artist', 'Song', True)[0])
+        self.assertEqual(catalog.apple_genre(rows, 'Artist', 'Song', False)[2], 'artist-context')
+
     def test_large_version_catalog_cannot_hide_another_song(self):
         first = {'id': 'a', 'title': 'One', 'artist-credit': [{'name': 'Artist'}]}
         second = {'id': 'b', 'title': 'Two', 'artist-credit': [{'name': 'Artist'}]}

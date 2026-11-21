@@ -386,6 +386,64 @@ def enrich_artists(args, client):
     return 0 if report['complete'] else 2
 
 
+
+def apple_genre(rows, artist, title, limited):
+    named = [row for row in rows if norm(row.get('artistName', '')) == norm(artist)]
+    identities = {row.get('artistId') for row in named}
+    exact_artist = [row for row in named if row.get('primaryGenreName') not in (None, '', 'Music')]
+    if len(identities) != 1 or None in identities:
+        return None, [], 'ambiguous-or-missing-artist'
+    exact_track = [row for row in exact_artist if norm(row.get('trackName', '')) == norm(title)]
+    candidates = exact_track or ([] if limited else exact_artist)
+    counts = collections.Counter(row['primaryGenreName'] for row in candidates)
+    ranked = counts.most_common()
+    if not ranked or len(ranked) > 1 and ranked[0][1] == ranked[1][1]:
+        return None, [], 'no-unambiguous-genre'
+    genre = ranked[0][0]
+    evidence = [row for row in candidates if row['primaryGenreName'] == genre]
+    return genre, evidence, 'exact-track' if exact_track else 'artist-context'
+
+
+def enrich_secondary(args, client):
+    output = Path(args.output)
+    document = json.loads((output / 'genres.json').read_text())
+    source = json.loads(Path(args.source).read_text())
+    entries = document['songs']
+    if {identity(row) for row in entries} != {identity(row) for row in source}:
+        raise ValueError('Secondary fallback must use the same source inventory')
+    if any(row.get('lookup', {}).get('status', 'pending') == 'pending' for row in entries):
+        raise ValueError('Finish recording lookups before secondary fallback')
+    artists = collections.defaultdict(list)
+    for entry in entries:
+        if norm(entry['genre']) == 'uncategorized' and not entry.get('missingMetadataFields'):
+            artists[entry['artist']].append(entry)
+    for index, (artist, songs) in enumerate(artists.items()):
+        try:
+            result = client.get(url('https://itunes.apple.com', '/search', term=artist, media='music', entity='song', attribute='artistTerm', limit=200))
+            rows = result['results']
+            if not isinstance(rows, list):
+                raise ValueError('Invalid iTunes search response')
+            error = None
+        except (urllib.error.URLError, TimeoutError, http.client.HTTPException, ValueError) as exc:
+            rows, error = [], str(exc)
+        for entry in songs:
+            genre, matches, method = apple_genre(rows, artist, entry['title'], len(rows) >= 200)
+            evidence = {'provider': 'iTunes', 'at': now(), 'status': 'error' if error else method,
+                        'providerResultLimited': len(rows) >= 200}
+            if error:
+                evidence['error'] = error
+            entry['lookup']['secondary'] = evidence
+            if genre:
+                entry.update(genre=genre, confidence='inferred', evidence='iTunes primary genre from exact artist/title match.' if method == 'exact-track' else 'Broad artist-context inference from a unique exact artist name in the returned iTunes catalog; not recording verification.')
+                entry.pop('classificationStatus', None)
+                entry['provenance'].update(method='itunes-' + method, confidence='inferred', confidenceLevel='medium', classifiedAt=now(),
+                    referenceUrls=list(dict.fromkeys(row.get('trackViewUrl') or row.get('artistViewUrl') for row in matches if row.get('trackViewUrl') or row.get('artistViewUrl')))[:5])
+        finalize(args, entries, source)
+        print(f'Secondary artist lookup {index + 1}/{len(artists)}', flush=True)
+    report = finalize(args, entries, source)
+    return 0 if report['complete'] else 2
+
+
 def finalize(args, entries, source):
     source_by_id = {identity(row): row for row in source}
     for entry in entries:
@@ -402,11 +460,14 @@ def finalize(args, entries, source):
               'missingArtist': sum('artist' in row['missingMetadataFields'] for row in entries),
               'lookupStatuses': dict(statuses), 'genres': dict(collections.Counter(row['genre'] for row in entries)),
               'methods': dict(collections.Counter(row.get('provenance', {}).get('method', 'unclassified') for row in entries)),
+              'secondaryErrors': sum(row.get('lookup', {}).get('secondary', {}).get('status') == 'error' for row in entries),
               'artistFallbackErrors': sum(row.get('lookup', {}).get('artistFallback', {}).get('status') == 'error' for row in entries),
               'providerLimitedLookups': sum(bool(row.get('lookup', {}).get('providerResultLimited')) for row in entries),
               'lookupFinished': not (statuses['error'] or statuses['pending']),
               'complete': not unresolved and not statuses['error'] and not statuses['pending'] and not statuses['missing-identity'],
               'scope': 'All source AUDIO identities', 'excludesNodeBlockedNames': args.exclude_blocked}
+    report['lookupFinished'] = report['lookupFinished'] and not report['artistFallbackErrors'] and not report['secondaryErrors']
+    report['complete'] = report['complete'] and report['lookupFinished']
     document = {'schema': 'earbump.legacy-genres.v1', 'updatedAt': now(), 'revision': args.revision,
                 'dataset': {'count': len(entries), 'sourceSha256': hashlib.sha256(Path(args.source).read_bytes()).hexdigest(),
                             'identifierPrefix': args.prefix, 'excludesNodeBlockedNames': args.exclude_blocked},
@@ -423,7 +484,7 @@ def finalize(args, entries, source):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['pull', 'enrich', 'artists'])
+    parser.add_argument('action', choices=['pull', 'enrich', 'artists', 'secondary'])
     parser.add_argument('--core', default='https://api.qortal.org')
     parser.add_argument('--prefix', default='earbump_song_')
     parser.add_argument('--exclude-blocked', action='store_true', help='Optional explicit narrower scope; default includes all identities')
@@ -437,10 +498,12 @@ def main():
     args = parser.parse_args()
     if not 1 <= args.batch_size <= 20:
         parser.error('--batch-size must be between 1 and 20')
-    client = Client(args.cache)
+    client = Client(args.cache, interval=3.1 if args.action == 'secondary' else 1.1)
     if args.action == 'pull':
         pull(args, client)
         return 0
+    if args.action == 'secondary':
+        return enrich_secondary(args, client)
     if args.action == 'artists':
         return enrich_artists(args, client)
     return enrich(args, client)
