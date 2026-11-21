@@ -1,5 +1,11 @@
 import importlib.util
 import unittest
+from unittest.mock import patch
+import http.client
+import json
+import tempfile
+import types
+import urllib.error
 from pathlib import Path
 
 spec = importlib.util.spec_from_file_location('catalog', Path(__file__).parents[1] / 'scripts/catalog.py')
@@ -37,6 +43,11 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(len(catalog.search(client, 'recording', 'example')), 2)
         self.assertIn('offset=1', client.urls[1])
 
+    def test_musicbrainz_score_ties_do_not_abort_search(self):
+        client = FakeClient([{'count': 3, 'recordings': [{'id': 'a'}, {'id': 'b'}]}, {'count': 3, 'recordings': [{'id': 'b'}]}])
+        self.assertEqual(len(catalog.search(client, 'recording', 'example')), 2)
+        self.assertIn('offset=2', client.urls[1])
+
     def test_musicbrainz_premature_empty_page_is_failure(self):
         client = FakeClient([{'count': 2, 'recordings': [{'id': 'a'}]}, {'count': 2, 'recordings': []}])
         with self.assertRaisesRegex(ValueError, 'before reported total'):
@@ -52,6 +63,61 @@ class CatalogTests(unittest.TestCase):
         self.assertIsNone(catalog.choose_genre([{'tags': [{'name': 'american', 'count': 5}]}], {'rock'}))
         self.assertIsNone(catalog.choose_genre([{'tags': [{'name': 'rock', 'count': 2}, {'name': 'pop', 'count': 2}]}], {'rock', 'pop'}))
         self.assertEqual(catalog.choose_genre([{'tags': [{'name': 'rock', 'count': 3}]}], {'rock'}), 'rock')
+
+    def test_rejected_batch_splits_without_losing_other_tracks(self):
+        class RejectLargeBatch:
+            def __init__(self):
+                self.urls = []
+
+            def get(self, address, **kwargs):
+                self.urls.append(address)
+                if '+OR+' in address:
+                    raise urllib.error.HTTPError(address, 400, 'query limit', {}, None)
+                return {'count': 0, 'recordings': []}
+
+        client = RejectLargeBatch()
+        pairs = [('Artist', 'One'), ('Artist', 'Two')]
+        results = catalog.recording_results(client, pairs)
+        self.assertEqual(set(results), set(pairs))
+        self.assertTrue(all(error is None for rows, error in results.values()))
+        self.assertEqual(len(client.urls), 3)
+
+    def test_interrupted_body_is_retried_before_caching(self):
+        class Response:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *args):
+                pass
+
+            def read(self):
+                return b'{"ok":true}'
+
+        with tempfile.TemporaryDirectory() as temporary:
+            with patch.object(catalog.urllib.request, 'urlopen', side_effect=[http.client.IncompleteRead(b'partial'), Response()]) as request:
+                with patch.object(catalog.time, 'sleep'):
+                    value = catalog.Client(temporary).get('https://example.test/data')
+            self.assertEqual(value, {'ok': True})
+            self.assertEqual(request.call_count, 2)
+            self.assertEqual(len(list(Path(temporary).glob('*.json'))), 1)
+
+    def test_checkpoint_resumes_only_matching_source_signature(self):
+        for signature, expected_queries in [('same', False), ('changed', True)]:
+            with self.subTest(signature=signature), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                source = [{'name': 'Publisher', 'service': 'AUDIO', 'identifier': 'earbump_song_a', 'created': 1000, 'latestSignature': signature,
+                           'metadata': {'title': 'One', 'description': 'author=Artist'}}]
+                catalog.write(root / 'source.json', source)
+                catalog.write(root / 'baseline.json', {'songs': []})
+                catalog.write(root / 'output/genres.json', {'revision': 'test', 'songs': [{**source[0], 'title': 'One', 'artist': 'Artist', 'genre': 'Rock',
+                    'provenance': {'sourceSignature': 'same'}, 'lookup': {'status': 'matched-genre', 'artist': 'Artist', 'title': 'One'}}]})
+                args = types.SimpleNamespace(source=str(root / 'source.json'), baseline=str(root / 'baseline.json'), output=str(root / 'output'), revision='test', prefix='earbump_song_', exclude_blocked=False, batch_size=20)
+                client = FakeClient([{'genre-count': 1, 'genres': [{'name': 'rock'}]}] + ([{'count': 0, 'recordings': []}] if expected_queries else []))
+                catalog.enrich(args, client)
+                self.assertEqual(any('/recording?' in address for address in client.urls), expected_queries)
+                report = json.loads((root / 'output/coverage.json').read_text())
+                self.assertEqual(report['total'], 1)
+                self.assertNotIn('pending', report['lookupStatuses'])
 
     def test_encoded_descriptions_preserve_artist(self):
         self.assertEqual(catalog.fields({'metadata': {'description': 'v=2;author=Bj%C3%B6rk;genre=Art%20Pop'}})['author'], 'Björk')

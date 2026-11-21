@@ -40,7 +40,10 @@ Do not run concurrent enrichment jobs from the same IP.
 API guidance: https://musicbrainz.org/doc/MusicBrainz_API/Rate_Limiting
 and https://musicbrainz.org/doc/MusicBrainz_API/Search.
 
-Each batch writes an atomic checkpoint. `genres.json` contains every source
+Each batch writes an atomic checkpoint. A rerun resumes completed per-song lookups
+only when revision, source transaction signature, artist and title still match.
+Rejected or unstable search batches are split so one query cannot hide other songs.
+Repeated search results are deduplicated; interrupted HTTP bodies are retried. `genres.json` contains every source
 identity and per-song lookup evidence; `coverage.json` reports statuses and
 coverage; `review-needed.json` lists unresolved records. Exit status **2** means
 coverage is incomplete or lookups failed. This is an intentional quality gate,

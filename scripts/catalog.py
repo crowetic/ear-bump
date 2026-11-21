@@ -5,6 +5,7 @@ import collections
 import copy
 import datetime as dt
 import hashlib
+import http.client
 import json
 import os
 from pathlib import Path
@@ -60,7 +61,7 @@ class Client:
                 if cached:
                     write(path, value)
                 return value
-            except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as error:
+            except (urllib.error.URLError, TimeoutError, http.client.HTTPException, json.JSONDecodeError) as error:
                 if isinstance(error, urllib.error.HTTPError) and error.code not in (408, 429, 500, 502, 503, 504):
                     raise
                 if attempt == 3:
@@ -122,7 +123,7 @@ def pull(args, client):
                 raise ValueError('No usable publisher metadata')
             song['metadata'] = metadata
             song['metadataEvidence'] = path
-        except (urllib.error.URLError, TimeoutError, ValueError) as error:
+        except (urllib.error.URLError, TimeoutError, http.client.HTTPException, ValueError) as error:
             failures.append({'identity': identity(song), 'error': str(error)})
     write(args.source, songs)
     write(Path(args.output) / 'pull-report.json', {'at': now(), 'core': args.core, 'prefix': args.prefix,
@@ -164,13 +165,28 @@ def search(client, entity, query):
             if offset < total:
                 raise ValueError('MusicBrainz search ended before reported total')
             return list(rows.values())
+        # Search score ties can repeat a recording across pages. Deduplicate evidence,
+        # but still advance through every provider-reported result position.
         for row in page:
-            if row['id'] in rows:
-                raise ValueError('Repeated MusicBrainz search result')
             rows[row['id']] = row
         offset += len(page)
         if offset >= total:
             return list(rows.values())
+
+
+
+def recording_results(client, pairs):
+    query = ' OR '.join('(artist:' + quote(artist) + ' AND recording:' + quote(title) + ')' for artist, title in pairs)
+    try:
+        rows = search(client, 'recording', query)
+        return {pair: (rows, None) for pair in pairs}
+    except (urllib.error.URLError, TimeoutError, http.client.HTTPException, ValueError) as error:
+        # Provider clause/query limits vary with title length. Split rejected batches
+        # without making one malformed or unstable lookup hide the rest of the songs.
+        if len(pairs) > 1 and (isinstance(error, ValueError) or isinstance(error, urllib.error.HTTPError) and error.code == 400):
+            middle = len(pairs) // 2
+            return {**recording_results(client, pairs[:middle]), **recording_results(client, pairs[middle:])}
+        return {pair: ([], str(error)) for pair in pairs}
 
 
 def genre_names(client):
@@ -213,6 +229,14 @@ def enrich(args, client):
         raise ValueError('Duplicate source identities')
     baseline = json.loads(Path(args.baseline).read_text())
     prior = {identity(row): row for row in baseline['songs']}
+    checkpoint_path = Path(args.output) / 'genres.json'
+    if checkpoint_path.exists():
+        checkpoint = json.loads(checkpoint_path.read_text())
+        if checkpoint.get('revision') == args.revision:
+            for row in checkpoint['songs']:
+                lookup = row.get('lookup', {})
+                if lookup.get('status') not in (None, 'pending', 'error'):
+                    prior[identity(row)] = row
     entries, pairs = [], collections.defaultdict(list)
     for song in source:
         f = fields(song)
@@ -221,14 +245,23 @@ def enrich(args, client):
         entry.update(name=song['name'], service='AUDIO', identifier=song['identifier'],
                      title=title or 'Unknown title', artist=artist or 'Unknown artist',
                      created=song.get('created'), genre=f.get('genre') or entry.get('genre') or 'Uncategorized')
+        previous_signature = entry.get('provenance', {}).get('sourceSignature')
         entry['provenance'] = {**entry.get('provenance', {}), 'sourceSignature': song.get('latestSignature')}
+        if isinstance(song.get('created'), (int, float)):
+            entry['publishedAt'] = dt.datetime.fromtimestamp(song['created'] / 1000, dt.timezone.utc).isoformat(timespec='milliseconds').replace('+00:00', 'Z')
         entry['missingMetadataFields'] = [key for key, value in [('title', title), ('artist', artist)] if not value]
         if f.get('genre'):
             entry.update(confidence='verified', evidence='Publisher explicitly supplies genre.')
             entry['provenance'].update(method='publisher-genre', confidence='verified')
         entries.append(entry)
         if title and artist and norm(title) != 'deleted':
-            pairs[(artist, title)].append(entry)
+            lookup = entry.get('lookup', {})
+            completed = (lookup.get('status') not in (None, 'pending', 'error', 'missing-identity')
+                         and lookup.get('artist') == artist and lookup.get('title') == title
+                         and previous_signature == song.get('latestSignature'))
+            if not completed:
+                entry.pop('lookup', None)
+                pairs[(artist, title)].append(entry)
         else:
             entry['lookup'] = {'status': 'missing-identity', 'at': now()}
     allowed = genre_names(client)
@@ -236,13 +269,9 @@ def enrich(args, client):
     print(f'Looking up {len(pair_list)} distinct pairs for {len(entries)} songs', flush=True)
     for start in range(0, len(pair_list), args.batch_size):
         batch = pair_list[start:start + args.batch_size]
-        query = ' OR '.join('(artist:' + quote(artist) + ' AND recording:' + quote(title) + ')' for artist, title in batch)
-        try:
-            rows = search(client, 'recording', query)
-            error = None
-        except (urllib.error.URLError, TimeoutError, ValueError) as exc:
-            rows, error = [], str(exc)
+        results = recording_results(client, batch)
         for artist, title in batch:
+            rows, error = results[(artist, title)]
             matches = matching_recordings(rows, artist, title)
             artist_sets = {tuple(credit['artist']['id'] for credit in row.get('artist-credit', []) if credit.get('artist', {}).get('id')) for row in matches}
             ambiguous = len(artist_sets) > 1
@@ -258,7 +287,7 @@ def enrich(args, client):
                         if genre:
                             method = 'musicbrainz-linked-artist-genre'
                             reference_urls = ['https://musicbrainz.org/artist/' + artist_ids[0]]
-                    except (urllib.error.URLError, TimeoutError, ValueError) as exc:
+                    except (urllib.error.URLError, TimeoutError, http.client.HTTPException, ValueError) as exc:
                         error = str(exc)
             status = 'error' if error else ('matched-artist-genre' if method == 'musicbrainz-linked-artist-genre' else 'matched-genre') if genre else 'ambiguous-match' if ambiguous else 'matched-no-genre' if matches else 'no-exact-match'
             for entry in pairs[(artist, title)]:
@@ -318,7 +347,7 @@ def main():
     parser.add_argument('--output', default='data/legacy/current')
     parser.add_argument('--cache', default='.cache/catalog')
     parser.add_argument('--revision', default='2026-11-21.1')
-    parser.add_argument('--batch-size', type=int, default=10)
+    parser.add_argument('--batch-size', type=int, default=20)
     args = parser.parse_args()
     if not 1 <= args.batch_size <= 20:
         parser.error('--batch-size must be between 1 and 20')
