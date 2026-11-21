@@ -25,6 +25,7 @@ import { Newest } from "./pages/Newest/Newest";
 import { RecentlyPlayed } from './pages/Home/RecentlyPlayed';
 import { Artist } from './pages/Artist/Artist';
 import { Album } from './pages/Album/Album';
+import { Changelog } from './pages/Changelog/Changelog';
 import { PrivateCollections } from './pages/PrivateCollections/PrivateCollections';
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
             <Route path="/recently-played" element={<RecentlyPlayed />} />
             <Route path="/search" element={<Search />} />
             <Route path="/private-collections" element={<PrivateCollections />} />
+            <Route path="/changelog" element={<Changelog />} />
             <Route path="/playlists" element={<Playlists />} />
             <Route path="/playlists/:name/:playlistId" element={<Playlist />} />
             <Route path="/artist/:name" element={<Artist />} />
