@@ -12,7 +12,7 @@ const output = mkdtempSync(join(tmpdir(), 'ear-bump-metadata-test-'));
 const require = createRequire(import.meta.url);
 process.env.VITE_LEGACY_GENRE_PUBLISHER = 'CatalogOwner';
 for (const file of ['songMetadata', 'songResources', 'legacyGenres', 'publishSongMetadata']) {
-  const source = readFileSync(new URL(`../src/utils/${file}.ts`, import.meta.url), 'utf8').replaceAll('import.meta.env.', 'process.env.').replaceAll('../../data/legacy/current/genres.json', new URL('../data/legacy/current/genres.json', import.meta.url).pathname);
+  const source = readFileSync(new URL(`../src/utils/${file}.ts`, import.meta.url), 'utf8').replaceAll('import.meta.env.', 'process.env.').replaceAll('../../data/legacy/current/app-genres.json', new URL('../data/legacy/current/app-genres.json', import.meta.url).pathname);
   writeFileSync(join(output, `${file}.js`), ts.transpileModule(source, {
     compilerOptions: { target: ts.ScriptTarget.ES2020, module: ts.ModuleKind.CommonJS }
   }).outputText);
@@ -152,4 +152,18 @@ test('shipped snapshot works when QDN and storage are unavailable', async () => 
 
 test('legacy recovered title fills discovery identifier placeholder', () => {
   assert.equal(legacy.applyLegacyGenres({ ...base, title: base.id }, legacy.parseLegacyGenres(document)).title, 'Title');
+});
+
+test('compact cache preserves all consumed metadata and omits audit payloads', () => {
+  const audited = { ...document, songs: [{ ...document.songs[0], provenance: { sourceDescription: 'audit only' }, evidence: 'audit only' }] };
+  const index = legacy.parseLegacyGenres(audited);
+  const compact = legacy.compactGenreDocument(audited, index);
+  assert.deepEqual([...legacy.parseLegacyGenres(compact)], [...index]);
+  assert.equal(compact.songs[0].provenance, undefined);
+});
+test('full dataset and small app snapshot contain identical normalized song metadata', () => {
+  const full = JSON.parse(readFileSync(new URL('../data/legacy/current/genres.json', import.meta.url)));
+  const app = JSON.parse(readFileSync(new URL('../data/legacy/current/app-genres.json', import.meta.url)));
+  assert.deepEqual([...legacy.parseLegacyGenres(app)], [...legacy.parseLegacyGenres(full)]);
+  assert.ok(JSON.stringify(app).length < JSON.stringify(full).length / 2);
 });

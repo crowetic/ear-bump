@@ -106,7 +106,9 @@ the trusted legacy index. New public uploads require title, artist and genre,
 and publish a revision-linked `earbump.song.v1` DOCUMENT alongside AUDIO and
 THUMBNAIL, so missing legacy genres are not recreated by new app uploads. A lazy bundled JSON chunk provides the reviewed
 snapshot without depending on an environment variable or QDN availability.
-The default trusted QDN publisher is the previously verified `crodex`; overrides
+The app bundle and browser cache retain only consumed metadata, avoiding the
+full audit payload and its storage cost. `app-genres.json` is generated from the
+full snapshot and verified to contain identical normalized metadata. The default trusted QDN publisher is the previously verified `crodex`; overrides
 are documented in `.env.example`. Valid cached/remote and bundled documents are
 compared by `updatedAt`, so yesterday's 24-hour cache cannot hide a newer bundle.
 An invalid or offline remote falls back to the bundled snapshot.

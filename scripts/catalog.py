@@ -84,7 +84,7 @@ def scan(client, core, prefix, exclude_blocked=False):
     songs, offset = {}, 0
     while True:
         page = client.get(url(core, '/arbitrary/resources/search', mode='ALL', service='AUDIO',
-                              identifier=prefix, limit=100, offset=offset, reverse='false',
+                              identifier=prefix, prefix='true', limit=100, offset=offset, reverse='false',
                               includemetadata='true', excludeblocked=str(exclude_blocked).lower()), cached=False)
         if not isinstance(page, list):
             raise ValueError('QDN did not return a resource array')
@@ -539,7 +539,17 @@ def apply_reviews(args):
     return 0 if report['complete'] else 2
 
 
+
+def app_document(document):
+    fields = {'name', 'service', 'identifier', 'title', 'artist', 'genre', 'created', 'album', 'mood', 'bpm',
+              'duration', 'releaseDate', 'explicit', 'tags', 'trackNumber', 'discNumber', 'language', 'notes', 'description'}
+    return {'schema': document['schema'], 'updatedAt': document['updatedAt'], 'revision': document.get('revision'),
+            'songs': [{key: value for key, value in row.items() if key in fields} for row in document['songs']]}
+
+
 def finalize(args, entries, source):
+    if len(entries) != len(source) or len({identity(row) for row in entries}) != len(entries) or {identity(row) for row in entries} != {identity(row) for row in source}:
+        raise ValueError('Enrichment must retain every unique source identity')
     source_by_id = {identity(row): row for row in source}
     for entry in entries:
         fallback = entry.get('lookup', {}).get('artistFallback', {})
@@ -547,11 +557,21 @@ def finalize(args, entries, source):
             fallback['status'] = 'result-limit'
             fallback['detail'] = fallback.pop('error')
         original = source_by_id[identity(entry)]
+        if entry.get('created') != original.get('created') or (original.get('latestSignature') and entry.get('provenance', {}).get('sourceSignature') != original['latestSignature']):
+            raise ValueError('Enrichment source timestamp or signature is stale')
         if norm(entry['genre']) == 'uncategorized':
             entry['classificationStatus'] = 'undetermined'
             entry.setdefault('evidence', 'No reliable genre evidence is available.')
             entry.setdefault('provenance', {}).setdefault('method', 'insufficient-evidence')
-            entry['provenance'].setdefault('confidence', 'undetermined')
+            entry.pop('confidence', None)
+            entry['provenance'].update(confidence='undetermined', confidenceLevel='none')
+        elif entry.get('confidence') == 'verified':
+            entry['provenance'].update(confidence='verified', confidenceLevel='high')
+        else:
+            entry['confidence'] = 'inferred'
+            entry['provenance']['confidence'] = 'inferred'
+            if entry['provenance'].get('confidenceLevel') in (None, 'none'):
+                entry['provenance']['confidenceLevel'] = 'medium'
         if isinstance(original.get('size'), int):
             entry['sourceBytes'] = original['size']
             if original['size'] <= 32:
@@ -582,6 +602,7 @@ def finalize(args, entries, source):
                 'summary': report, 'songs': entries}
     output = Path(args.output)
     write(output / 'genres.json', document)
+    write(output / 'app-genres.json', app_document(document))
     write(output / 'coverage.json', report)
     write(output / 'review-needed.json', [{'name': row['name'], 'identifier': row['identifier'],
           'artist': row['artist'], 'title': row['title'], 'genre': row['genre'], 'lookup': row.get('lookup', {'status': 'pending'})}

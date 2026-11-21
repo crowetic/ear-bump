@@ -68,7 +68,7 @@ export const applyLegacyGenres = (input: Song, index: LegacyGenreIndex): Song =>
 export const genrePublisher = (import.meta.env.VITE_LEGACY_GENRE_PUBLISHER || 'crodex').trim();
 const identifier = import.meta.env.VITE_LEGACY_GENRE_IDENTIFIER || 'earbump_legacy_genres_v1';
 // Ship the reviewed snapshot in a lazy chunk so ordinary/offline builds retain coverage.
-const bundledGenres = () => import('../../data/legacy/current/genres.json').then((module) => module.default || module);
+const bundledGenres = () => import('../../data/legacy/current/app-genres.json').then((module) => module.default || module);
 export const newestGenreDocument = (documents: unknown[]) => {
   const valid = documents.flatMap((document) => {
     try { return [{ document, index: parseLegacyGenres(document), date: Date.parse((document as LegacyGenreDocument).updatedAt) }]; }
@@ -77,6 +77,10 @@ export const newestGenreDocument = (documents: unknown[]) => {
   if (!valid.length) throw new Error('No valid legacy genre snapshot is available.');
   return valid[0];
 };
+export const compactGenreDocument = (document: unknown, index: LegacyGenreIndex): LegacyGenreDocument => ({
+  schema: 'earbump.legacy-genres.v1', updatedAt: (document as LegacyGenreDocument).updatedAt,
+  songs: [...index.values()]
+});
 let pending: Promise<LegacyGenreIndex> | undefined;
 export const loadLegacyGenres = () => {
   if (!pending) pending = (async () => {
@@ -85,14 +89,16 @@ export const loadLegacyGenres = () => {
     try {
       const cached = JSON.parse(localStorage.getItem(key) || 'null');
       if (cached && Date.now() - cached.savedAt < 24 * 60 * 60 * 1000) {
-        return newestGenreDocument([bundled, cached.document]).index;
+        const selected = newestGenreDocument([bundled, cached.document]);
+        try { localStorage.setItem(key, JSON.stringify({ savedAt: cached.savedAt, document: compactGenreDocument(selected.document, selected.index) })); } catch { /* Session data remains available. */ }
+        return selected.index;
       }
     } catch { /* Unavailable storage never disables the shipped snapshot. */ }
     let remote: unknown;
     try { remote = await fetchMetadataDocument(resourcePath('DOCUMENT', genrePublisher, identifier), 8 * 1024 * 1024, 5000); }
     catch { /* The reviewed bundled list remains available while QDN propagates. */ }
     const selected = newestGenreDocument([bundled, remote]);
-    try { localStorage.setItem(key, JSON.stringify({ savedAt: Date.now(), document: selected.document })); } catch { /* Session cache still works. */ }
+    try { localStorage.setItem(key, JSON.stringify({ savedAt: Date.now(), document: compactGenreDocument(selected.document, selected.index) })); } catch { /* Session cache still works. */ }
     return selected.index;
   })();
   return pending;

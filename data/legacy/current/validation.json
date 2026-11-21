@@ -1,0 +1,42 @@
+{
+  "total": 3422,
+  "uniqueIdentities": 3422,
+  "allSourceIdentitiesRetained": true,
+  "allSourceTimestampsAndSignaturesRetained": true,
+  "genreStrings": 3422,
+  "emptyOrMissingGenres": 0,
+  "classified": 2883,
+  "uncategorized": 539,
+  "classificationPercent": 84.25,
+  "genreLabels": 84,
+  "confidence": {
+    "undetermined": 539,
+    "inferred": 2880,
+    "verified": 3
+  },
+  "missingTitle": 42,
+  "missingArtist": 45,
+  "usableIdentityRows": 3377,
+  "distinctSearchablePairs": 3281,
+  "sourceSha256": "fe93c7bfc7c09c8cd8d3c5de94d2ccecfd8ae1ac957d6c5cb88605b08d98c542",
+  "genreSha256": "2ae4c4f3aa222a62c50f69c1fd137d21364df48c1a4ac60429c508c9504e89ef",
+  "genreBytes": 5087662,
+  "sourceBytes": 1196854,
+  "lookupFinished": true,
+  "genreCoverageComplete": false,
+  "recordingLookupStatuses": {
+    "no-exact-match": 1917,
+    "matched-no-genre": 903,
+    "matched-genre": 498,
+    "ambiguous-match": 6,
+    "missing-identity": 45,
+    "matched-artist-genre": 51,
+    "result-limit": 2
+  },
+  "providerLimitedRecordingLookups": 287,
+  "providerLimitedArtistLookups": 16,
+  "appSnapshotBytes": 657946,
+  "appSnapshotSha256": "78b93899386f666558b4cb51299fb73f6b656d68017e9d78096ae4b8797e7b44",
+  "appSnapshotAllIdentitiesRetained": true,
+  "classificationConfidenceConsistent": true
+}

@@ -64,6 +64,31 @@ class CatalogTests(unittest.TestCase):
         self.assertIsNone(catalog.choose_genre([{'tags': [{'name': 'rock', 'count': 2}, {'name': 'pop', 'count': 2}]}], {'rock', 'pop'}))
         self.assertEqual(catalog.choose_genre([{'tags': [{'name': 'rock', 'count': 3}]}], {'rock'}), 'rock')
 
+    def test_confidence_labels_remain_consistent_with_classification(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = [{**row(str(i)), 'created': 1000} for i in range(3)]
+            catalog.write(root / 'source.json', source)
+            entries = [{**item, 'title': 'One', 'artist': 'Artist', 'genre': genre, 'confidence': confidence,
+                        'missingMetadataFields': [], 'provenance': {'confidenceLevel': level}, 'lookup': {'status': 'no-exact-match'}}
+                       for item, genre, confidence, level in zip(source, ['Uncategorized', 'Rock', 'Jazz'], ['inferred', 'inferred', 'verified'], ['medium', 'none', 'none'])]
+            args = types.SimpleNamespace(source=str(root / 'source.json'), output=str(root / 'output'), revision='test', prefix='earbump_song_', exclude_blocked=False)
+            catalog.finalize(args, entries, source)
+            self.assertEqual([entry['provenance']['confidenceLevel'] for entry in entries], ['none', 'medium', 'high'])
+            self.assertNotIn('confidence', entries[0])
+
+    def test_stale_source_signature_cannot_be_published_as_current(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = [{**row('a'), 'created': 1000, 'latestSignature': 'current'}]
+            catalog.write(root / 'source.json', source)
+            entries = [{**source[0], 'title': 'One', 'artist': 'Artist', 'genre': 'Rock', 'missingMetadataFields': [],
+                        'provenance': {'sourceSignature': 'stale'}, 'lookup': {'status': 'matched-genre'}}]
+            args = types.SimpleNamespace(source=str(root / 'source.json'), output=str(root / 'output'), revision='test', prefix='earbump_song_', exclude_blocked=False)
+            with self.assertRaisesRegex(ValueError, 'signature is stale'):
+                catalog.finalize(args, entries, source)
+            self.assertFalse((root / 'output/genres.json').exists())
+
     def test_reviews_fill_only_matching_unresolved_source_and_preserve_native_genres(self):
         for genre, signature, expected in [('Uncategorized', 'same', 'Rock'), ('Jazz', 'same', 'Jazz'), ('Uncategorized', 'changed', 'Uncategorized')]:
             with self.subTest(genre=genre, signature=signature), tempfile.TemporaryDirectory() as temporary:
