@@ -64,6 +64,32 @@ class CatalogTests(unittest.TestCase):
         self.assertIsNone(catalog.choose_genre([{'tags': [{'name': 'rock', 'count': 2}, {'name': 'pop', 'count': 2}]}], {'rock', 'pop'}))
         self.assertEqual(catalog.choose_genre([{'tags': [{'name': 'rock', 'count': 3}]}], {'rock'}), 'rock')
 
+    def test_large_version_catalog_cannot_hide_another_song(self):
+        first = {'id': 'a', 'title': 'One', 'artist-credit': [{'name': 'Artist'}]}
+        second = {'id': 'b', 'title': 'Two', 'artist-credit': [{'name': 'Artist'}]}
+        client = FakeClient([{'count': 900, 'recordings': [first]}, {'count': 1, 'recordings': [second]}])
+        results = catalog.recording_results(client, [('Artist', 'One'), ('Artist', 'Two')])
+        self.assertTrue(results[('Artist', 'One')][0][0]['_providerResultLimited'])
+        self.assertEqual(results[('Artist', 'Two')][0], [second])
+        self.assertEqual(len(client.urls), 2)
+
+    def test_artist_fallback_requires_unique_exact_name(self):
+        for ambiguous in [False, True]:
+            with self.subTest(ambiguous=ambiguous), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                source = [{'name': 'Publisher', 'service': 'AUDIO', 'identifier': 'earbump_song_a', 'created': 1000}]
+                catalog.write(root / 'source.json', source)
+                entry = {**source[0], 'title': 'One', 'artist': 'Artist', 'genre': 'Uncategorized', 'missingMetadataFields': [], 'provenance': {}, 'lookup': {'status': 'no-exact-match'}}
+                catalog.write(root / 'output/genres.json', {'songs': [entry]})
+                rows = [{'id': 'a', 'name': 'Artist', 'tags': [{'name': 'rock', 'count': 3}]}]
+                if ambiguous:
+                    rows.append({'id': 'b', 'name': 'Artist', 'tags': [{'name': 'pop', 'count': 4}]})
+                client = FakeClient([{'genre-count': 2, 'genres': [{'name': 'rock'}, {'name': 'pop'}]}, {'count': len(rows), 'artists': rows}])
+                args = types.SimpleNamespace(source=str(root / 'source.json'), output=str(root / 'output'), revision='test', prefix='earbump_song_', exclude_blocked=False)
+                catalog.enrich_artists(args, client)
+                result = json.loads((root / 'output/genres.json').read_text())['songs'][0]
+                self.assertEqual(result['genre'], 'Uncategorized' if ambiguous else 'rock')
+
     def test_rejected_batch_splits_without_losing_other_tracks(self):
         class RejectLargeBatch:
             def __init__(self):

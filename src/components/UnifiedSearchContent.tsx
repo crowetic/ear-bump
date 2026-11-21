@@ -17,7 +17,7 @@ const UnifiedSearchContent = ({ query }: { query: string }) => {
   const [visible, setVisible] = useState(60);
   const categories = useCategorySongs();
   const catalog = useSongCatalog();
-  const genres = [...new Set(catalog.map(songCategory).filter(Boolean))].sort();
+  const genres = [...new Map(catalog.map(songCategory).filter(Boolean).map(name => [normalizeName(name), name])).values()].sort((a, b) => a.localeCompare(b));
   const playlists = useSelector(selectPlaylists);
   const queriedSongs = useSelector((state: RootState) => state.global.songListQueried);
   const { loading, error, hasMore, loadMore } = useCatalogSearch(query);

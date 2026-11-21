@@ -148,7 +148,7 @@ def quote(value):
     return '"' + re.sub(r'([+\-!(){}\[\]^"~*?:\\/|&])', r'\\\1', value) + '"'
 
 
-def search(client, entity, query):
+def search(client, entity, query, allow_limited=False):
     rows, offset, total = {}, 0, None
     while True:
         result = client.get(url('https://musicbrainz.org', '/ws/2/' + entity, query=query,
@@ -159,6 +159,10 @@ def search(client, entity, query):
             raise ValueError('Malformed MusicBrainz search response')
         if total is None:
             total = count
+            if total > 100 and allow_limited:
+                return [{**row, '_providerResultLimited': True} for row in page]
+            if total > 500:
+                raise ValueError('MusicBrainz provider result limit: narrow the query')
         if total != count:
             raise ValueError('MusicBrainz result count changed during pagination')
         if not page:
@@ -178,14 +182,32 @@ def search(client, entity, query):
 def recording_results(client, pairs):
     query = ' OR '.join('(artist:' + quote(artist) + ' AND recording:' + quote(title) + ')' for artist, title in pairs)
     try:
-        rows = search(client, 'recording', query)
-        return {pair: (rows, None) for pair in pairs}
+        rows = search(client, 'recording', query, allow_limited=True)
+        results = {pair: (rows, None) for pair in pairs}
+        # Large live/alternate-version catalogs must not crowd other songs off the
+        # result page. Narrow queries for every pair without an exact returned match.
+        missing = [pair for pair in pairs if not matching_recordings(rows, *pair)]
+        if len(pairs) > 1 and missing and any(row.get('_providerResultLimited') for row in rows):
+            if len(missing) == len(pairs):
+                middle = len(pairs) // 2
+                results.update(recording_results(client, pairs[:middle]))
+                results.update(recording_results(client, pairs[middle:]))
+            else:
+                results.update(recording_results(client, missing))
+        return results
     except (urllib.error.URLError, TimeoutError, http.client.HTTPException, ValueError) as error:
         # Provider clause/query limits vary with title length. Split rejected batches
         # without making one malformed or unstable lookup hide the rest of the songs.
         if len(pairs) > 1 and (isinstance(error, ValueError) or isinstance(error, urllib.error.HTTPError) and error.code == 400):
             middle = len(pairs) // 2
             return {**recording_results(client, pairs[:middle]), **recording_results(client, pairs[middle:])}
+        if len(pairs) == 1 and isinstance(error, ValueError) and 'provider result limit' in str(error):
+            # A single recording can have hundreds of live/alternate versions. Preserve
+            # evidence from the available page and explicitly flag the provider limit.
+            try:
+                return {pairs[0]: (search(client, 'recording', query, allow_limited=True), None)}
+            except (urllib.error.URLError, TimeoutError, http.client.HTTPException, ValueError) as limited_error:
+                return {pairs[0]: ([], str(limited_error))}
         return {pair: ([], str(error)) for pair in pairs}
 
 
@@ -289,10 +311,11 @@ def enrich(args, client):
                             reference_urls = ['https://musicbrainz.org/artist/' + artist_ids[0]]
                     except (urllib.error.URLError, TimeoutError, http.client.HTTPException, ValueError) as exc:
                         error = str(exc)
-            status = 'error' if error else ('matched-artist-genre' if method == 'musicbrainz-linked-artist-genre' else 'matched-genre') if genre else 'ambiguous-match' if ambiguous else 'matched-no-genre' if matches else 'no-exact-match'
+            status = 'error' if error else ('matched-artist-genre' if method == 'musicbrainz-linked-artist-genre' else 'matched-genre') if genre else 'ambiguous-match' if ambiguous else 'matched-no-genre' if matches else 'result-limit' if any(row.get('_providerResultLimited') for row in rows) else 'no-exact-match'
             for entry in pairs[(artist, title)]:
                 entry['lookup'] = {'status': status, 'provider': 'MusicBrainz', 'artist': artist, 'title': title,
-                                   'at': now(), 'recordingIds': [row['id'] for row in matches]}
+                                   'at': now(), 'recordingIds': [row['id'] for row in matches],
+                                   'providerResultLimited': any(row.get('_providerResultLimited') for row in rows)}
                 if error:
                     entry['lookup']['error'] = error
                 if genre:
@@ -310,14 +333,77 @@ def enrich(args, client):
     return 0 if report['complete'] else 2
 
 
+
+def artist_results(client, artists):
+    query = ' OR '.join('artist:' + quote(artist) for artist in artists)
+    try:
+        rows = search(client, 'artist', query)
+        return {artist: (rows, None) for artist in artists}
+    except (urllib.error.URLError, TimeoutError, http.client.HTTPException, ValueError) as error:
+        if len(artists) > 1 and (isinstance(error, ValueError) or isinstance(error, urllib.error.HTTPError) and error.code == 400):
+            middle = len(artists) // 2
+            return {**artist_results(client, artists[:middle]), **artist_results(client, artists[middle:])}
+        return {artist: ([], str(error)) for artist in artists}
+
+
+def enrich_artists(args, client):
+    output = Path(args.output)
+    document = json.loads((output / 'genres.json').read_text())
+    source = json.loads(Path(args.source).read_text())
+    entries = document['songs']
+    if {identity(row) for row in entries} != {identity(row) for row in source}:
+        raise ValueError('Artist fallback must use the same complete source inventory')
+    if any(row.get('lookup', {}).get('status', 'pending') == 'pending' for row in entries):
+        raise ValueError('Finish recording lookups before artist fallback')
+    allowed = genre_names(client)
+    artists = collections.defaultdict(list)
+    for entry in entries:
+        if norm(entry['genre']) == 'uncategorized' and not entry.get('missingMetadataFields'):
+            artists[entry['artist']].append(entry)
+    names = list(artists)
+    print(f'Artist fallback for {len(names)} distinct artists', flush=True)
+    for start in range(0, len(names), 10):
+        batch = names[start:start + 10]
+        results = artist_results(client, batch)
+        for name in batch:
+            rows, error = results[name]
+            matches = [row for row in rows if norm(row.get('name', '')) == norm(name)]
+            genre = choose_genre(matches, allowed) if len(matches) == 1 else None
+            status = 'error' if error else 'ambiguous-artist' if len(matches) > 1 else 'matched-artist-genre' if genre else 'no-artist-genre' if matches else 'no-exact-artist'
+            for entry in artists[name]:
+                evidence = {'status': status, 'at': now(), 'artistIds': [row['id'] for row in matches]}
+                if error:
+                    evidence['error'] = error
+                entry['lookup']['artistFallback'] = evidence
+                if genre:
+                    entry.update(genre=genre, confidence='inferred', evidence='Broad genre from MusicBrainz tags for a unique exact artist name; recording identity not verified by this fallback.')
+                    entry.pop('classificationStatus', None)
+                    entry['provenance'].update(method='musicbrainz-exact-artist-tags', confidence='inferred', confidenceLevel='medium', classifiedAt=now(),
+                        referenceUrls=['https://musicbrainz.org/artist/' + matches[0]['id']])
+        finalize(args, entries, source)
+        print(f'Artist fallback {min(start + len(batch), len(names))}/{len(names)}', flush=True)
+    report = finalize(args, entries, source)
+    return 0 if report['complete'] else 2
+
+
 def finalize(args, entries, source):
+    source_by_id = {identity(row): row for row in source}
+    for entry in entries:
+        original = source_by_id[identity(entry)]
+        if isinstance(original.get('size'), int):
+            entry['sourceBytes'] = original['size']
+            if original['size'] <= 32:
+                entry['resourceStatus'] = 'deleted' if norm(entry['title']) == 'deleted' else 'tiny-payload'
     entries.sort(key=identity)
     statuses = collections.Counter(row.get('lookup', {}).get('status', 'pending') for row in entries)
     unresolved = [row for row in entries if norm(row['genre']) == 'uncategorized']
     report = {'at': now(), 'total': len(entries), 'classified': len(entries) - len(unresolved),
-              'uncategorized': len(unresolved), 'missingTitle': sum('title' in row['missingMetadataFields'] for row in entries),
+              'uncategorized': len(unresolved), 'tinyPayloadResources': sum(row.get('sourceBytes', 33) <= 32 for row in entries), 'missingTitle': sum('title' in row['missingMetadataFields'] for row in entries),
               'missingArtist': sum('artist' in row['missingMetadataFields'] for row in entries),
               'lookupStatuses': dict(statuses), 'genres': dict(collections.Counter(row['genre'] for row in entries)),
+              'methods': dict(collections.Counter(row.get('provenance', {}).get('method', 'unclassified') for row in entries)),
+              'artistFallbackErrors': sum(row.get('lookup', {}).get('artistFallback', {}).get('status') == 'error' for row in entries),
+              'providerLimitedLookups': sum(bool(row.get('lookup', {}).get('providerResultLimited')) for row in entries),
               'lookupFinished': not (statuses['error'] or statuses['pending']),
               'complete': not unresolved and not statuses['error'] and not statuses['pending'] and not statuses['missing-identity'],
               'scope': 'All source AUDIO identities', 'excludesNodeBlockedNames': args.exclude_blocked}
@@ -337,7 +423,7 @@ def finalize(args, entries, source):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['pull', 'enrich'])
+    parser.add_argument('action', choices=['pull', 'enrich', 'artists'])
     parser.add_argument('--core', default='https://api.qortal.org')
     parser.add_argument('--prefix', default='earbump_song_')
     parser.add_argument('--exclude-blocked', action='store_true', help='Optional explicit narrower scope; default includes all identities')
@@ -355,6 +441,8 @@ def main():
     if args.action == 'pull':
         pull(args, client)
         return 0
+    if args.action == 'artists':
+        return enrich_artists(args, client)
     return enrich(args, client)
 
 

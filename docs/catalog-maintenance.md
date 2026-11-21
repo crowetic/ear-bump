@@ -5,6 +5,7 @@ Run from the repository root with Python 3; no API key or audio download is need
 ```sh
 python3 scripts/catalog.py pull
 python3 scripts/catalog.py enrich
+python3 scripts/catalog.py artists
 python3 -m unittest discover -s tests -p 'test_*.py'
 node --test tests/song-metadata.test.mjs
 npm run build
@@ -22,14 +23,24 @@ The source list is atomically replaced only after both inventories agree.
 No fixed expected count, first-page cutoff, cron, or scheduled publishing exists.
 
 `enrich` checks every available artist/title pair through batched MusicBrainz
-recording searches. Results are exhaustively paginated against the API count.
+recording searches. Source enumeration has no record cap. Genre searches use the highest-ranked
+100 recording candidates and explicitly record `providerResultLimited` when
+more exist. Unmatched pairs are queried again in smaller groups, so a popular
+song with hundreds of live versions cannot hide another song. This is genre
+evidence retrieval, not a complete inventory of every MusicBrainz recording.
+Other bounded searches are paginated against the API count and split when they
+hit the provider limit.
 Only normalized exact artist/title matches qualify; multiple matching artist
 identities remain ambiguous. Candidate tags must belong to MusicBrainz's genre
 registry and have positive votes; tied leading genres are left unresolved.
 An exact recording's linked artist may provide a separately labelled broad
 artist inference when recording tags are missing. Publisher genres win.
 Existing editorial inferences remain explicitly inferred if no better evidence
-is available; they are not magically upgraded to verified genres.
+is available; they are not upgraded to verified genres.
+`artists` then searches unresolved artists in batches. A unique exact artist
+name with positive genre tags may supply an explicitly labelled broad inference;
+homonyms and untagged artists remain unresolved. This fallback does not claim
+recording-specific verification.
 
 MusicBrainz requests share a limiter (at least 1.1 seconds apart), a meaningful
 User-Agent, bounded retries/backoff and Retry-After support. Successful responses
