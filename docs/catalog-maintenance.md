@@ -74,9 +74,20 @@ and rerun. No provider can promise a factual genre for an unidentified recording
 
 ## App consumption and publication
 
+The 2026-11-21 delivery worktree is
+`/home/crowetic/git-repos/ear-bump-delivery-20261121`, based on committed main.
+The canonical `/home/crowetic/git-repos/ear-bump` checkout retains 59 pre-existing
+uncommitted source paths (including Phase 3 UI work). Yesterday's QDN app was
+built from that dirty source. Reconcile and review those edits before a new QDN
+app release if retaining the already-published Phase 3 interface; this task did
+not sweep unrelated UI changes into its commits or deploy a replacement app.
+
+
 Genre discovery scans all supported AUDIO prefixes, progressively hydrates full
 metadata, and displays 60 local rows at a time. Native genres take priority over
-the trusted legacy index. A lazy bundled JSON chunk provides the reviewed
+the trusted legacy index. New public uploads require title, artist and genre,
+and publish a revision-linked `earbump.song.v1` DOCUMENT alongside AUDIO and
+THUMBNAIL, so missing legacy genres are not recreated by new app uploads. A lazy bundled JSON chunk provides the reviewed
 snapshot without depending on an environment variable or QDN availability.
 The default trusted QDN publisher is the previously verified `crodex`; overrides
 are documented in `.env.example`. Valid cached/remote and bundled documents are

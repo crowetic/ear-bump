@@ -14,6 +14,8 @@ Updates, improvements and fixes for Ear-Bump.
   including per-song evidence and explicit coverage reports.
 - Browse genres across the full catalog. Preserve publisher genres and use a bundled
   reviewed legacy snapshot when QDN or browser storage is unavailable.
+- Require artist, title and genre for new uploads and retain full structured song
+  metadata alongside the audio.
 - Add Private Collections planning, access-policy scaffolding and a Coming Soon
   preview for artist groups and subscriber releases.
 - Display a clickable app version at the top left and provide this changelog view.
