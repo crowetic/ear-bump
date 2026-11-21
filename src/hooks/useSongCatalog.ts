@@ -1,3 +1,7 @@
+import { useMemo } from 'react';
+import useCategorySongs from './useCategorySongs';
+import { applyLegacyGenres, songWithoutLegacyMetadata } from '../utils/legacyGenres';
+import useLegacyGenres from './useLegacyGenres';
 import { createSelector } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../state/store';
@@ -34,12 +38,24 @@ export const selectSongCatalog = createSelector(
     })));
     for (const song of [...references, ...history, ...recent, ...library, ...queried, ...liked, ...queue]) {
       // Sparse playlist references must not erase richer QDN metadata.
-      const populated = Object.fromEntries(Object.entries(song).filter(([, value]) => value !== undefined && value !== ''));
+      const populated = Object.fromEntries(Object.entries(songWithoutLegacyMetadata(song)).filter(([, value]) => value !== undefined && value !== ''));
       songs.set(song.id, { ...songs.get(song.id), ...populated, service: song.service || 'AUDIO' } as Song);
     }
     return [...songs.values()];
   }
 );
 
-const useSongCatalog = () => useSelector(selectSongCatalog);
+const useSongCatalog = () => {
+  const loaded = useSelector(selectSongCatalog);
+  const catalog = useCategorySongs(false);
+  const legacy = useLegacyGenres();
+  return useMemo(() => {
+    const songs = new Map<string, Song>();
+    for (const song of [...loaded, ...catalog.songs]) {
+      const populated = Object.fromEntries(Object.entries(songWithoutLegacyMetadata(song)).filter(([, value]) => value !== undefined && value !== ''));
+      songs.set(song.id, { ...songs.get(song.id), ...populated } as Song);
+    }
+    return [...songs.values()].map((song) => applyLegacyGenres(song, legacy.index));
+  }, [loaded, catalog.songs, legacy.index]);
+};
 export default useSongCatalog;

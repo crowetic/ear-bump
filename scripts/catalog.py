@@ -1,0 +1,333 @@
+#!/usr/bin/env python3
+"""Metadata-only full QDN inventory and resumable, evidence-preserving enrichment."""
+import argparse
+import collections
+import copy
+import datetime as dt
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import time
+import unicodedata
+import urllib.error
+import urllib.parse
+import urllib.request
+
+AGENT = 'EarBumpCatalog/0.1.0 (https://github.com/crowetic/ear-bump)'
+
+
+def now():
+    return dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds').replace('+00:00', 'Z')
+
+
+def write(path, value):
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(path.suffix + '.tmp')
+    temporary.write_text(json.dumps(value, ensure_ascii=False, separators=(',', ':')) + '\n')
+    os.replace(temporary, path)
+
+
+def norm(value):
+    return ' '.join(unicodedata.normalize('NFKC', value).casefold().split())
+
+
+def identity(song):
+    return song['service'], song['name'].casefold(), song.get('identifier', song.get('id'))
+
+
+class Client:
+    def __init__(self, cache, interval=1.1):
+        self.cache = Path(cache)
+        self.interval = interval
+        self.last_request = {}
+
+    def get(self, url, cached=True):
+        key = hashlib.sha256(url.encode()).hexdigest()
+        path = self.cache / (key + '.json')
+        if cached and path.exists():
+            return json.loads(path.read_text())
+        host = urllib.parse.urlsplit(url).netloc
+        for attempt in range(4):
+            time.sleep(max(0, self.last_request.get(host, 0) + self.interval - time.monotonic()))
+            self.last_request[host] = time.monotonic()
+            try:
+                request = urllib.request.Request(url, headers={'User-Agent': AGENT, 'Accept': 'application/json'})
+                with urllib.request.urlopen(request, timeout=35) as response:
+                    value = json.load(response)
+                if cached:
+                    write(path, value)
+                return value
+            except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as error:
+                if isinstance(error, urllib.error.HTTPError) and error.code not in (408, 429, 500, 502, 503, 504):
+                    raise
+                if attempt == 3:
+                    raise
+                retry_after = error.headers.get('Retry-After', '') if isinstance(error, urllib.error.HTTPError) else ''
+                delay = float(retry_after) if retry_after.isdigit() else 2 ** (attempt + 1)
+                print(f'retry {host}: {error}; waiting {delay}s', flush=True)
+                time.sleep(delay)
+
+
+def url(base, path, **query):
+    return base.rstrip('/') + path + '?' + urllib.parse.urlencode(query)
+
+
+def scan(client, core, prefix, exclude_blocked=False):
+    """Continue through short server-capped pages; stop only at an empty page."""
+    songs, offset = {}, 0
+    while True:
+        page = client.get(url(core, '/arbitrary/resources/search', mode='ALL', service='AUDIO',
+                              identifier=prefix, limit=100, offset=offset, reverse='false',
+                              includemetadata='true', excludeblocked=str(exclude_blocked).lower()), cached=False)
+        if not isinstance(page, list):
+            raise ValueError('QDN did not return a resource array')
+        if not page:
+            return list(songs.values())
+        for song in page:
+            if song.get('service') != 'AUDIO' or not song.get('identifier', '').startswith(prefix):
+                raise ValueError('Unexpected resource in QDN inventory')
+            key = identity(song)
+            if key in songs:
+                raise ValueError('Repeated QDN identity: unstable paging; rerun the snapshot')
+            songs[key] = song
+        offset += len(page)
+        print(f'QDN {prefix}: {offset}', flush=True)
+
+
+def pull(args, client):
+    songs = scan(client, args.core, args.prefix, args.exclude_blocked)
+    # Verify enumeration against a second inventory before replacing the last snapshot.
+    check = scan(client, args.core, args.prefix, args.exclude_blocked)
+    signatures = lambda rows: {identity(row): row.get('latestSignature') for row in rows}
+    if signatures(songs) != signatures(check):
+        raise ValueError('Catalog changed during scan; previous snapshot retained, rerun')
+    previous = {identity(row): row for row in json.loads(Path(args.metadata_seed).read_text())} if Path(args.metadata_seed).exists() else {}
+    failures = []
+    for song in songs:
+        saved = previous.get(identity(song), {})
+        if not song.get('metadata') and saved.get('latestSignature') == song.get('latestSignature') and saved.get('metadata'):
+            song['metadata'] = saved['metadata']
+            song['metadataEvidence'] = 'Recovered prior metadata, same QDN transaction signature'
+
+        if song.get('metadata'):
+            continue
+        print(f"Recovering metadata: {song['name']}/{song['identifier']}", flush=True)
+        try:
+            path = '/arbitrary/metadata/AUDIO/' + urllib.parse.quote(song['name'], safe='') + '/' + urllib.parse.quote(song['identifier'], safe='')
+            metadata = client.get(args.core.rstrip('/') + path, cached=False)
+            if not isinstance(metadata, dict) or not (metadata.get('title') or metadata.get('description')):
+                raise ValueError('No usable publisher metadata')
+            song['metadata'] = metadata
+            song['metadataEvidence'] = path
+        except (urllib.error.URLError, TimeoutError, ValueError) as error:
+            failures.append({'identity': identity(song), 'error': str(error)})
+    write(args.source, songs)
+    write(Path(args.output) / 'pull-report.json', {'at': now(), 'core': args.core, 'prefix': args.prefix,
+          'scope': 'All AUDIO identities for prefix; no audio downloads', 'excludesNodeBlockedNames': args.exclude_blocked,
+          'count': len(songs), 'verifiedWithSecondScan': True, 'missingMetadata': failures,
+          'sourceSha256': hashlib.sha256(Path(args.source).read_bytes()).hexdigest()})
+
+
+def fields(song):
+    metadata = song.get('metadata') or {}
+    compact = {}
+    for pair in metadata.get('description', '').split(';'):
+        if '=' in pair:
+            key, value = pair.split('=', 1)
+            compact[key.strip().lower()] = value.strip()
+    if compact.get('v') in ('2', 'earbump1'):
+        compact = {key: urllib.parse.unquote(value) for key, value in compact.items()}
+    return {**compact, **{key: value for key, value in metadata.items() if value is not None and value != ''}}
+
+
+def quote(value):
+    return '"' + re.sub(r'([+\-!(){}\[\]^"~*?:\\/|&])', r'\\\1', value) + '"'
+
+
+def search(client, entity, query):
+    rows, offset, total = {}, 0, None
+    while True:
+        result = client.get(url('https://musicbrainz.org', '/ws/2/' + entity, query=query,
+                                fmt='json', limit=100, offset=offset))
+        count = result.get('count')
+        page = result.get(entity + 's')
+        if not isinstance(count, int) or not isinstance(page, list):
+            raise ValueError('Malformed MusicBrainz search response')
+        if total is None:
+            total = count
+        if total != count:
+            raise ValueError('MusicBrainz result count changed during pagination')
+        if not page:
+            if offset < total:
+                raise ValueError('MusicBrainz search ended before reported total')
+            return list(rows.values())
+        for row in page:
+            if row['id'] in rows:
+                raise ValueError('Repeated MusicBrainz search result')
+            rows[row['id']] = row
+        offset += len(page)
+        if offset >= total:
+            return list(rows.values())
+
+
+def genre_names(client):
+    names, offset = set(), 0
+    while True:
+        result = client.get(url('https://musicbrainz.org', '/ws/2/genre/all', fmt='json', limit=100, offset=offset))
+        page = result['genres']
+        names.update(norm(row['name']) for row in page)
+        offset += len(page)
+        if offset >= result['genre-count']:
+            return names
+        if not page:
+            raise ValueError('Incomplete MusicBrainz genre registry')
+
+
+def matching_recordings(rows, artist, title):
+    return [row for row in rows if norm(row['title']) == norm(title) and
+            norm(''.join(credit.get('name', credit.get('artist', {}).get('name', '')) + credit.get('joinphrase', '')
+                         for credit in row.get('artist-credit', []))) == norm(artist)]
+
+
+def choose_genre(rows, allowed):
+    votes = collections.Counter()
+    for row in rows:
+        for tag in row.get('genres', row.get('tags', [])):
+            label, count = norm(tag['name']), tag.get('count', 0)
+            if label in allowed and count > 0:
+                votes[label] += count
+    if not votes:
+        return None
+    ranked = votes.most_common()
+    if len(ranked) > 1 and ranked[0][1] == ranked[1][1]:
+        return None  # Avoid assigning an arbitrary winner when evidence is tied.
+    return ranked[0][0]
+
+
+def enrich(args, client):
+    source = json.loads(Path(args.source).read_text())
+    if len({identity(row) for row in source}) != len(source):
+        raise ValueError('Duplicate source identities')
+    baseline = json.loads(Path(args.baseline).read_text())
+    prior = {identity(row): row for row in baseline['songs']}
+    entries, pairs = [], collections.defaultdict(list)
+    for song in source:
+        f = fields(song)
+        title, artist = f.get('title', '').strip(), (f.get('artist') or f.get('author') or '').strip()
+        entry = copy.deepcopy(prior.get(identity(song), {}))
+        entry.update(name=song['name'], service='AUDIO', identifier=song['identifier'],
+                     title=title or 'Unknown title', artist=artist or 'Unknown artist',
+                     created=song.get('created'), genre=f.get('genre') or entry.get('genre') or 'Uncategorized')
+        entry['provenance'] = {**entry.get('provenance', {}), 'sourceSignature': song.get('latestSignature')}
+        entry['missingMetadataFields'] = [key for key, value in [('title', title), ('artist', artist)] if not value]
+        if f.get('genre'):
+            entry.update(confidence='verified', evidence='Publisher explicitly supplies genre.')
+            entry['provenance'].update(method='publisher-genre', confidence='verified')
+        entries.append(entry)
+        if title and artist and norm(title) != 'deleted':
+            pairs[(artist, title)].append(entry)
+        else:
+            entry['lookup'] = {'status': 'missing-identity', 'at': now()}
+    allowed = genre_names(client)
+    pair_list = list(pairs)
+    print(f'Looking up {len(pair_list)} distinct pairs for {len(entries)} songs', flush=True)
+    for start in range(0, len(pair_list), args.batch_size):
+        batch = pair_list[start:start + args.batch_size]
+        query = ' OR '.join('(artist:' + quote(artist) + ' AND recording:' + quote(title) + ')' for artist, title in batch)
+        try:
+            rows = search(client, 'recording', query)
+            error = None
+        except (urllib.error.URLError, TimeoutError, ValueError) as exc:
+            rows, error = [], str(exc)
+        for artist, title in batch:
+            matches = matching_recordings(rows, artist, title)
+            artist_sets = {tuple(credit['artist']['id'] for credit in row.get('artist-credit', []) if credit.get('artist', {}).get('id')) for row in matches}
+            ambiguous = len(artist_sets) > 1
+            genre = None if ambiguous else choose_genre(matches, allowed)
+            method = 'musicbrainz-recording-tags'
+            reference_urls = ['https://musicbrainz.org/recording/' + row['id'] for row in matches]
+            if not genre and not ambiguous and matches and any(norm(entry['genre']) == 'uncategorized' for entry in pairs[(artist, title)]):
+                artist_ids = next(iter(artist_sets), ())
+                if len(artist_ids) == 1:
+                    try:
+                        detail = client.get(url('https://musicbrainz.org', '/ws/2/artist/' + artist_ids[0], inc='genres', fmt='json'))
+                        genre = choose_genre([detail], allowed)
+                        if genre:
+                            method = 'musicbrainz-linked-artist-genre'
+                            reference_urls = ['https://musicbrainz.org/artist/' + artist_ids[0]]
+                    except (urllib.error.URLError, TimeoutError, ValueError) as exc:
+                        error = str(exc)
+            status = 'error' if error else ('matched-artist-genre' if method == 'musicbrainz-linked-artist-genre' else 'matched-genre') if genre else 'ambiguous-match' if ambiguous else 'matched-no-genre' if matches else 'no-exact-match'
+            for entry in pairs[(artist, title)]:
+                entry['lookup'] = {'status': status, 'provider': 'MusicBrainz', 'artist': artist, 'title': title,
+                                   'at': now(), 'recordingIds': [row['id'] for row in matches]}
+                if error:
+                    entry['lookup']['error'] = error
+                if genre:
+                    entry['lookup']['genre'] = genre
+                # Native genre always wins; external recording evidence replaces editorial inference.
+                if genre and entry.get('confidence') != 'verified':
+                    entry.update(genre=genre, confidence='inferred', evidence=('MusicBrainz community tags for the artist linked by exact recording match; broad artist inference, not recording verification.' if method == 'musicbrainz-linked-artist-genre' else 'MusicBrainz community genre tags on exact artist/title matches; not acoustic verification.'))
+                    entry.pop('classificationStatus', None)
+                    entry['provenance'].update(method=method, confidence='inferred',
+                         classifiedAt=now(), referenceUrls=reference_urls)
+        # Save checkpoints after each batch; failures are retried on rerun, never success-cached.
+        finalize(args, entries, source)
+        print(f'Lookups {min(start + len(batch), len(pair_list))}/{len(pair_list)}', flush=True)
+    report = finalize(args, entries, source)
+    return 0 if report['complete'] else 2
+
+
+def finalize(args, entries, source):
+    entries.sort(key=identity)
+    statuses = collections.Counter(row.get('lookup', {}).get('status', 'pending') for row in entries)
+    unresolved = [row for row in entries if norm(row['genre']) == 'uncategorized']
+    report = {'at': now(), 'total': len(entries), 'classified': len(entries) - len(unresolved),
+              'uncategorized': len(unresolved), 'missingTitle': sum('title' in row['missingMetadataFields'] for row in entries),
+              'missingArtist': sum('artist' in row['missingMetadataFields'] for row in entries),
+              'lookupStatuses': dict(statuses), 'genres': dict(collections.Counter(row['genre'] for row in entries)),
+              'lookupFinished': not (statuses['error'] or statuses['pending']),
+              'complete': not unresolved and not statuses['error'] and not statuses['pending'] and not statuses['missing-identity'],
+              'scope': 'All source AUDIO identities', 'excludesNodeBlockedNames': args.exclude_blocked}
+    document = {'schema': 'earbump.legacy-genres.v1', 'updatedAt': now(), 'revision': args.revision,
+                'dataset': {'count': len(entries), 'sourceSha256': hashlib.sha256(Path(args.source).read_bytes()).hexdigest(),
+                            'identifierPrefix': args.prefix, 'excludesNodeBlockedNames': args.exclude_blocked},
+                'classificationPolicy': {'confidence': 'Native genre > exact-recording community tags > preserved editorial inference > Uncategorized. No acoustic verification.'},
+                'summary': report, 'songs': entries}
+    output = Path(args.output)
+    write(output / 'genres.json', document)
+    write(output / 'coverage.json', report)
+    write(output / 'review-needed.json', [{'name': row['name'], 'identifier': row['identifier'],
+          'artist': row['artist'], 'title': row['title'], 'genre': row['genre'], 'lookup': row.get('lookup', {'status': 'pending'})}
+          for row in entries if norm(row['genre']) == 'uncategorized' or row.get('lookup', {}).get('status') in ('error', 'pending', 'missing-identity')])
+    return report
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('action', choices=['pull', 'enrich'])
+    parser.add_argument('--core', default='https://api.qortal.org')
+    parser.add_argument('--prefix', default='earbump_song_')
+    parser.add_argument('--exclude-blocked', action='store_true', help='Optional explicit narrower scope; default includes all identities')
+    parser.add_argument('--metadata-seed', default='data/legacy/source-2026-11-20.json')
+    parser.add_argument('--source', default='data/legacy/source-current.json')
+    parser.add_argument('--baseline', default='data/legacy/genres-2026-11-20.json')
+    parser.add_argument('--output', default='data/legacy/current')
+    parser.add_argument('--cache', default='.cache/catalog')
+    parser.add_argument('--revision', default='2026-11-21.1')
+    parser.add_argument('--batch-size', type=int, default=10)
+    args = parser.parse_args()
+    if not 1 <= args.batch_size <= 20:
+        parser.error('--batch-size must be between 1 and 20')
+    client = Client(args.cache)
+    if args.action == 'pull':
+        pull(args, client)
+        return 0
+    return enrich(args, client)
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

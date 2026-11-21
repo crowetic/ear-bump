@@ -58,7 +58,7 @@ export interface PlayList extends ResourceBase {
   image: string | null
 }
 
-export interface SongReference {
+export interface SongReference extends Pick<Song, 'genre' | 'mood' | 'bpm' | 'releaseDate' | 'explicit' | 'tags' | 'source' | 'audio' | 'coverArt' | 'description' | 'metadataDescription'> {
   name: string;
   service: string;
   identifier: string;

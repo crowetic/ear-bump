@@ -6,6 +6,8 @@ import {
 } from '../state/features/globalSlice';
 import { AppDispatch, RootState } from '../state/store';
 import { Song } from '../types';
+import { songWithoutLegacyMetadata } from '../utils/legacyGenres';
+import { resourcePath } from '../utils/songResources';
 import { artistName } from '../utils/songMetadata';
 import { MyContext } from '../wrappers/DownloadWrapper';
 import { getPlaybackQueue, selectPlaybackQueue } from '../utils/playbackQueue';
@@ -42,7 +44,7 @@ const usePlayer = () => {
         ...cached,
         ...resource,
         status: song.status?.status === 'READY' ? song.status : cached.status,
-        url: cached?.url || `/arbitrary/AUDIO/${song.name}/${song.id}`
+        url: cached?.url || resourcePath('AUDIO', song.name, song.id)
       }));
     } else {
       downloadVideo(resource);
@@ -79,13 +81,17 @@ const usePlayer = () => {
     return nextSong.id;
   }, [dispatch, startTrack, store]);
 
-  const recordPlayback = useCallback((song: Song) => {
+  const recordPlayback = useCallback((input: Song) => {
+    const song = songWithoutLegacyMetadata(input);
     const { global, auth } = store.getState();
     if (!auth.user?.address || global.currentSong !== song.id || global.lastHistoryRequest === global.playbackRequest) return;
     dispatch(recordPlaybackHistory({
       address: auth.user.address, request: global.playbackRequest,
       entry: { id: song.id, songId: song.id, title: song.title, author: song.author,
         artist: artistName(song), album: song.album || '', name: song.name, service: song.service,
+        genre: song.genre, mood: song.mood, bpm: song.bpm, releaseDate: song.releaseDate,
+        explicit: song.explicit, tags: song.tags, description: song.description, metadataDescription: song.metadataDescription, language: song.language,
+        notes: song.notes, source: song.source, audio: song.audio, coverArt: song.coverArt,
         duration: song.duration, trackNumber: song.trackNumber, discNumber: song.discNumber,
         playedAt: Date.now(), thumbnail: global.imageCoverHash[song.id] }
     }));

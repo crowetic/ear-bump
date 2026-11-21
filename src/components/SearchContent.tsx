@@ -46,6 +46,7 @@ const SearchContent: React.FC<SearchContentProps> = ({
               onClick={(id: string) => onPlay(id)} 
               data={song}
             />
+            <p className="ml-16 text-xs text-neutral-400">{song.genre || 'Uncategorized'}</p>
           </div>
           <AddToPlaylistButton song={song} />
           <LikeButton songId={song.id} name={song.name} service={song.service} songData={song} />

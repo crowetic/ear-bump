@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 *.zip
+# Local catalog HTTP cache and Python bytecode
+.cache/
+__pycache__/

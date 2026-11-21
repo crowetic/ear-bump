@@ -4,7 +4,7 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 
 import { RootState } from "../state/store";
 import { FavSong, PlayList, SongMeta, addToPlaylistHashMap, setImageCoverHash, setIsLoadingGlobal, setRandomPlaylist, upsertFavorite, upsertMyLibrary, upsertMyPlaylists, upsertPlaylists, upsertQueried, upsertQueriedPlaylist, upsertRecent } from "../state/features/globalSlice";
-import { getSongMetadata } from '../utils/songMetadata';
+import { loadSongDescriptor, normalizeSongResource, SongResource } from '../utils/songResources';
 import { queueFetchAvatars } from "../wrappers/GlobalWrapper";
 
 export const useFetchSongs = () => {
@@ -63,18 +63,12 @@ export const useFetchSongs = () => {
         }
       })
       const responseData = await response.json()
-      const structureData = responseData.map((song: any): SongMeta => {
-        return {
-          description: song?.metadata?.description,
-          created: song.created,
-          updated: song.updated,
-          name: song.name,
-          id: song.identifier,
-          status: song?.status,
-          service: 'AUDIO',
-          ...getSongMetadata(song.metadata)
-        }
-      })
+      const structureData: SongMeta[] = await Promise.all(responseData.map(async (song: SongResource) => {
+        const normalized = normalizeSongResource(song);
+        const details = await loadSongDescriptor(normalized).catch(() => normalized);
+        return { ...details, description: details.description || '', created: song.created || 0,
+          updated: song.updated || song.created || 0 };
+      }))
       dispatch(upsertMyLibrary(structureData))
 
 
@@ -109,18 +103,12 @@ export const useFetchSongs = () => {
         }
       })
       const responseData = await response.json()
-      const structureData = responseData.map((song: any): SongMeta => {
-        return {
-          description: song?.metadata?.description,
-          created: song.created,
-          updated: song.updated,
-          name: song.name,
-          id: song.identifier,
-          status: song?.status,
-          service: 'AUDIO',
-          ...getSongMetadata(song.metadata)
-        }
-      })
+      const structureData: SongMeta[] = await Promise.all(responseData.map(async (song: SongResource) => {
+        const normalized = normalizeSongResource(song);
+        const details = await loadSongDescriptor(normalized).catch(() => normalized);
+        return { ...details, description: details.description || '', created: song.created || 0,
+          updated: song.updated || song.created || 0 };
+      }))
       dispatch(upsertQueried(structureData))
 
 
@@ -156,16 +144,8 @@ export const useFetchSongs = () => {
         if (responseData.length === 0) continue
         const data = responseData[0]
 
-        const object = {
-          description: data?.metadata?.description,
-          created: data.created,
-          updated: data.updated,
-          name: data.name,
-          id: data.identifier,
-          status: data?.status,
-          service: 'AUDIO',
-          ...getSongMetadata(data.metadata)
-        }
+        const normalized = normalizeSongResource(data);
+        const object = await loadSongDescriptor(normalized).catch(() => normalized);
         songsToSet.push(object)
 
 
@@ -198,18 +178,12 @@ export const useFetchSongs = () => {
         }
       })
       const responseData = await response.json()
-      const structureData = responseData.map((song: any): SongMeta => {
-        return {
-          description: song?.metadata?.description,
-          created: song.created,
-          updated: song.updated,
-          name: song.name,
-          id: song.identifier,
-          status: song?.status,
-          service: 'AUDIO',
-          ...getSongMetadata(song.metadata)
-        }
-      })
+      const structureData: SongMeta[] = await Promise.all(responseData.map(async (song: SongResource) => {
+        const normalized = normalizeSongResource(song);
+        const details = await loadSongDescriptor(normalized).catch(() => normalized);
+        return { ...details, description: details.description || '', created: song.created || 0,
+          updated: song.updated || song.created || 0 };
+      }))
       dispatch(upsertRecent(structureData))
       for (const content of structureData) {
         if (content.name && content.id) {
