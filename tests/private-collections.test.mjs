@@ -35,7 +35,7 @@ test('authentication and verified closed-group membership are required', () => {
   for (const changes of [{ isMember: false }, { isClosedGroup: false }, { accountAddress: 'other' }, { groupId: 43 }]) assert.equal(evaluateCollectionAccess(collection, 'listener', { ...member, ...changes }, proof, 150).allowed, false);
 });
 test('invalid collections, duplicated tiers and malformed prices are rejected', () => {
-  for (const changes of [{ visibility: 'public' }, { groupId: 0 }, { tiers: [] }, { tiers: {} }, { tiers: [null] }, { artistAddress: {} }, { tiers: [...collection.tiers, ...collection.tiers] }, { tiers: [{ ...collection.tiers[0], price: '-1' }] }]) assert.equal(isValidPrivateCollection({ ...collection, ...changes }), false);
+  for (const changes of [{ visibility: 'public' }, { groupId: 0 }, { tiers: [] }, { tiers: {} }, { tiers: [null] }, { artistAddress: {} }, { tiers: [...collection.tiers, ...collection.tiers] }, { tiers: [{ ...collection.tiers[0], price: '-1' }] }, { tiers: [{ ...collection.tiers[0], price: 1 }] }]) assert.equal(isValidPrivateCollection({ ...collection, ...changes }), false);
 });
 test('all production gateway operations remain unavailable', async () => {
   await assert.rejects(privateCollectionGateway.publishCollection(collection), PrivateCollectionsUnavailableError);

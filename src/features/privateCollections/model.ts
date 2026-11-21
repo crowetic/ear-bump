@@ -49,7 +49,7 @@ export const isValidPrivateCollection = (collection: PrivateCollectionDraft) => 
     && Number.isSafeInteger(collection.groupId) && collection.groupId > 0
     && Array.isArray(collection.tiers) && collection.tiers.length > 0 && ids.size === collection.tiers.length
     && collection.tiers.every((tier) => hasText(tier.id) && hasText(tier.label)
-      && /^(?:0|[1-9]\d*)(?:\.\d{1,8})?$/.test(tier.price)
+      && typeof tier.price === 'string' && /^(?:0|[1-9]\d*)(?:\.\d{1,8})?$/.test(tier.price)
       && Number.isSafeInteger(tier.assetId) && tier.assetId >= 0
       && Number.isSafeInteger(tier.termDays) && tier.termDays > 0);
 };
